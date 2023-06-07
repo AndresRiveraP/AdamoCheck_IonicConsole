@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -17,6 +18,8 @@ function App(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  
 });
 
 export default App;
+
