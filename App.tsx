@@ -8,7 +8,6 @@ import {
   Animated,
   SafeAreaView,
 } from 'react-native';
-import Easing  from 'react-native-reanimated';
 
 import InitialScreen from './src/components/Views/InitialScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
