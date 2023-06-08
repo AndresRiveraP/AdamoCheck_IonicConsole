@@ -20,7 +20,7 @@ const AdminLog = () => {
             <TextInput 
                 placeholder="ID" 
                 placeholderTextColor='#EAEAEA' 
-                style={styles.ico} 
+                style={styles.tInput} 
                 onChangeText={setId}
             />
         </View>
@@ -31,9 +31,10 @@ const AdminLog = () => {
             />
             <TextInput 
                 placeholder="Password" 
-                placeholderTextColor='#EAEAEA' 
-                style={styles.ico} 
-                onChangeText={setId}
+                placeholderTextColor='#EAEAEA'
+                secureTextEntry  
+                style={styles.tInput} 
+                onChangeText={setPassword}
             />
         </View>
         <View style={styles.field}>
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     },
     ico:{
         alignSelf:'flex-start',
+        width:50,
         height: 50,
         resizeMode: 'contain'
     },
