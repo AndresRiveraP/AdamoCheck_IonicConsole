@@ -8,8 +8,9 @@ import {
   Animated,
   SafeAreaView,
 } from 'react-native';
-import { Easing } from 'react-native-reanimated';
+import Easing  from 'react-native-reanimated';
 
+import InitialScreen from './src/components/Views/InitialScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => (
@@ -22,35 +23,36 @@ const SplashScreen = () => (
 );
 
 const App = () => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
   const [showSplash, setShowSplash] = useState(true);
+  const fadeAnim = new Animated.Value(1);
 
   useEffect(() => {
-    setTimeout(() => {
-      setShowSplash(false);
-    }, 2500); 
-  }, []);
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000, 
-      easing: Easing.linear,
+    const fadeOut = Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 1000,
       useNativeDriver: true,
-    }).start();
+    });
+
+    setTimeout(() => {
+      fadeOut.start(() => {
+        setShowSplash(false);
+      });
+    }, 2000); 
+
+    return () => {
+      fadeOut.stop();
+    };
   }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
       {showSplash ? (
-        <SplashScreen />
+        <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+          <SplashScreen />
+        </Animated.View>
       ):(
-        <ImageBackground
-          source={require('./assets/img/imgBG01.png')}
-          style={[styles.background,{opacity : fadeAnim}]}
-        >
-
-        </ImageBackground>
+        <InitialScreen />
       )}
       
     </SafeAreaView>
@@ -63,15 +65,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor :'#FFF'
   },
-  background:{
-    flex:1,
-    resizeMode: 'cover',
-    justifyContent:'center',
-  },
   image: {
-    maxHeight: 200,
-    maxWidth: 200,
-    top: '40%',
+    top: '20%',
+    maxWidth: 212,
     resizeMode: 'contain',
     alignSelf: 'center'
   },
