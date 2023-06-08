@@ -1,7 +1,17 @@
-import React from 'react'
-import { ImageBackground,StyleSheet,View, Image, Pressable, Text} from 'react-native'
+import React, {useState} from 'react'
+import { ImageBackground,StyleSheet,View, Image, Pressable, Text,Modal} from 'react-native'
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+
+import CameraScreen from './CameraScreen'
 
 const InitialScreen = () => {
+  const [modalCamera, setModalCamera] = useState(false)
+  
+  const handleCamera = () => {
+    console.log('Setteaado')
+    setModalCamera(true)
+  }
+
   return (
     <ImageBackground
           source={require('../../../assets/img/imgBG01.png')}
@@ -15,7 +25,7 @@ const InitialScreen = () => {
 
                 <Pressable
                     style={styles.boton}
-                    onPress={() => console.log('Requesting Camera...')}
+                    onPress={() => handleCamera()}
                 >
                     <Image 
                         source={require('../../../assets/img/profi.png')}
@@ -30,7 +40,18 @@ const InitialScreen = () => {
                 </Pressable>
             </View>
 
+            {modalCamera && (
+                <Modal
+                    animationType='slide'
+                    visible = {modalCamera}
+                    onRequestClose={() =>{setModalCamera(!modalCamera)}}
+                >
+                    <CameraScreen/>
+
+                </Modal>
+            )}
     </ImageBackground>
+
   )
 }
 
@@ -57,11 +78,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#9cd0de',
         borderRadius: 50,
         padding: 20,
-        marginTop: 50,
+        marginTop: 40,
     },
     profi:{
-        maxWidth: 40,
-        maxHeight: 40,
+        maxWidth: 20,
+        maxHeight: 20,
         resizeMode: 'contain',
     },
     label:{
