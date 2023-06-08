@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     top: '20%',
     maxWidth: 212,
     resizeMode: 'contain',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 });
 

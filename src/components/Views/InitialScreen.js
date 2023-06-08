@@ -3,20 +3,35 @@ import { ImageBackground,StyleSheet,View, Image, Pressable, Text,Modal} from 're
 import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 import CameraScreen from './CameraScreen'
+import AdminLog from './AdminLog';
 
 const InitialScreen = () => {
   const [modalCamera, setModalCamera] = useState(false)
+  const [modalAdminLog, setModalAdminLog] = useState(false)
   
   const handleCamera = () => {
     console.log('Setteaado')
     setModalCamera(true)
   }
 
+  const handleAdmin = () =>{
+    console.log('To Admin')
+    setModalAdminLog(true)
+  }
+
   return (
     <ImageBackground
           source={require('../../../assets/img/imgBG01.png')}
           style={styles.background}
-        >
+    >
+
+            <Pressable
+                style={styles.botonAdmin}
+                onPress={() => handleAdmin()}
+            >
+                <Text style={styles.label2}>Log In As Admin</Text>
+            </Pressable>
+
             <View style={styles.container}>
                 <Image 
                 source={require('../../../assets/img/ic_white_c.png')}
@@ -36,7 +51,6 @@ const InitialScreen = () => {
                         source={require('../../../assets/img/profi.png')}
                         style={styles.profi}
                     />
-
                 </Pressable>
             </View>
 
@@ -50,6 +64,17 @@ const InitialScreen = () => {
 
                 </Modal>
             )}
+
+            {modalAdminLog && (
+                <Modal
+                    animationType='fade'
+                    visible = {modalAdminLog}
+                    onRequestClose={() =>{setModalAdminLog(!modalAdminLog)}}
+                >
+                    <AdminLog/>
+
+                </Modal>
+            )}
     </ImageBackground>
 
   )
@@ -59,7 +84,7 @@ const styles = StyleSheet.create({
     background:{
         flex:1,
         resizeMode: 'cover',
-        justifyContent:'center',
+        justifyContent:'space-around',
     },
     container:{
         justifyContent : 'center',
@@ -80,6 +105,15 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 40,
     },
+    botonAdmin:{
+        alignSelf:'flex-end',
+        alignItems: 'flex-end',
+        backgroundColor: '#FFF',
+        marginHorizontal: 20,
+        borderRadius: 50,
+        padding: 15,
+        right: 10,
+    }, 
     profi:{
         maxWidth: 20,
         maxHeight: 20,
@@ -89,6 +123,10 @@ const styles = StyleSheet.create({
         color : '#FFF',
         fontSize: 16,
         paddingHorizontal: 50,
+    },
+    label2:{
+        color : '#000',
+        fontSize: 16,
     }
 })
 
