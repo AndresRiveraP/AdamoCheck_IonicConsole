@@ -9,7 +9,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import InitialScreen from './src/components/Views/InitialScreen';
+import InitialScreen from './src/components/Views/InitialScreen.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => (
