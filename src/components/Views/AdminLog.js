@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text} from 'react-native'
-import SQLite from 'react-native-sqlite-storage';
 
 const AdminLog = () => {
   const [id,setId] = useState('')
