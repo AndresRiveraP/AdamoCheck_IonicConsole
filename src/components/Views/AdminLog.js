@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     field:{
         flexDirection:'row',
         alignContent:'flex-start',
-        alignItems:'flex-start',
+        alignItems:'center',
         borderWidth : 2,
         paddingVertical: 10,
         marginBottom: 15,

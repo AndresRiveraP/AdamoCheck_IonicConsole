@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import InitialScreen from './src/components/Views/InitialScreen.js';
+import AdminScreen from './src/components/Views/AdminScreen.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => (
@@ -52,6 +53,7 @@ const App = () => {
         </Animated.View>
       ):(
         <InitialScreen />
+        //<AdminScreen />
       )}
       
     </SafeAreaView>
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center',
   },
+  
 });
 
 export default App;
