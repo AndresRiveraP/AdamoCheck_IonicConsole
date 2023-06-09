@@ -90,7 +90,6 @@ const InitialScreen = () => {
                 </Modal>
             )}
     </ImageBackground>
-
   )
 }
 

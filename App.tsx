@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 
 import InitialScreen from './src/components/Views/InitialScreen.js';
-import AdminScreen from './src/components/Views/AdminScreen.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Unverified from './src/components/Views/Unverified.js';
 
 const SplashScreen = () => (
   <View style={styles.container}>
@@ -52,8 +52,10 @@ const App = () => {
           <SplashScreen />
         </Animated.View>
       ):(
-        <InitialScreen />
+        //<InitialScreen />
         //<AdminScreen />
+        <Unverified />
+
       )}
       
     </SafeAreaView>
