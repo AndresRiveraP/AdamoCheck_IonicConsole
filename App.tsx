@@ -36,7 +36,7 @@ const App = () => {
       fadeOut.start(() => {
         setShowSplash(false);
       });
-    }, 2000); 
+    }, 1500); 
 
     return () => {
       fadeOut.stop();

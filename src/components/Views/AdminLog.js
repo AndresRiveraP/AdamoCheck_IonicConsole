@@ -12,6 +12,7 @@ const AdminLog = () => {
             style={styles.image}
         />
 
+    <View style={styles.fieldsC}>
         <View style={styles.field}>
             <Image 
                 source={require('../../../assets/img/id.png')}
@@ -37,10 +38,10 @@ const AdminLog = () => {
                 onChangeText={setPassword}
             />
         </View>
-        <View style={styles.field}>
+        <View style={styles.fieldBoton}>
             <Pressable
                 style={styles.boton}
-                onPress={() => console.log('Presionado')}
+                onPress={() => console.log('Log In, Then...')}
             >
                 <Image 
                     source={require('../../../assets/img/enter.png')}
@@ -49,6 +50,7 @@ const AdminLog = () => {
                 <Text style={styles.label}>Log In</Text>
             </Pressable>
         </View>
+    </View>
     </SafeAreaView>
   )
 }
@@ -57,26 +59,50 @@ const styles = StyleSheet.create({
     admon:{
         alignItems:'center'
     },
+    fieldsC:{
+        width: '70%',
+        justifyContent:'center',
+        alignContent:'center',
+    },
     image: {
-        maxWidth: 212,
+        width: 212,
+        height: 414,
         resizeMode: 'contain',
         alignSelf: 'center',
     },
     field:{
         flexDirection:'row',
-        width:'70%',
         alignContent:'flex-start',
         alignItems:'flex-start',
         borderWidth : 2,
+        paddingVertical: 10,
+        marginBottom: 15,
         borderRadius: 10,
-        borderColor: '#EAEAEA',
+        borderColor: '#b4b4ac',
         justifyContent: 'flex-start'
+    },
+    tInput:{
+        flex:0.9,
+    },
+    fieldBoton:{
+        flexDirection:'row',
+        paddingVertical: 8,
+        borderWidth : 2,
+        borderRadius: 10,
+        borderColor: '#b4b4ac',
+        backgroundColor:'#b9e4f4',
+    },
+    boton:{
+        flexDirection: 'row',
     },
     ico:{
         alignSelf:'flex-start',
         width:50,
         height: 50,
         resizeMode: 'contain'
+    },
+    label:{
+        alignSelf: 'center',
     },
 })
 
