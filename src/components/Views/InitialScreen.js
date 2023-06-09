@@ -45,7 +45,7 @@ const InitialScreen = () => {
                         source={require('../../../assets/img/profi.png')}
                         style={styles.profi}
                     />
-                    <Text style={styles.label}>Check In</Text>
+                    <Text style={styles.label}> Check In </Text>
                     <Image 
                         source={require('../../../assets/img/profi.png')}
                         style={styles.profi}

@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text} from 'react-native'
-import db from '../DataBaseHandlers/db'
+import SQLite from 'react-native-sqlite-storage';
 
 const AdminLog = () => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogIn = () =>{
-    console.log("Handling Log")
+  const handleLogIn = (id,password) =>{
+    console.log('Mandando las credenciales' + [id,password])
   }
 
   return (
@@ -46,7 +46,7 @@ const AdminLog = () => {
         <View style={styles.fieldBoton}>
             <Pressable
                 style={styles.boton}
-                onPress={() => handleLogIn()}
+                onPress={() => handleLogIn(id,password)}
             >
                 <Image 
                     source={require('../../../assets/img/enter.png')}
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     },
     boton:{
         flexDirection: 'row',
+        width: '100%'
     },
     ico:{
         alignSelf:'flex-start',
