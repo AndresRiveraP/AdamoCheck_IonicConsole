@@ -45,12 +45,27 @@ const InitialScreen = () => {
                         source={require('../../../assets/img/profi.png')}
                         style={styles.profi}
                     />
-                    <Text style={styles.label}>Check Your ID</Text>
+                    <Text style={styles.label}>Check In</Text>
                     <Image 
                         source={require('../../../assets/img/profi.png')}
                         style={styles.profi}
                     />
                 </Pressable>
+                <Pressable
+                    style={styles.boton2}
+                    onPress={() => handleCamera()}
+                >
+                    <Image 
+                        source={require('../../../assets/img/profi.png')}
+                        style={styles.profi}
+                    />
+                    <Text style={styles.label}>Check Out</Text>
+                    <Image 
+                        source={require('../../../assets/img/profi.png')}
+                        style={styles.profi}
+                    />
+                </Pressable>
+                
             </View>
 
             {modalCamera && (

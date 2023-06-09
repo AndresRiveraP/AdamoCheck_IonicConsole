@@ -26,6 +26,15 @@ export default StyleSheet.create({
         padding: 20,
         marginTop: 40,
     },
+    boton2:{
+        flexDirection : 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#043655',
+        borderRadius: 50,
+        padding: 20,
+        marginTop: 40,
+    },
     botonAdmin:{
         alignSelf:'flex-end',
         alignItems: 'flex-end',

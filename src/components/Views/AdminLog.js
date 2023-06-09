@@ -1,9 +1,14 @@
 import React, {useState} from 'react'
 import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text} from 'react-native'
+import db from '../DataBaseHandlers/db'
 
 const AdminLog = () => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
+
+  const handleLogIn = () =>{
+    console.log("Handling Log")
+  }
 
   return (
     <SafeAreaView style={styles.admon}>
@@ -41,7 +46,7 @@ const AdminLog = () => {
         <View style={styles.fieldBoton}>
             <Pressable
                 style={styles.boton}
-                onPress={() => console.log('Log In, Then...')}
+                onPress={() => handleLogIn()}
             >
                 <Image 
                     source={require('../../../assets/img/enter.png')}
