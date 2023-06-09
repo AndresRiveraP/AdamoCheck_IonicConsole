@@ -52,10 +52,10 @@ const App = () => {
           <SplashScreen />
         </Animated.View>
       ):(
-        //<InitialScreen />
+        <InitialScreen />
         //<AdminScreen />
         //<Unverified />
-        <Verified />
+        //<Verified />
       )}
       
     </SafeAreaView>
