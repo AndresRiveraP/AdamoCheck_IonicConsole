@@ -36,13 +36,13 @@ export default StyleSheet.create({
         marginTop: 40,
     },
     botonAdmin:{
-        marginTop: 30,
+        position: 'relative',
+        marginTop: 40,
+        marginRight: 20,
         alignSelf:'flex-end',
         backgroundColor: '#FFF',
-        marginHorizontal: 20,
         borderRadius: 50,
         padding: 15,
-        right: 10,
     }, 
     profi:{
         maxWidth: 20,

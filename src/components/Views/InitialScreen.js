@@ -9,6 +9,7 @@ import styles from '../../styles/InitialScreenStyles.js'
 const InitialScreen = () => {
   const [modalCamera, setModalCamera] = useState(false)
   const [modalAdminLog, setModalAdminLog] = useState(false)
+  const [check,setCheck] = useState('')
   
   const handleCamera = () => {
     setModalCamera(true)
@@ -39,7 +40,7 @@ const InitialScreen = () => {
 
                 <Pressable
                     style={styles.boton}
-                    onPress={() => handleCamera()}
+                    onPress={() => {setCheck('in'); handleCamera()}}
                 >
                     <Image 
                         source={require('../../../assets/img/profi.png')}
@@ -53,7 +54,7 @@ const InitialScreen = () => {
                 </Pressable>
                 <Pressable
                     style={styles.boton2}
-                    onPress={() => handleCamera()}
+                    onPress={() => {setCheck('out'); handleCamera()}}
                 >
                     <Image 
                         source={require('../../../assets/img/profi.png')}
@@ -74,7 +75,9 @@ const InitialScreen = () => {
                     visible = {modalCamera}
                     onRequestClose={() =>{setModalCamera(!modalCamera)}}
                 >
-                    <CameraScreen/>
+                    <CameraScreen
+                        check={check}
+                    />
 
                 </Modal>
             )}

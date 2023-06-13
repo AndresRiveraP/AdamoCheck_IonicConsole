@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { RNCamera } from 'react-native-camera';
 
-const CameraScreen = () => {
+const CameraScreen = ({check}) => {
   const cameraRef = useRef(null);
 
   const takePicture = async () => {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     alignSelf: 'center',
-    padding: 16,
+    padding: 25,
     borderRadius: 32,
     backgroundColor: 'white',
   },
