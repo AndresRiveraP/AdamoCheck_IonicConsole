@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: 16,
+    bottom: 30,
     alignSelf: 'center',
     padding: 16,
     borderRadius: 32,

@@ -61,7 +61,7 @@ const AdminLog = () => {
 
 const styles = StyleSheet.create({
     admon:{
-        alignItems:'center'
+        alignItems:'center',
     },
     fieldsC:{
         width: '70%',

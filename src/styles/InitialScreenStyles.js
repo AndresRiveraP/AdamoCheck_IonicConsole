@@ -6,7 +6,6 @@ export default StyleSheet.create({
         flex:1,
         resizeMode: 'cover',
         justifyContent:'space-around',
-        paddingVertical: 50
     },
     container:{
         justifyContent : 'center',
@@ -37,8 +36,8 @@ export default StyleSheet.create({
         marginTop: 40,
     },
     botonAdmin:{
+        marginTop: 30,
         alignSelf:'flex-end',
-        alignItems: 'flex-end',
         backgroundColor: '#FFF',
         marginHorizontal: 20,
         borderRadius: 50,

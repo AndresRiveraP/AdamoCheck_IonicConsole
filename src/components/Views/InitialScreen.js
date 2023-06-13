@@ -28,7 +28,7 @@ const InitialScreen = () => {
                 style={styles.botonAdmin}
                 onPress={() => handleAdmin()}
             >
-                <Text style={styles.label2}>Log In As Admin</Text>
+                <Text style={styles.label2}>Admin Log In</Text>
             </Pressable>
 
             <View style={styles.container}>
@@ -81,7 +81,7 @@ const InitialScreen = () => {
 
             {modalAdminLog && (
                 <Modal
-                    animationType='fade'
+                    animationType='slide'
                     visible = {modalAdminLog}
                     onRequestClose={() =>{setModalAdminLog(!modalAdminLog)}}
                 >
