@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text} from 'react-native'
+import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text, KeyboardAvoidingView} from 'react-native'
 
 const AdminLog = () => {
   const [id,setId] = useState('')
@@ -11,57 +11,63 @@ const AdminLog = () => {
 
   return (
     <SafeAreaView style={styles.admon}>
-        <Image
-            source={require('../../../assets/img/ic.png')}
-            style={styles.image}
-        />
+        <KeyboardAvoidingView style={styles.keyboardAvoidingContainer} behavior="position">
+            <Image
+                source={require('../../../assets/img/ic.png')}
+                style={styles.image}
+            />
 
-    <View style={styles.fieldsC}>
-        <View style={styles.field}>
-            <Image 
-                source={require('../../../assets/img/id.png')}
-                style={styles.ico}
-            />
-            <TextInput 
-                placeholder="ID" 
-                placeholderTextColor='#EAEAEA' 
-                style={styles.tInput} 
-                onChangeText={setId}
-            />
-        </View>
-        <View style={styles.field}>
-            <Image 
-                source={require('../../../assets/img/pass.png')}
-                style={styles.ico}
-            />
-            <TextInput 
-                placeholder="Password" 
-                placeholderTextColor='#EAEAEA'
-                secureTextEntry  
-                style={styles.tInput} 
-                onChangeText={setPassword}
-            />
-        </View>
-        <View style={styles.fieldBoton}>
-            <Pressable
-                style={styles.boton}
-                onPress={() => handleLogIn(id,password)}
-            >
+        <View style={styles.fieldsC}>
+            <View style={styles.field}>
                 <Image 
-                    source={require('../../../assets/img/enter.png')}
+                    source={require('../../../assets/img/id.png')}
                     style={styles.ico}
                 />
-                <Text style={styles.label}>Log In</Text>
-            </Pressable>
+                <TextInput 
+                    placeholder="ID" 
+                    placeholderTextColor='#EAEAEA' 
+                    style={styles.tInput} 
+                    onChangeText={setId}
+                />
+            </View>
+            <View style={styles.field}>
+                <Image 
+                    source={require('../../../assets/img/pass.png')}
+                    style={styles.ico}
+                />
+                <TextInput 
+                    placeholder="Password" 
+                    placeholderTextColor='#EAEAEA'
+                    secureTextEntry  
+                    style={styles.tInput} 
+                    onChangeText={setPassword}
+                />
+            </View>
+            <View style={styles.fieldBoton}>
+                <Pressable
+                    style={styles.boton}
+                    onPress={() => handleLogIn(id,password)}
+                >
+                    <Image 
+                        source={require('../../../assets/img/enter.png')}
+                        style={styles.ico}
+                    />
+                    <Text style={styles.label}>Log In</Text>
+                </Pressable>
+            </View>
         </View>
-    </View>
+    </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
     admon:{
+        flex: 1
+    },
+    keyboardAvoidingContainer:{
         alignItems:'center',
+        flex:1
     },
     fieldsC:{
         width: '70%',
