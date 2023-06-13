@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         alignItems : 'center',
     },
     picture:{
-        marginTop: 100,
+        marginTop: 70,
         width: 200,
         height: 200,
         resizeMode: 'cover',
