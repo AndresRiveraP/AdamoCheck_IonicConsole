@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         textAlign: 'justify'
     },
     redirectioning:{
-        marginTop: 60,
+        marginTop: 20,
+        marginBottom: 60,
         width:'80%',
         alignItems: 'center',
         paddingVertical: 60,
@@ -66,7 +67,6 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     nonBolded: {
-    
         fontSize: 20,
         color:'#FFF',
         textAlign: 'center'

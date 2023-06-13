@@ -27,11 +27,15 @@ const Verified = () => {
 
             <View style={styles.identi}>
                 <Image 
-                    source={require('../../../assets/img/profi.png')}
+                    source={require('../../../assets/img/verified.png')}
                     style={styles.ico}
                 />
                 <Text style={styles.idS}>{id}</Text>
             </View>
+            <Image 
+                source={require('../../../assets/img/check.png')}
+                style={styles.check}
+            />
         </ImageBackground>
     </SafeAreaView>
   )
@@ -48,8 +52,8 @@ const styles = StyleSheet.create({
     },
     picture:{
         marginTop: 100,
-        width: 250,
-        height: 250,
+        width: 200,
+        height: 200,
         resizeMode: 'cover',
         borderWidth: 15,
         borderColor: '#FFF',
@@ -87,6 +91,11 @@ const styles = StyleSheet.create({
     idS:{
         color:'#FFF',
         fontSize: 26,
+    },
+    check:{
+        width: 35,
+        height: 35,
+        marginTop: 20,
     },
 })
 export default Verified

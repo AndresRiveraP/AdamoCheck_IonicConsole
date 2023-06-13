@@ -1,17 +1,15 @@
-import React, {useState,useEffect,useRef} from 'react';
+import React, {useState,useEffect} from 'react';
 
 import {
   Image,
   View,
   StyleSheet,
-  ImageBackground,
   Animated,
   SafeAreaView,
 } from 'react-native';
 
 import InitialScreen from './src/components/Views/InitialScreen.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Verified from './src/components/Views/Verified.js';
 
 const SplashScreen = () => (
   <View style={styles.container}>
