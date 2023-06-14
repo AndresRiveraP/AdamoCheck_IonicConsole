@@ -1,13 +1,19 @@
 import React, {useState} from 'react'
-import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback} from 'react-native'
+import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity} from 'react-native'
 
 const AdminLog = () => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
+  const [buttonOpacity, setButtonOpacity] = useState(1);
 
   const handleLogIn = (id,password) =>{
-    console.log('Mandando las credenciales' + [id,password])
+    console.log('Mandando las credenciales: ' + [id,password]);
+    setButtonOpacity(1);
   }
+
+  const handleButtonPress = () => {
+    setButtonOpacity(0.4);
+  };
 
   const keyboardGone = () => {
     Keyboard.dismiss();
@@ -49,16 +55,16 @@ const AdminLog = () => {
                     />
                 </View>
                 <View style={styles.fieldBoton}>
-                    <Pressable
+                    <TouchableOpacity
                         style={styles.boton}
-                        onPress={() => handleLogIn(id,password)}
+                        onPress={() => {handleButtonPress(),handleLogIn(id,password)}}
                     >
                         <Image 
                             source={require('../../../assets/img/enter.png')}
                             style={styles.ico}
                         />
                         <Text style={styles.label}>Log In</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             </View>
         </KeyboardAvoidingView>
