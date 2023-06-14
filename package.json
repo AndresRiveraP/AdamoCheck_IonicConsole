@@ -10,7 +10,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.18.2",
     "deprecated-react-native-prop-types": "^4.1.0",
     "react": "18.2.0",
     "react-native": "0.71.8",

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import InitialScreen from './src/components/Views/InitialScreen.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => (
   <View style={styles.container}>
