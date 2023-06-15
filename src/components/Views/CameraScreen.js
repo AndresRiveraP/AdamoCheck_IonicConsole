@@ -1,21 +1,26 @@
+import 'react-native-gesture-handler'
 import React, { useState,useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet,Image} from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
 import axios from 'axios';
 import { RNCamera } from 'react-native-camera';
+
+import LoadingScreen from './LoadingScreen';
 
 const CameraScreen = ({check}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState(null);
+  const [modalLoading, setModalLoading] = useState(false);
   const [response, setResponse] = useState(null);
-
+  
   const takePicture = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
-      console.log(data.uri); // The captured image URI
+      console.log(data.uri); // Dirección de imagen capturada
       setCapturedImage(data.uri);
       setCameraView(false)
+      setModalLoading(true);
     }
   };
 
@@ -35,7 +40,7 @@ const CameraScreen = ({check}) => {
         </View>
       ):(
         <View>
-          <Image source={{ uri: capturedImage }} style={{width: '100%', height: '100%',resizeMode:'cover'}} />
+          <LoadingScreen />
         </View>
       )}
     </View>
