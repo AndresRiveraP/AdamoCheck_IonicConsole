@@ -4,6 +4,9 @@ import axios from 'axios';
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
 
+import Verified from './Verified';
+import Unverified from './Unverified';
+
 
 const CameraScreen = ({check,setModalCamera}) => {
   const cameraRef = useRef(null);
@@ -11,7 +14,9 @@ const CameraScreen = ({check,setModalCamera}) => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageDisplay,setImageDisplay] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [response, setResponse] = useState(null);
+  const [modalVerified,setModalVerified] = useState(false);
+  const [modalUnverified,setModalUnverified] = useState(false);
+  const [response, setResponse] = useState(10);
 
   var checkType = check;
   
@@ -32,14 +37,29 @@ const CameraScreen = ({check,setModalCamera}) => {
     }
   };
 
+
+  const validVerify = () => {
+    if(response == 0){
+      setModalVerified(true);
+    }
+    else{
+      setModalUnverified(true);
+    }
+  };
+
   const simulateAPIResponse = () => {
-    // Simulate API response after 2 seconds
+    // Simulamos respuesta de API después de 5 segundos
     setTimeout(() => {
       setShowLoading(false);
-      setModalCamera(false);
-      setResponse('API response');
-    }, 15000);
+      setCameraView(false);
+      var randit = parseInt(Math.floor(Math.random() * 2));
+      setResponse(randit);
+      console.log(response);
+      validVerify();
+    }, 5000);
   };
+
+
 
   return (
     <View style={styles.container}>
@@ -60,18 +80,37 @@ const CameraScreen = ({check,setModalCamera}) => {
           {imageDisplay && (
             <Image source={{ uri: capturedImage }} style={styles.image} />
           )}
+
           {showLoading && (
             <Modal
               animationType='slide'
               style={styles.modalLoading}
             >
               <Video
-                source={require('../../../assets/gif/LoadingScreen.mp4')} 
+                source={require('../../../assets/gif/eye.mp4')} 
                 style={styles.videoContainer}
-                resizeMode="cover"
+                resizeMode="contain"
                 repeat={true}
                 paused={false}
               />
+            </Modal>
+          )}
+
+          {modalVerified && (
+            <Modal
+              animationType='fade'
+              onRequestClose={() =>{setModalVerified(!modalVerified)}}
+            >
+              <Verified/>
+            </Modal>
+          )}
+
+          {modalUnverified && (
+            <Modal
+              animationType='fade'
+              onRequestClose={() =>{setModalUnverified(!modalUnverified)}}
+            >
+              <Unverified/>
             </Modal>
           )}
           
@@ -101,11 +140,15 @@ const styles = StyleSheet.create({
     height :'100%',
     resizeMode: 'cover',
   },
+  modalLoading:{
+    flex:1,
+    justifyContent: 'center',
+  },
   videoContainer: {
-    flex: 1,
     zIndex: 1,
-    width:'100%',
-    height: '100%'
+    width:'60%',
+    height: '100%',
+    alignSelf: 'center'
   },
 });
 
