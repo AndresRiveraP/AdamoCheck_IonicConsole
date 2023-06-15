@@ -8,7 +8,7 @@ import Verified from './Verified';
 import Unverified from './Unverified';
 
 
-const CameraScreen = ({check,setModalCamera}) => {
+const CameraScreen = ({check,}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState(null);
@@ -16,7 +16,9 @@ const CameraScreen = ({check,setModalCamera}) => {
   const [showLoading, setShowLoading] = useState(false);
   const [modalVerified,setModalVerified] = useState(false);
   const [modalUnverified,setModalUnverified] = useState(false);
-  const [response, setResponse] = useState(10);
+  const [response, setResponse] = useState(0);
+
+  var answer = 10;
 
   var checkType = check;
   
@@ -39,22 +41,27 @@ const CameraScreen = ({check,setModalCamera}) => {
 
 
   const validVerify = () => {
-    if(response == 0){
+    if(answer == 0){
       setModalVerified(true);
     }
     else{
       setModalUnverified(true);
     }
+
+    setTimeout(() =>{
+      setModalVerified(false)
+      setModalUnverified(false)
+    }, 5000);
+
   };
 
   const simulateAPIResponse = () => {
     // Simulamos respuesta de API después de 5 segundos
     setTimeout(() => {
       setShowLoading(false);
-      setCameraView(false);
-      var randit = parseInt(Math.floor(Math.random() * 2));
-      setResponse(randit);
-      console.log(response);
+      answer = parseInt(Math.floor(Math.random() * 2));
+      setResponse(answer);
+      console.log(answer);
       validVerify();
     }, 5000);
   };
