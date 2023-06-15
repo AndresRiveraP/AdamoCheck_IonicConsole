@@ -119,6 +119,7 @@ const InitialScreen = () => {
             >
                 <CameraScreen
                     check={check}
+                    setModalCamera={setModalCamera}
                 />
 
             </Modal>

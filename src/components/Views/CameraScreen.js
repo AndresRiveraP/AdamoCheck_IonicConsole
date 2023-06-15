@@ -1,17 +1,19 @@
-import 'react-native-gesture-handler'
-import React, { useState,useRef } from 'react';
+import React, { useEffect,useState,useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
 import axios from 'axios';
 import { RNCamera } from 'react-native-camera';
+import Video from 'react-native-video';
 
-import LoadingScreen from './LoadingScreen';
 
-const CameraScreen = ({check}) => {
+const CameraScreen = ({check,setModalCamera}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState(null);
-  const [modalLoading, setModalLoading] = useState(false);
+  const [imageDisplay,setImageDisplay] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [response, setResponse] = useState(null);
+
+  var checkType = check;
   
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -20,8 +22,23 @@ const CameraScreen = ({check}) => {
       console.log(data.uri); // Dirección de imagen capturada
       setCapturedImage(data.uri);
       setCameraView(false)
-      setModalLoading(true);
+      setImageDisplay(true)
+
+      setTimeout(() => {
+        setImageDisplay(false);
+        setShowLoading(true);
+        simulateAPIResponse();
+      }, 1500);
     }
+  };
+
+  const simulateAPIResponse = () => {
+    // Simulate API response after 2 seconds
+    setTimeout(() => {
+      setShowLoading(false);
+      setModalCamera(false);
+      setResponse('API response');
+    }, 15000);
   };
 
   return (
@@ -40,7 +57,24 @@ const CameraScreen = ({check}) => {
         </View>
       ):(
         <View>
-          <LoadingScreen />
+          {imageDisplay && (
+            <Image source={{ uri: capturedImage }} style={styles.image} />
+          )}
+          {showLoading && (
+            <Modal
+              animationType='slide'
+              style={styles.modalLoading}
+            >
+              <Video
+                source={require('../../../assets/gif/LoadingScreen.mp4')} 
+                style={styles.videoContainer}
+                resizeMode="cover"
+                repeat={true}
+                paused={false}
+              />
+            </Modal>
+          )}
+          
         </View>
       )}
     </View>
@@ -63,11 +97,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   image: {
-    width: 200,
-    height: 200,
+    width: '100%',
+    height :'100%',
     resizeMode: 'cover',
-    bottom: '30%',
-    left: '25%'
+  },
+  videoContainer: {
+    flex: 1,
+    zIndex: 1,
+    width:'100%',
+    height: '100%'
   },
 });
 
