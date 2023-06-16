@@ -1,23 +1,53 @@
 import React, {useState} from 'react'
-import {SafeAreaView, TextInput, Image, StyleSheet, View,Pressable,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity} from 'react-native'
+import axios from 'axios';
+import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity} from 'react-native'
 
 const AdminLog = () => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
   const [buttonOpacity, setButtonOpacity] = useState(1);
 
-  const handleLogIn = (id,password) =>{
-    console.log('Mandando las credenciales: ' + [id,password]);
-    setButtonOpacity(1);
+  const validateForm = () =>{
+    if(id == '' || password == ''){
+        return false;
+    }
+    return true;
   }
 
-  const handleButtonPress = () => {
-    setButtonOpacity(0.4);
-  };
+  const handleLogIn = async (id,password) =>{
+    setButtonOpacity(1);
+    if(!validateForm()){
+        Alert.alert('Atención', 'Debe completar todos los campos')
+        return;
+    }
+    try {
+        var url = 'http://192.168.0.201:3000/admins';
+        const result = await axios.get(url)
+        var searchIndex = ((result.data).findIndex((admin) => admin.idNumber==id)) 
+
+        if(searchIndex !== -1){
+            var url = url+'/'+searchIndex+1
+            console.log(url)
+            var pass = await axios.get(url)
+            if(password == pass.data.password){
+                console.log("Correct Login")
+            }
+            else{
+                console.log("Incorrect Password")
+            }
+        }
+        else{
+            console.log("Admin User Not Found")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
 
   const keyboardGone = () => {
     Keyboard.dismiss();
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => keyboardGone()}>
@@ -56,8 +86,8 @@ const AdminLog = () => {
                 </View>
                 <View style={styles.fieldBoton}>
                     <TouchableOpacity
-                        style={styles.boton}
-                        onPress={() => {handleButtonPress(),handleLogIn(id,password)}}
+                        style={[styles.boton, {opacity:buttonOpacity}]}
+                        onPress={() => {setButtonOpacity(0.4),handleLogIn(id,password)}}
                     >
                         <Image 
                             source={require('../../../assets/img/enter.png')}

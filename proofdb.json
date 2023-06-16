@@ -1,0 +1,14 @@
+{
+    "admins" : [
+        {
+            "idNumber": "1000185626",
+            "password": "felipe0715",
+             "id": 1
+        },
+        {
+            "idNumber": "100000000",
+            "password": "123456789",
+             "id": 2
+        }
+    ]
+}

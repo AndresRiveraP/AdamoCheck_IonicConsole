@@ -8,7 +8,7 @@ import Verified from './Verified';
 import Unverified from './Unverified';
 
 
-const CameraScreen = ({check,}) => {
+const CameraScreen = ({check}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState(null);
