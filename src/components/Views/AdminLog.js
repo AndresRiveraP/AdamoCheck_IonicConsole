@@ -1,10 +1,13 @@
 import React, {useState} from 'react'
 import axios from 'axios';
-import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity} from 'react-native'
+import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity, Modal} from 'react-native'
+
+import AdminScreen from './AdminScreen';
 
 const AdminLog = () => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
+  const [validLog, setValidLog] = useState(false)
   const [buttonOpacity, setButtonOpacity] = useState(1);
 
   const validateForm = () =>{
@@ -18,19 +21,19 @@ const AdminLog = () => {
     setButtonOpacity(1);
     if(!validateForm()){
         Alert.alert('Atención', 'Debe completar todos los campos')
-        return;
+        return 0;
     }
     try {
         var url = 'http://192.168.0.201:3000/admins';
         const result = await axios.get(url)
         var searchIndex = ((result.data).findIndex((admin) => admin.idNumber==id)) 
-
+        console.log(searchIndex)
         if(searchIndex !== -1){
-            var url = url+'/'+searchIndex+1
-            console.log(url)
+            url = url+'/'+(searchIndex+1)
             var pass = await axios.get(url)
             if(password == pass.data.password){
                 console.log("Correct Login")
+                setValidLog(true)
             }
             else{
                 console.log("Incorrect Password")
@@ -98,6 +101,14 @@ const AdminLog = () => {
                 </View>
             </View>
         </KeyboardAvoidingView>
+
+        {validLog && (
+            <Modal
+                animationType='fade'
+            >
+                <AdminScreen/>
+            </Modal>
+        )}
         </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -108,8 +119,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     keyboardAvoidingContainer:{
+        flex:1,
         alignItems:'center',
-        flex:1
     },
     fieldsC:{
         width: '70%',

@@ -1,7 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Pressable} from 'react-native'
 
 const AdminScreen = () => {
+  const [buttonOpacity, setButtonOpacity] = useState(1);
+
+  const handleModalTable = () => {
+    setTimeout(() => {
+        console.log('Showing Modal Table');
+        setButtonOpacity(1);
+    }, 100)
+    
+  }
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
@@ -38,8 +47,8 @@ const AdminScreen = () => {
 
                 </Pressable>
                 <Pressable
-                    style={styles.botonShow}
-                    onPress={() => console.log('Showing Modal Table')}
+                    style={[styles.botonShow,{opacity:buttonOpacity}]}
+                    onPress={() => {setButtonOpacity(0.4), handleModalTable()}}
                 >
                     <Image
                         source={require('../../../assets/img/table.png')}
