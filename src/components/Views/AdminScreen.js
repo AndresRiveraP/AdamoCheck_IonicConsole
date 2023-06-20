@@ -1,9 +1,28 @@
 import React, {useState} from 'react'
-import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Pressable} from 'react-native'
+import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Pressable,Modal, TouchableOpacity} from 'react-native'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Moment from 'moment';
 
 const AdminScreen = () => {
   const [buttonOpacity, setButtonOpacity] = useState(1);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.date("A date has been picked: ", date);
+    Moment.locale('en');
+    date = Moment(date).format('DD-MM-YYYY')
+    console.log(date)
+    hideDatePicker();
+  };
+  
   const handleModalTable = () => {
     setTimeout(() => {
         console.log('Showing Modal Table');
@@ -23,18 +42,18 @@ const AdminScreen = () => {
             />
 
             <View style={styles.adminMethods}>
-                <Pressable
+                <TouchableOpacity
                     style={styles.boton}
-                    onPress={() => console.log('Selecting Date...')}
+                    onPress={() => showDatePicker()}
                 >
                     <Image
                         source={require('../../../assets/img/calendar.png')}
                         style={styles.ico}
                     />
                     <Text style={styles.modalLabel}>Select a Date</Text>
-                </Pressable>
+                </TouchableOpacity>
 
-                <Pressable
+                <TouchableOpacity
                     style={styles.boton}
                     onPress={() => console.log('Downloading .csv...')}
                 >
@@ -45,7 +64,7 @@ const AdminScreen = () => {
                     />
                     <Text style={styles.modalLabel}>Download as .csv</Text>
 
-                </Pressable>
+                </TouchableOpacity>
                 <Pressable
                     style={[styles.botonShow,{opacity:buttonOpacity}]}
                     onPress={() => {setButtonOpacity(0.4), handleModalTable()}}
@@ -56,9 +75,14 @@ const AdminScreen = () => {
                     />
                     <Text style={styles.modalLabel}>Show Modal Table</Text>
                 </Pressable>
+
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                />
             </View>
-
-
         </ImageBackground>
     </SafeAreaView>
   )
