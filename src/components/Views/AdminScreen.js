@@ -9,8 +9,8 @@ const AdminScreen = () => {
         console.log('Showing Modal Table');
         setButtonOpacity(1);
     }, 100)
-    
   }
+  
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground

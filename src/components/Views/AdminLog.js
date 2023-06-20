@@ -25,6 +25,7 @@ const AdminLog = () => {
     }
     try {
         var url = 'http://192.168.0.201:3000/admins';
+        //json-server --host 192.168.0.201 proofdb.json
         const result = await axios.get(url)
         var searchIndex = ((result.data).findIndex((admin) => admin.idNumber==id)) 
         console.log(searchIndex)

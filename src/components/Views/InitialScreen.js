@@ -4,7 +4,7 @@ import { ImageBackground,TouchableWithoutFeedback,View, Image, Pressable, Text,M
 
 import CameraScreen from './CameraScreen'
 import AdminLog from './AdminLog';
-import styles from '../../styles/InitialScreenStyles.js'
+import styles from '../../styles/globStyles.js'
 
 
 const InitialScreen = () => {

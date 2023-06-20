@@ -18,15 +18,13 @@ const CameraScreen = ({check}) => {
   const [modalUnverified,setModalUnverified] = useState(false);
   const [response, setResponse] = useState(0);
 
-  var answer = 10;
-
-  var checkType = check;
+  var answer = null;
   
   const takePicture = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
-      console.log(data.uri); // Dirección de imagen capturada
+      console.log(data.uri); // Imagen capturada
       setCapturedImage(data.uri);
       setCameraView(false)
       setImageDisplay(true)
@@ -155,7 +153,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width:'60%',
     height: '100%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    backgroundColor: '#fff'
   },
 });
 
