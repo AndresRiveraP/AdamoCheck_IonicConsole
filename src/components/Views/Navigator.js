@@ -9,7 +9,6 @@ const Stack = createStackNavigator();
 import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
 
-
 const App = () => {
   return (
     <NavigationContainer>

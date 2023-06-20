@@ -1,8 +1,8 @@
 import React, {useState,useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import Video from 'react-native-video';
 
+import LoadingModal from './LoadingModal';
 import Verified from './Verified';
 import Unverified from './Unverified';
 
@@ -14,7 +14,6 @@ const CameraScreen = ({check,navigation}) => {
   const [showLoading, setShowLoading] = useState(false);
   const [modalVerified,setModalVerified] = useState(false);
   const [modalUnverified,setModalUnverified] = useState(false);
-  const [response, setResponse] = useState(0);
 
   var answer = null;
   
@@ -48,7 +47,7 @@ const CameraScreen = ({check,navigation}) => {
       setModalVerified(false)
       setModalUnverified(false)
       navigation.navigate('InitialScreen')
-    }, 5000);
+    }, 7000);
   };
 
   const simulateAPIResponse = () => {
@@ -56,7 +55,6 @@ const CameraScreen = ({check,navigation}) => {
     setTimeout(() => {
       setShowLoading(false);
       answer = parseInt(Math.floor(Math.random() * 2));
-      setResponse(answer);
       console.log(answer);
       validVerify();
     }, 5000);
@@ -89,13 +87,7 @@ const CameraScreen = ({check,navigation}) => {
               animationType='slide'
               style={styles.modalLoading}
             >
-              <Video
-                source={require('../../../assets/gif/eye.mp4')} 
-                style={styles.videoContainer}
-                resizeMode="contain"
-                repeat={true}
-                paused={false}
-              />
+              <LoadingModal/>
             </Modal>
           )}
 
@@ -146,13 +138,6 @@ const styles = StyleSheet.create({
   modalLoading:{
     flex:1,
     justifyContent: 'center',
-  },
-  videoContainer: {
-    zIndex: 1,
-    width:'60%',
-    height: '100%',
-    alignSelf: 'center',
-    backgroundColor: '#fff'
   },
 });
 
