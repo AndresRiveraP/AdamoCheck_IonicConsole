@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
-import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Pressable,Modal, TouchableOpacity} from 'react-native'
+import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import Moment from 'moment';
 
 const AdminScreen = () => {
-  const [buttonOpacity, setButtonOpacity] = useState(1);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -16,20 +14,11 @@ const AdminScreen = () => {
   };
 
   const handleConfirm = (date) => {
-    console.date("A date has been picked: ", date);
-    Moment.locale('en');
-    date = Moment(date).format('DD-MM-YYYY')
-    console.log(date)
+    console.warn("A date has been picked: ", date);
+    console.log(date.toLocaleDateString());
     hideDatePicker();
   };
-  
-  const handleModalTable = () => {
-    setTimeout(() => {
-        console.log('Showing Modal Table');
-        setButtonOpacity(1);
-    }, 100)
-  }
-  
+
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
@@ -65,16 +54,16 @@ const AdminScreen = () => {
                     <Text style={styles.modalLabel}>Download as .csv</Text>
 
                 </TouchableOpacity>
-                <Pressable
-                    style={[styles.botonShow,{opacity:buttonOpacity}]}
-                    onPress={() => {setButtonOpacity(0.4), handleModalTable()}}
+                <TouchableOpacity
+                    style={[styles.botonShow]}
+                    onPress={() => {console.log('Showing Modal Table')}}
                 >
                     <Image
                         source={require('../../../assets/img/table.png')}
                         style={styles.ico}
                     />
                     <Text style={styles.modalLabel}>Show Modal Table</Text>
-                </Pressable>
+                </TouchableOpacity>
 
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
