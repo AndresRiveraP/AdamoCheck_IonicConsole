@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import InitialScreen from './src/components/Views/InitialScreen.js';
+import Navigator from './src/components/Views/Navigator'
 
 const SplashScreen = () => (
   <View style={styles.container}>
@@ -49,10 +49,7 @@ const App = () => {
           <SplashScreen />
         </Animated.View>
       ):(
-        <InitialScreen />
-        //<AdminScreen />
-        //<Unverified />
-        //<Verified />
+        <Navigator />
       )}
       
     </SafeAreaView>

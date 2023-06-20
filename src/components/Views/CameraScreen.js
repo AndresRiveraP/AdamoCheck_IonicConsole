@@ -1,14 +1,12 @@
-import React, { useEffect,useState,useRef } from 'react';
+import React, {useState,useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
-import axios from 'axios';
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
 
 import Verified from './Verified';
 import Unverified from './Unverified';
 
-
-const CameraScreen = ({check}) => {
+const CameraScreen = ({check,navigation}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState(null);
@@ -49,8 +47,8 @@ const CameraScreen = ({check}) => {
     setTimeout(() =>{
       setModalVerified(false)
       setModalUnverified(false)
+      navigation.navigate('InitialScreen')
     }, 5000);
-
   };
 
   const simulateAPIResponse = () => {

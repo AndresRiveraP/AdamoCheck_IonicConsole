@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     adminMethods:{
         backgroundColor: "#FFF",
-        width: '100%',
+        width: '90%',
         height: '50%',
         borderRadius: 10,
         justifyContent: 'center',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginBottom: 15,
         borderRadius: 10,
-        borderColor: '#b4b4ac',
+        borderColor: '#eeeee4',
         justifyContent: 'flex-start'
     },
     botonShow:{
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginBottom: 15,
         borderRadius: 10,
-        borderColor: '#b4b4ac',
+        borderColor: '#9d927c',
         backgroundColor: '#b9e4f4',
         justifyContent: 'flex-start'
     },

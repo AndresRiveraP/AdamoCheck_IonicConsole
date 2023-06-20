@@ -1,14 +1,12 @@
 import React, {useState} from 'react'
 import { ImageBackground,TouchableWithoutFeedback,View, Image, Pressable, Text,Modal,Animated,TouchableOpacity} from 'react-native'
 
-
 import CameraScreen from './CameraScreen'
 import AdminLog from './AdminLog';
 import styles from '../../styles/globStyles.js'
 
 
-const InitialScreen = () => {
-  const [modalCamera, setModalCamera] = useState(false)
+const InitialScreen = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState(false)
   const [check,setCheck] = useState('')
   const [animacionBotones] = useState(new Animated.Value(1));
@@ -46,7 +44,7 @@ const InitialScreen = () => {
   const handleCamera = () => {
     setButton1Opacity(1);
     setButton2Opacity(1);
-    setModalCamera(true);
+    navigation.navigate('CameraScreen', {check:check})
   }
 
   const handleAdmin = () =>{
@@ -55,8 +53,8 @@ const InitialScreen = () => {
 
   return (
     <ImageBackground
-          source={require('../../../assets/img/imgBG01.png')}
-          style={styles.background}
+        source={require('../../../assets/img/imgBG01.png')}
+        style={styles.background}
     >
 
         <TouchableWithoutFeedback
@@ -80,7 +78,7 @@ const InitialScreen = () => {
                 style={[styles.boton, { opacity: button1Opacity}]}
                 onPress={() => {setCheck('in'),handleButton1Press(), handleCamera()}}
             >
-       
+
                 <Image 
                     source={require('../../../assets/img/profi.png')}
                     style={styles.profi}
@@ -96,7 +94,7 @@ const InitialScreen = () => {
                 style={[styles.boton2, { opacity: button2Opacity}]}
                 onPress={() => {setCheck('out'),handleButton2Press(), handleCamera()}}
             >
-       
+
                 <Image 
                     source={require('../../../assets/img/profi.png')}
                     style={styles.profi}
@@ -111,19 +109,6 @@ const InitialScreen = () => {
             
         </View>
 
-        {modalCamera && (
-            <Modal
-                animationType='slide'
-                visible = {modalCamera}
-                onRequestClose={() =>{setModalCamera(!modalCamera)}}
-            >
-                <CameraScreen
-                    check={check}
-                    setModalCamera={setModalCamera}
-                />
-
-            </Modal>
-        )}
 
         {modalAdminLog && (
             <Modal
