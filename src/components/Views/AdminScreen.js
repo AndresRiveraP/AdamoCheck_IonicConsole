@@ -4,6 +4,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const AdminScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState('')
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -14,8 +15,8 @@ const AdminScreen = () => {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
     console.log(date.toLocaleDateString());
+    setDate(date.toLocaleDateString());
     hideDatePicker();
   };
 
@@ -39,7 +40,8 @@ const AdminScreen = () => {
                         source={require('../../../assets/img/calendar.png')}
                         style={styles.ico}
                     />
-                    <Text style={styles.modalLabel}>Select a Date</Text>
+
+                    {date ? <Text style={[styles.modalLabel,{fontWeight: 'bold'}]}>{date}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
                 </TouchableOpacity>
 
                 <TouchableOpacity
