@@ -41,7 +41,7 @@ const AdminScreen = () => {
                         style={styles.ico}
                     />
 
-                    {date ? <Text style={[styles.modalLabel,{fontWeight: 'bold'}]}>{date}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
+                    {date ? <Text style={[styles.modalLabel,{fontWeight: 'bold', fontSize: 20}]}>{date}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
                 </TouchableOpacity>
 
                 <TouchableOpacity

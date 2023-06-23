@@ -10,9 +10,6 @@ const InitialScreen = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState(false)
   const [check,setCheck] = useState('')
   const [animacionBotones] = useState(new Animated.Value(1));
-  const [button1Opacity, setButton1Opacity] = useState(1);
-  const [button2Opacity, setButton2Opacity] = useState(1);
-
   const pressing = () =>{
     Animated.spring(animacionBotones, {
         toValue: 0.8,
@@ -29,21 +26,11 @@ const InitialScreen = ({navigation}) => {
     }).start();
   }
 
-  const handleButton1Press = () => {
-    setButton1Opacity(0.4);
-  };
-
-  const handleButton2Press = () => {
-    setButton2Opacity(0.4);
-  };
-
   const btnAnimation = {
     transform: [{ scale: animacionBotones }]
     }
 
   const handleCamera = () => {
-    setButton1Opacity(1);
-    setButton2Opacity(1);
     navigation.navigate('CameraScreen', {check:check})
   }
 
@@ -75,8 +62,8 @@ const InitialScreen = ({navigation}) => {
             />
 
             <TouchableOpacity 
-                style={[styles.boton, { opacity: button1Opacity}]}
-                onPress={() => {setCheck('in'),handleButton1Press(), handleCamera()}}
+                style={[styles.boton]}
+                onPress={() => {setCheck('in'), handleCamera()}}
             >
 
                 <Image 
@@ -91,8 +78,8 @@ const InitialScreen = ({navigation}) => {
             </TouchableOpacity>
 
             <TouchableOpacity 
-                style={[styles.boton2, { opacity: button2Opacity}]}
-                onPress={() => {setCheck('out'),handleButton2Press(), handleCamera()}}
+                style={[styles.boton2]}
+                onPress={() => {setCheck('out'), handleCamera()}}
             >
 
                 <Image 
