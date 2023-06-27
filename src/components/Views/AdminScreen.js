@@ -1,24 +1,24 @@
 import React, {useState} from 'react'
 import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
-import DatePicker from 'react-native-datepicker';
-
+import { Calendar } from 'react-native-calendars';
 
 const AdminScreen = () => {
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [selectedEndDate, setSelectedEndDate] = useState(null);
     const [calendarModal, setCalendarModal] = useState(false)
     
     const openCalendar = () => {
         setCalendarModal(true);
+        setSelectedStartDate(null)
+        setSelectedEndDate(null)
     };
 
-
-    const handleStartDateChange = (date) => {
-        setStartDate(date);
+    const handleStartDateSelect = (date) => {
+        setSelectedStartDate(date.dateString);
       };
       
-    const handleEndDateChange = (date) => {
-        setEndDate(date);
+      const handleEndDateSelect = (date) => {
+        setSelectedEndDate(date.dateString);
       };
 
 
@@ -43,7 +43,7 @@ const AdminScreen = () => {
                         style={styles.ico}
                     />
 
-                    {selectedDates ? <Text style={[styles.modalLabel,{fontWeight: 'bold', fontSize: 20}]}>{selectedDates}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
+                    {selectedStartDate ? <Text style={[styles.modalLabel,{fontWeight: '600', fontSize: 14}]}>{selectedStartDate} to {selectedEndDate}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -70,34 +70,31 @@ const AdminScreen = () => {
                 </TouchableOpacity>
             </View>
 
-           <Modal
+            <Modal
                 visible={calendarModal}
                 animationType="slide"
                 transparent={true}
                 onRequestClose={() => setCalendarModal(false)}
             >
                 <View>
-                <DatePicker
-                    mode="date"
-                    date={startDate}
-                    onDateChange={handleStartDateChange}
-                />
-                <DatePicker
-                    mode="date"
-                    date={endDate}
-                    onDateChange={handleEndDateChange}
-                    minDate={startDate}
-                />
-                <TouchableOpacity
-                    title="Confirm"
-                    onPress={() => {
-                    setCalendarModal(false);
-                    console.log('Selected Start Date:', startDate);
-                    console.log('Selected End Date:', endDate);
+                <Calendar
+                    onDayPress={(day) => {
+                    if (selectedStartDate === null) {
+                        handleStartDateSelect(day);
+                    } else if (selectedEndDate === null) {
+                        handleEndDateSelect(day);
+                        setCalendarModal(false);
+                    }
                     }}
+                    markedDates={{
+                    [selectedStartDate]: { startingDay: true, color: 'green' },
+                    [selectedEndDate]: { endingDay: true, color: 'green' },
+                    }}
+                    markingType={'period'}
                 />
                 </View>
             </Modal>
+
 
         </ImageBackground>
     </SafeAreaView>
