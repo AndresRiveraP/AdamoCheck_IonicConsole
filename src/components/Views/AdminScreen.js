@@ -1,24 +1,26 @@
 import React, {useState} from 'react'
 import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from 'react-native-datepicker';
+
 
 const AdminScreen = () => {
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [date, setDate] = useState('')
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [calendarModal, setCalendarModal] = useState(false)
+    
+    const openCalendar = () => {
+        setCalendarModal(true);
+    };
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+    const handleStartDateChange = (date) => {
+        setStartDate(date);
+      };
+      
+    const handleEndDateChange = (date) => {
+        setEndDate(date);
+      };
 
-  const handleConfirm = (date) => {
-    console.log(date.toLocaleDateString());
-    setDate(date.toLocaleDateString());
-    hideDatePicker();
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,14 +36,14 @@ const AdminScreen = () => {
             <View style={styles.adminMethods}>
                 <TouchableOpacity
                     style={styles.boton}
-                    onPress={() => showDatePicker()}
+                    onPress={() => openCalendar()}
                 >
                     <Image
                         source={require('../../../assets/img/calendar.png')}
                         style={styles.ico}
                     />
 
-                    {date ? <Text style={[styles.modalLabel,{fontWeight: 'bold', fontSize: 20}]}>{date}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
+                    {selectedDates ? <Text style={[styles.modalLabel,{fontWeight: 'bold', fontSize: 20}]}>{selectedDates}</Text> : <Text style={styles.modalLabel}>Select A Date</Text>}
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -66,14 +68,37 @@ const AdminScreen = () => {
                     />
                     <Text style={styles.modalLabel}>Show Modal Table</Text>
                 </TouchableOpacity>
-
-                <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
-                />
             </View>
+
+           <Modal
+                visible={calendarModal}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={() => setCalendarModal(false)}
+            >
+                <View>
+                <DatePicker
+                    mode="date"
+                    date={startDate}
+                    onDateChange={handleStartDateChange}
+                />
+                <DatePicker
+                    mode="date"
+                    date={endDate}
+                    onDateChange={handleEndDateChange}
+                    minDate={startDate}
+                />
+                <TouchableOpacity
+                    title="Confirm"
+                    onPress={() => {
+                    setCalendarModal(false);
+                    console.log('Selected Start Date:', startDate);
+                    console.log('Selected End Date:', endDate);
+                    }}
+                />
+                </View>
+            </Modal>
+
         </ImageBackground>
     </SafeAreaView>
   )
