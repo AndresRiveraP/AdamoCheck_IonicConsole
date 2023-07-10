@@ -8,6 +8,8 @@ const Stack = createStackNavigator();
 
 import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
+import Verified from './Verified';
+import Unverified from './Unverified';
 
 const App = () => {
   return (
@@ -21,6 +23,16 @@ const App = () => {
         <Stack.Screen
             name="CameraScreen"
             component={CameraScreen}
+            options={{ headerShown: false } }
+        />
+         <Stack.Screen
+            name="Verified"
+            component={Verified}
+            options={{ headerShown: false } }
+        />
+         <Stack.Screen
+            name="Unverified"
+            component={Unverified}
             options={{ headerShown: false } }
         />
       </Stack.Navigator>

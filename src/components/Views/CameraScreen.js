@@ -12,14 +12,13 @@ const CameraScreen = ({check,navigation}) => {
   const [capturedImage, setCapturedImage] = useState('');
   const [imageDisplay,setImageDisplay] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [modalVerified,setModalVerified] = useState(false);
-  const [modalUnverified,setModalUnverified] = useState(false);
+  const [profile, setProfile] = useState(null)
   
   const takePicture = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
-      console.log(data.uri); // Imagen capturada
+      //console.log(data.uri); // Imagen capturada
       setCapturedImage(data.uri);
       setCameraView(false)
       setImageDisplay(true)
@@ -28,12 +27,26 @@ const CameraScreen = ({check,navigation}) => {
         setImageDisplay(false);
         setShowLoading(true);
         gotoAPIResponse(data.base64);
-      }, 1500);
+      }, 1000);
   };
+
+  const verifyResponse = res =>{
+    if(res["message"] == 'Not Found'){
+      console.log("Not Found papá")
+      navigation.navigate('Unverified')
+    }
+    else if(res["message"] == 'Ok'){
+      console.log("Found papi")
+      setProfile(res)
+      navigation.navigate('Verified')
+    }
+    else{
+      console.log(res["message"])
+    }
+  }
 
   const gotoAPIResponse = async (base64Data) => {
     //Respuesta de la API
-    //console.log(base64Data)
     try{
         fetch('https://adamo-onboarding-qa.limboteams.com/onboarding-processes/get-user-details-by-face', {
         method: 'POST',
@@ -45,11 +58,13 @@ const CameraScreen = ({check,navigation}) => {
           "faceImage" : base64Data
         }),
       })
-      .then((response) => {
-        response.json();
-        console.log(response)
+      .then(response => response.text())
+      .then((data) => {
         setShowLoading(false);
-        navigation.navigate('InitialScreen')
+        console.log(data)
+        const res = JSON.parse(data)
+        verifyResponse(res);
+        //navigation.navigate('InitialScreen')
       });
     }
     catch(error){
@@ -85,24 +100,6 @@ const CameraScreen = ({check,navigation}) => {
               style={styles.modalLoading}
             >
               <LoadingModal/>
-            </Modal>
-          )}
-
-          {modalVerified && (
-            <Modal
-              animationType='fade'
-              onRequestClose={() =>{setModalVerified(!modalVerified)}}
-            >
-              <Verified/>
-            </Modal>
-          )}
-
-          {modalUnverified && (
-            <Modal
-              animationType='fade'
-              onRequestClose={() =>{setModalUnverified(!modalUnverified)}}
-            >
-              <Unverified/>
             </Modal>
           )}
           

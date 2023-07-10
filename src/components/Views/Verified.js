@@ -2,12 +2,12 @@ import React from 'react'
 
 import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-native'
 
-const Verified = () => {
+const Verified = ({profile}) => {
 
-  var picture = '../../../assets/img/picutre.jpg';
-  var welcoming = 'Bienvenido';
-  var name = 'Handsome Smiling Man.png';
-  var id= '1004166666'
+  var picture = JSON.stringify(profile.payload.firstFacialVerificationFrame);
+  var name = profile.payload.fullname;
+  var id= profile.payload.documentNumber;
+
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
@@ -16,12 +16,12 @@ const Verified = () => {
         >
 
             <Image 
-                source={require(picture)}
+                source={picture}
                 style={styles.picture}
             />
 
             <View style={styles.welcomingText}>
-                <Text style={styles.welcome}>¡{welcoming}!</Text>
+                <Text style={styles.welcome}>¡Welcome!</Text>
                 <Text style={styles.name}>{name}</Text>
             </View>
 
