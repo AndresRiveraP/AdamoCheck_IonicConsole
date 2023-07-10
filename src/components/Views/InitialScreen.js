@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { ImageBackground,TouchableWithoutFeedback,View, Image, Pressable, Text,Modal,Animated,TouchableOpacity} from 'react-native'
 
-import CameraScreen from './CameraScreen'
+
 import AdminLog from './AdminLog';
 import styles from '../../styles/globStyles.js'
 
