@@ -1,7 +1,6 @@
 import React, {useState,useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import RNFS from 'react-native-fs';
 
 import LoadingModal from './LoadingModal';
 import Verified from './Verified';
@@ -15,8 +14,6 @@ const CameraScreen = ({check,navigation}) => {
   const [showLoading, setShowLoading] = useState(false);
   const [modalVerified,setModalVerified] = useState(false);
   const [modalUnverified,setModalUnverified] = useState(false);
-
-  var answer = null;
   
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -24,30 +21,43 @@ const CameraScreen = ({check,navigation}) => {
       const data = await cameraRef.current.takePictureAsync(options);
       console.log(data.uri); // Imagen capturada
       setCapturedImage(data.uri);
-      RNFS.readFile(this.state.capturedImage, 'base64')
-      .then(res =>{
-        console.log(res);
-        setCameraView(false)
-        setImageDisplay(true)
-      });
-     
+      setCameraView(false)
+      setImageDisplay(true)
+
       setTimeout(() => {
         setImageDisplay(false);
         setShowLoading(true);
-        gotoAPIResponse();
+        gotoAPIResponse(data.base64);
       }, 1500);
+  };
+
+  const gotoAPIResponse = async (base64Data) => {
+    //Respuesta de la API
+    //console.log(base64Data)
+    try{
+        fetch('https://adamo-onboarding-qa.limboteams.com/onboarding-processes/get-user-details-by-face', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "faceImage" : base64Data
+        }),
+      })
+      .then((response) => {
+        response.json();
+        console.log(response)
+        setShowLoading(false);
+        navigation.navigate('InitialScreen')
+      });
+    }
+    catch(error){
+      console.log(error)
     }
   };
 
-  const gotoAPIResponse = () => {
-    // Simulamos respuesta de API después de 5 segundos
-    setTimeout(() => {
-      setShowLoading(false);
-    }, 5000);
-    navigation.navigate('InitialScreen')
-  };
-
-
+}
 
   return (
     <View style={styles.container}>
@@ -60,7 +70,7 @@ const CameraScreen = ({check,navigation}) => {
             captureAudio={false}
           />
           <TouchableOpacity style={styles.button} onPress={takePicture}>
-            {/* Your capture button UI */}
+            {/* Capture button UI */}
           </TouchableOpacity>
         </View>
       ):(
