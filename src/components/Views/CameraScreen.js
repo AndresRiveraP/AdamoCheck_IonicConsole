@@ -1,6 +1,7 @@
 import React, {useState,useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import RNFS from 'react-native-fs';
 
 import LoadingModal from './LoadingModal';
 import Verified from './Verified';
@@ -9,7 +10,7 @@ import Unverified from './Unverified';
 const CameraScreen = ({check,navigation}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState('');
   const [imageDisplay,setImageDisplay] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [modalVerified,setModalVerified] = useState(false);
@@ -23,41 +24,27 @@ const CameraScreen = ({check,navigation}) => {
       const data = await cameraRef.current.takePictureAsync(options);
       console.log(data.uri); // Imagen capturada
       setCapturedImage(data.uri);
-      setCameraView(false)
-      setImageDisplay(true)
-
+      RNFS.readFile(this.state.capturedImage, 'base64')
+      .then(res =>{
+        console.log(res);
+        setCameraView(false)
+        setImageDisplay(true)
+      });
+     
       setTimeout(() => {
         setImageDisplay(false);
         setShowLoading(true);
-        simulateAPIResponse();
+        gotoAPIResponse();
       }, 1500);
     }
   };
 
-
-  const validVerify = () => {
-    if(answer == 0){
-      setModalVerified(true);
-    }
-    else{
-      setModalUnverified(true);
-    }
-
-    setTimeout(() =>{
-      setModalVerified(false)
-      setModalUnverified(false)
-      navigation.navigate('InitialScreen')
-    }, 7000);
-  };
-
-  const simulateAPIResponse = () => {
+  const gotoAPIResponse = () => {
     // Simulamos respuesta de API después de 5 segundos
     setTimeout(() => {
       setShowLoading(false);
-      answer = parseInt(Math.floor(Math.random() * 2));
-      console.log(answer);
-      validVerify();
     }, 5000);
+    navigation.navigate('InitialScreen')
   };
 
 
