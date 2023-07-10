@@ -2,7 +2,7 @@ import React from 'react'
 
 import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-native'
 
-const Unverified = () => {
+const Unverified = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground

@@ -3,8 +3,6 @@ import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
 import LoadingModal from './LoadingModal';
-import Verified from './Verified';
-import Unverified from './Unverified';
 
 const CameraScreen = ({check,navigation}) => {
   const cameraRef = useRef(null);
@@ -32,13 +30,12 @@ const CameraScreen = ({check,navigation}) => {
 
   const verifyResponse = res =>{
     if(res["message"] == 'Not Found'){
-      console.log("Not Found papá")
       navigation.navigate('Unverified')
     }
     else if(res["message"] == 'Ok'){
       console.log("Found papi")
       setProfile(res)
-      navigation.navigate('Verified')
+      navigation.navigate('Verified', profile={profile})
     }
     else{
       console.log(res["message"])
