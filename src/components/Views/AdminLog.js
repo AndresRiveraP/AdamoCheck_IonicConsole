@@ -12,7 +12,6 @@ const AdminLog = () => {
   const [buttonOpacity, setButtonOpacity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const validateForm = () =>{
     if(id == '' || password == ''){
         return false;
@@ -29,7 +28,6 @@ const AdminLog = () => {
 
     try {
         setIsLoading(true)
-
         var url = 'http://192.168.0.39:8030/admins';
         //json-server --host 192.168.0.39 --port 8030 proofdb.json
         const result = await axios.get(url)
@@ -59,7 +57,6 @@ const AdminLog = () => {
         return;
     }
   }
-
 
   const keyboardGone = () => {
     Keyboard.dismiss();
