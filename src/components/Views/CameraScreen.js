@@ -35,7 +35,7 @@ const CameraScreen = ({check,navigation}) => {
     else if(res["message"] == 'Ok'){
       console.log("Found papi")
       setProfile(res)
-      navigation.navigate('Verified', profile={profile})
+      navigation.navigate('Verified', {profile:profile})
     }
     else{
       console.log(res["message"])

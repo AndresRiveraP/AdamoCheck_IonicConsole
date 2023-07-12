@@ -4,6 +4,9 @@ import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-na
 
 const Verified = ({profile}) => {
 
+  console.log(typeof(profile))
+  console.log(profile)
+  
   var picture = JSON.stringify(profile.payload.firstFacialVerificationFrame);
   var name = profile.payload.fullname;
   var id= profile.payload.documentNumber;
