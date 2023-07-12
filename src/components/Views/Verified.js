@@ -2,14 +2,17 @@ import React from 'react'
 
 import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-native'
 
-const Verified = ({profile}) => {
+const Verified = ({route,navigation}) => {
+  var data = route.params.payload;
 
-  console.log(typeof(profile))
-  console.log(profile)
-  
-  var picture = JSON.stringify(profile.payload.firstFacialVerificationFrame);
-  var name = profile.payload.fullname;
-  var id= profile.payload.documentNumber;
+  console.log(data)
+  console.log(typeof(data))  
+  console.log(JSON.stringify(data))
+
+
+  var picture = '../../../assets/img/picutre.jpg';
+  var name = 'Handsome Smiling Guy';
+  var id= "100001852104";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -19,7 +22,7 @@ const Verified = ({profile}) => {
         >
 
             <Image 
-                source={picture}
+                source={require(picture)}
                 style={styles.picture}
             />
 

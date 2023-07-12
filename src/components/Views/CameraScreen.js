@@ -10,7 +10,7 @@ const CameraScreen = ({check,navigation}) => {
   const [capturedImage, setCapturedImage] = useState('');
   const [imageDisplay,setImageDisplay] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [profile, setProfile] = useState(null)
+  const [payload,setPayload] = useState(null)
   
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -28,14 +28,13 @@ const CameraScreen = ({check,navigation}) => {
       }, 1000);
   };
 
-  const verifyResponse = res =>{
+  const verifyResponse = (res) =>{
     if(res["message"] == 'Not Found'){
       navigation.navigate('Unverified')
     }
     else if(res["message"] == 'Ok'){
-      console.log("Found papi")
-      setProfile(res)
-      navigation.navigate('Verified', {profile:profile})
+      setPayload(res["payload"])
+      navigation.navigate('Verified', {payload});
     }
     else{
       console.log(res["message"])
