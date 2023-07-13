@@ -3,16 +3,14 @@ import React from 'react'
 import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-native'
 
 const Verified = ({route,navigation}) => {
-  var data = route.params.payload;
+  var payload = route.params;
 
-  console.log(data)
-  console.log(typeof(data))  
-  console.log(JSON.stringify(data))
+  console.log("Verifying Starts From Here")
+  console.log(payload)
 
-
-  var picture = '../../../assets/img/picutre.jpg';
-  var name = 'Handsome Smiling Guy';
-  var id= "100001852104";
+  var picture = payload.payload.firstFacialVerificationFrame;
+  var name = payload.payload.fullname;
+  var id= payload.payload.documentNumber;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,7 +20,7 @@ const Verified = ({route,navigation}) => {
         >
 
             <Image 
-                source={require(picture)}
+                source={{uri : picture}}
                 style={styles.picture}
             />
 

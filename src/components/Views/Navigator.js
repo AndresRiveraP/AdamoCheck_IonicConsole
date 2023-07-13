@@ -29,7 +29,6 @@ const App = () => {
             name="Verified"
             component={Verified}
             options={{ headerShown: false } }
-            initialParams={{payload : null}}
         />
          <Stack.Screen
             name="Unverified"

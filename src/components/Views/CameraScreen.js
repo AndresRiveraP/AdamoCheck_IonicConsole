@@ -10,7 +10,7 @@ const CameraScreen = ({check,navigation}) => {
   const [capturedImage, setCapturedImage] = useState('');
   const [imageDisplay,setImageDisplay] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [payload,setPayload] = useState(null)
+  var payload = null;
   
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -33,7 +33,7 @@ const CameraScreen = ({check,navigation}) => {
       navigation.navigate('Unverified')
     }
     else if(res["message"] == 'Ok'){
-      setPayload(res["payload"])
+      payload = res["payload"]
       navigation.navigate('Verified', {payload});
     }
     else{
@@ -60,7 +60,6 @@ const CameraScreen = ({check,navigation}) => {
         console.log(data)
         const res = JSON.parse(data)
         verifyResponse(res);
-        //navigation.navigate('InitialScreen')
       });
     }
     catch(error){
