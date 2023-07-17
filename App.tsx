@@ -13,7 +13,7 @@ import Navigator from './src/components/Views/Navigator'
 const SplashScreen = () => (
   <View style={styles.container}>
     <Image
-      source={require('./assets/img/ic.png')}
+      source={require('./src/assets/img/ic.png')}
       style={styles.image}
     />
   </View>
