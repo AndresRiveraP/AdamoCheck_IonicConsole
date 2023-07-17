@@ -25,11 +25,11 @@ const AdminScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
-            source={require('../../../assets/img/imgBG02.png')}
+            source={require('../../assets/img/imgBG02.png')}
             style={styles.background}
         >
             <Image 
-                source={require('../../../assets/img/ic_white_c.png')}
+                source={require('../../assets/img/ic_white_c.png')}
                  style={styles.logoA}
             />
 
@@ -39,7 +39,7 @@ const AdminScreen = () => {
                     onPress={() => openCalendar()}
                 >
                     <Image
-                        source={require('../../../assets/img/calendar.png')}
+                        source={require('../../assets/img/calendar.png')}
                         style={styles.ico}
                     />
 
@@ -52,7 +52,7 @@ const AdminScreen = () => {
                 >
 
                     <Image
-                        source={require('../../../assets/img/csvicon.png')}
+                        source={require('../../assets/img/csvicon.png')}
                         style={styles.ico}
                     />
                     <Text style={styles.modalLabel}>Download as .csv</Text>
@@ -63,7 +63,7 @@ const AdminScreen = () => {
                     onPress={() => {console.log('Showing Modal Table')}}
                 >
                     <Image
-                        source={require('../../../assets/img/table.png')}
+                        source={require('../../assets/img/table.png')}
                         style={styles.ico}
                     />
                     <Text style={styles.modalLabel}>Show Modal Table</Text>

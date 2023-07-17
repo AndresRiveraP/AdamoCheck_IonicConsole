@@ -67,14 +67,14 @@ const AdminLog = () => {
         <SafeAreaView style={styles.admon}>
             <KeyboardAvoidingView style={styles.keyboardAvoidingContainer} behavior="position">
                 <Image
-                    source={require('../../../assets/img/ic.png')}
+                    source={require('../../assets/img/ic.png')}
                     style={styles.image}
                 />
 
             <View style={styles.fieldsC}>
                 <View style={styles.field}>
                     <Image 
-                        source={require('../../../assets/img/id.png')}
+                        source={require('../../assets/img/id.png')}
                         style={styles.ico}
                     />
                     <TextInput 
@@ -86,7 +86,7 @@ const AdminLog = () => {
                 </View>
                 <View style={styles.field}>
                     <Image 
-                        source={require('../../../assets/img/pass.png')}
+                        source={require('../../assets/img/pass.png')}
                         style={styles.ico}
                     />
                     <TextInput 
@@ -103,7 +103,7 @@ const AdminLog = () => {
                         onPress={() => {setButtonOpacity(0.4),handleLogIn(id,password)}}
                     >
                         <Image 
-                            source={require('../../../assets/img/enter.png')}
+                            source={require('../../assets/img/enter.png')}
                             style={styles.ico}
                         />
                         <Text style={styles.label}>Log In</Text>

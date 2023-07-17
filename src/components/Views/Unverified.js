@@ -6,11 +6,11 @@ const Unverified = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
-            source={require('../../../assets/img/imgBG02.png')}
+            source={require('../../assets/img/imgBG02.png')}
             style={styles.background}
         >
         <Image 
-            source={require('../../../assets/img/eye.png')}
+            source={require('../../assets/img/eye.png')}
             style={[{marginTop:40}]}
         />
 
@@ -22,7 +22,7 @@ const Unverified = ({navigation}) => {
         <View style={styles.redirectioning} >
             <Text style={styles.nonBolded}>Puedes iniciar tu proceso de registro <Text style={styles.bolded}>en el siguiente enlace:</Text></Text>
             <Image 
-                source={require('../../../assets/img/Captura.png')}
+                source={require('../../assets/img/Captura.png')}
                 style={styles.qr}
             />
         </View>

@@ -5,7 +5,7 @@ import Video from 'react-native-video';
 const LoadingModal = () => {
   return (
     <Video
-        source={require('../../../assets/gif/eye.mp4')} 
+        source={require('../../assets/gif/eye.mp4')} 
         style={styles.videoContainer}
         resizeMode="contain"
         repeat={true}

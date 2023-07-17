@@ -15,7 +15,7 @@ const Verified = ({route,navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
-            source={require('../../../assets/img/imgBG02.png')}
+            source={require('../../assets/img/imgBG02.png')}
             style={styles.background}
         >
 
@@ -31,13 +31,13 @@ const Verified = ({route,navigation}) => {
 
             <View style={styles.identi}>
                 <Image 
-                    source={require('../../../assets/img/verified.png')}
+                    source={require('../../assets/img/verified.png')}
                     style={styles.ico}
                 />
                 <Text style={styles.idS}>{id}</Text>
             </View>
             <Image 
-                source={require('../../../assets/img/check.png')}
+                source={require('../../assets/img/check.png')}
                 style={styles.check}
             />
         </ImageBackground>

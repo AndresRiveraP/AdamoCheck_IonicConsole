@@ -16,7 +16,6 @@ const CameraScreen = ({check,navigation}) => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
-      //console.log(data.uri); // Imagen capturada
       setCapturedImage(data.uri);
       setCameraView(false)
       setImageDisplay(true)
@@ -57,7 +56,7 @@ const CameraScreen = ({check,navigation}) => {
       .then(response => response.text())
       .then((data) => {
         setShowLoading(false);
-        console.log(data)
+        //console.log(data)
         const res = JSON.parse(data)
         verifyResponse(res);
       });

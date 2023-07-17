@@ -40,7 +40,7 @@ const InitialScreen = ({navigation}) => {
 
   return (
     <ImageBackground
-        source={require('../../../assets/img/imgBG01.png')}
+        source={require('../../assets/img/imgBG01.png')}
         style={styles.background}
     >
 
@@ -57,7 +57,7 @@ const InitialScreen = ({navigation}) => {
 
         <View style={styles.container}>
             <Image 
-                source={require('../../../assets/img/ic_white_c.png')}
+                source={require('../../assets/img/ic_white_c.png')}
                 style={styles.logoA}
             />
 
@@ -67,12 +67,12 @@ const InitialScreen = ({navigation}) => {
             >
 
                 <Image 
-                    source={require('../../../assets/img/profi.png')}
+                    source={require('../../assets/img/profi.png')}
                     style={styles.profi}
                 />
                 <Text style={styles.label}> Check In </Text>
                 <Image 
-                    source={require('../../../assets/img/profi.png')}
+                    source={require('../../assets/img/profi.png')}
                     style={styles.profi}
                 />
             </TouchableOpacity>
@@ -83,12 +83,12 @@ const InitialScreen = ({navigation}) => {
             >
 
                 <Image 
-                    source={require('../../../assets/img/profi.png')}
+                    source={require('../../assets/img/profi.png')}
                     style={styles.profi}
                 />
                 <Text style={styles.label}>Check Out</Text>
                 <Image 
-                    source={require('../../../assets/img/profi.png')}
+                    source={require('../../assets/img/profi.png')}
                     style={styles.profi}
                 />
             </TouchableOpacity>
