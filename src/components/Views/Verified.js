@@ -1,12 +1,12 @@
 import React from 'react'
-
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, TouchableOpacity} from 'react-native'
+import FastImage from 'react-native-fast-image';
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-native'
 
 const Verified = ({route,navigation}) => {
   var payload = route.params;
 
-  /*console.log("Verifying Starts From Here")
-  console.log(payload)*/
+  console.log("Verifying Starts From Here")
+  console.log(payload)
 
   var picture = payload.payload.firstFacialVerificationFrame;
   var name = payload.payload.fullname;
@@ -14,7 +14,7 @@ const Verified = ({route,navigation}) => {
 
   setTimeout(() => {
     navigation.navigate('InitialScreen')
-  }, 6000);
+  }, 6800);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -23,7 +23,7 @@ const Verified = ({route,navigation}) => {
             style={styles.background}
         >
 
-            <Image 
+            <FastImage 
                 source={{uri : picture}}
                 style={styles.picture}
             />
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     },
     picture:{
         marginTop: 70,
-        width: 250,
-        height: 250,
+        width: '45%',
+        height: '35%',
         resizeMode: 'cover',
         borderWidth: 15,
         borderColor: '#FFF',

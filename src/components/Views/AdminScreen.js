@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import moment from 'moment';
-import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
+import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity, FlatList} from 'react-native'
 import { Calendar } from 'react-native-calendars';
 
 const AdminScreen = () => {
@@ -22,11 +22,11 @@ const AdminScreen = () => {
         setSelectedStartDate(formattedDate)        
       };
       
-      const handleEndDateSelect = (date) => {
+    const handleEndDateSelect = (date) => {
         const formattedDate = moment(date.dateString, 'YYYY-MM-DD').format('DD-MM-YYY');
         console.log(formattedDate)
         setSelectedEndDate(date.dateString);
-      };
+    };
 
 
   return (
@@ -67,7 +67,7 @@ const AdminScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.botonShow]}
-                    onPress={() => {setModalTable(true)}}
+                    onPress={() => {fethingLogs(), setModalTable(true)}}
                 >
                     <Image
                         source={require('../../assets/img/table.png')}
@@ -107,7 +107,7 @@ const AdminScreen = () => {
                     animationType='slide'
                     onRequestClose={setModalTable(false)}
                 >
-
+                    <TableScreen />
                 </Modal>
             )}
         </ImageBackground>
