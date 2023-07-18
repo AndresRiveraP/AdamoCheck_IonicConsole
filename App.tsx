@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   image: {
     top: '20%',
-    maxWidth: 212,
+    maxWidth: '40%',
     resizeMode: 'contain',
     alignSelf: 'center',
   },

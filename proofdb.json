@@ -10,5 +10,79 @@
             "password": "123456789",
              "id": 2
         }
+    ],
+    "logs" : [
+        {
+            "check-in" : [
+                {
+                    "18-07-2023" : { 
+                        "1000185626" : {
+                            "nombre" : "Juan Felipe Quintero Molina",
+                            "datetime" : "7:35AM"
+                        },
+                        "1000777210" : {
+                            "nombre" : "Fulano de Fulanez Ramírez",
+                            "datetime" : "8:00AM"
+                        }
+                    },
+                    "19-07-2023" : {
+                        "1000185626" : {
+                            "nombre" : "Juan Felipe Quintero Molina",
+                            "datetime" : "7:46AM"
+                        },
+                        "1000777210" : {
+                            "nombre" : "Fulano de Fulanez Ramírez",
+                            "datetime" : "7:58AM"
+                        }
+                    },
+                    "20-07-2023" : {
+                        "1000185626" : {
+                            "nombre" : "Juan Felipe Quintero Molina",
+                            "datetime" : "7:46AM"
+                        },
+                        "1000777210" : {
+                            "nombre" : "Fulano de Fulanez Ramírez",
+                            "datetime" : "7:58AM"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "check-out" : [
+                {
+                    "18-07-2023" : { 
+                        "1000185626" : {
+                            "nombre" : "Juan Felipe Quintero Molina",
+                            "datetime" : "5:35PM"
+                        },
+                        "1000777210" : {
+                            "nombre" : "Fulano de Fulanez Ramírez",
+                            "datetime" : "6:00PM"
+                        }
+                    },
+                    "19-07-2023" : {
+                        "1000185626" : {
+                            "nombre" : "Juan Felipe Quintero Molina",
+                            "datetime" : "5:46PM"
+                        },
+                        "1000777210" : {
+                            "nombre" : "Fulano de Fulanez Ramírez",
+                            "datetime" : "5:28PM"
+                        }
+                    },
+                    "20-07-2023" : {
+                        "1000185626" : {
+                            "nombre" : "Juan Felipe Quintero Molina",
+                            "datetime" : "4:56PM"
+                        },
+                        "1000777210" : {
+                            "nombre" : "Fulano de Fulanez Ramírez",
+                            "datetime" : "5:01PM"
+                        }
+                    }
+                }
+            ]
+        }
     ]
 }

@@ -28,8 +28,8 @@ const AdminLog = () => {
 
     try {
         setIsLoading(true)
-        var url = 'http://192.168.0.39:8030/admins';
-        //json-server --host 192.168.0.39 --port 8030 proofdb.json
+        var url = 'http://192.168.0.44:8010/admins';
+        //json-server --host 192.168.0.44 --port 8010 proofdb.json
         const result = await axios.get(url)
         var searchIndex = ((result.data).findIndex((admin) => admin.idNumber==id)) 
         console.log(searchIndex)
