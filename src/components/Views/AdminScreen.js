@@ -107,7 +107,7 @@ const AdminScreen = () => {
                     animationType='slide'
                     onRequestClose={setModalTable(false)}
                 >
-                    <TableScreen />
+                    
                 </Modal>
             )}
         </ImageBackground>
