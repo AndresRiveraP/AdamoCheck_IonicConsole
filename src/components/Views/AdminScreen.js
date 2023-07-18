@@ -16,16 +16,14 @@ const AdminScreen = () => {
         setCalendarModal(true);
     };
 
-    const handleStartDateSelect = (date) => {
-        const formattedDate = moment(date.dateString, 'YYYY-MM-DD').format('DD-MM-YYY');
-        console.log(formattedDate)
+    const handleStartDateSelect = (dateStart) => {
+        const formattedDate = moment(dateStart.dateString, 'YYYY-MM-DD').format('DD-MM-YYYY');
         setSelectedStartDate(formattedDate)        
       };
       
-    const handleEndDateSelect = (date) => {
-        const formattedDate = moment(date.dateString, 'YYYY-MM-DD').format('DD-MM-YYY');
-        console.log(formattedDate)
-        setSelectedEndDate(date.dateString);
+    const handleEndDateSelect = (dateEnd) => {
+        const formattedDate = moment(dateEnd.dateString, 'YYYY-MM-DD').format('DD-MM-YYYY');
+        setSelectedEndDate(formattedDate);
     };
 
 
