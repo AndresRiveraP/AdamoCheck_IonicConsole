@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import moment from 'moment';
 import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
 import { Calendar } from 'react-native-calendars';
 
@@ -6,18 +7,24 @@ const AdminScreen = () => {
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedEndDate, setSelectedEndDate] = useState(null);
     const [calendarModal, setCalendarModal] = useState(false)
-    
+    const [modalTable, setModalTable] = useState(false)
+    var url = 'http://192.168.0.44:8010/logs'
+
     const openCalendar = () => {
-        setCalendarModal(true);
         setSelectedStartDate(null)
         setSelectedEndDate(null)
+        setCalendarModal(true);
     };
 
     const handleStartDateSelect = (date) => {
-        setSelectedStartDate(date.dateString);
+        const formattedDate = moment(date.dateString, 'YYYY-MM-DD').format('DD-MM-YYY');
+        console.log(formattedDate)
+        setSelectedStartDate(formattedDate)        
       };
       
       const handleEndDateSelect = (date) => {
+        const formattedDate = moment(date.dateString, 'YYYY-MM-DD').format('DD-MM-YYY');
+        console.log(formattedDate)
         setSelectedEndDate(date.dateString);
       };
 
@@ -60,7 +67,7 @@ const AdminScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.botonShow]}
-                    onPress={() => {console.log('Showing Modal Table')}}
+                    onPress={() => {setModalTable(true)}}
                 >
                     <Image
                         source={require('../../assets/img/table.png')}
@@ -87,15 +94,22 @@ const AdminScreen = () => {
                     }
                     }}
                     markedDates={{
-                    [selectedStartDate]: { startingDay: true, color: 'green' },
-                    [selectedEndDate]: { endingDay: true, color: 'green' },
+                        [selectedStartDate]: { startingDay: true, color: 'green' },
+                        [selectedEndDate]: { endingDay: true, color: 'green' },
                     }}
                     markingType={'period'}
                 />
                 </View>
             </Modal>
 
+            {modalTable && (
+                <Modal
+                    animationType='slide'
+                    onRequestClose={setModalTable(false)}
+                >
 
+                </Modal>
+            )}
         </ImageBackground>
     </SafeAreaView>
   )
