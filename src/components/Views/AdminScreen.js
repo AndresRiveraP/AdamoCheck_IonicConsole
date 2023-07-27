@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import moment from 'moment';
-import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity, FlatList} from 'react-native'
+import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
 import { Calendar } from 'react-native-calendars';
 
 const AdminScreen = () => {
