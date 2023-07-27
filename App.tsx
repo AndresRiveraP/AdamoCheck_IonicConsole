@@ -1,5 +1,9 @@
 import React, {useState,useEffect} from 'react';
 
+//Apollo
+import client from './config/apollo';
+import { ApolloProvider } from '@apollo/client';
+
 import {
   Image,
   View,
@@ -43,16 +47,18 @@ const App = () => {
 
 
   return (
-    <SafeAreaView style={styles.container}>
-      {showSplash ? (
-        <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
-          <SplashScreen />
-        </Animated.View>
-      ):(
-        <Navigator />
-      )}
-      
-    </SafeAreaView>
+    <ApolloProvider client={client}>
+      <SafeAreaView style={styles.container}>
+        {showSplash ? (
+          <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+            <SplashScreen />
+          </Animated.View>
+        ):(
+          <Navigator />
+        )}
+        
+      </SafeAreaView>
+    </ApolloProvider>
     
   );
 }
