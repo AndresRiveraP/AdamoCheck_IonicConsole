@@ -16,6 +16,7 @@ const CameraScreen = ({check,navigation}) => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
+      console.log(check);
       setCapturedImage(data.uri);
       setCameraView(false)
       setImageDisplay(true)
