@@ -8,8 +8,9 @@ import styles from '../../styles/globStyles.js'
 
 const InitialScreen = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState(false)
-  const [check,setCheck] = useState('')
   const [animacionBotones] = useState(new Animated.Value(1));
+  var check = null;
+
   const pressing = () =>{
     Animated.spring(animacionBotones, {
         toValue: 0.8,
@@ -31,7 +32,7 @@ const InitialScreen = ({navigation}) => {
     }
 
   const handleCamera = () => {
-    navigation.navigate('CameraScreen', {check:check})
+    navigation.navigate('CameraScreen', {check})
   }
 
   const handleAdmin = () =>{
@@ -63,7 +64,7 @@ const InitialScreen = ({navigation}) => {
 
             <TouchableOpacity 
                 style={[styles.boton]}
-                onPress={() => {setCheck('in'), handleCamera()}}
+                onPress={() => {check='in', handleCamera()}}
             >
 
                 <Image 
@@ -79,7 +80,7 @@ const InitialScreen = ({navigation}) => {
 
             <TouchableOpacity 
                 style={[styles.boton2]}
-                onPress={() => {setCheck('out'), handleCamera()}}
+                onPress={() => {check='out', handleCamera()}}
             >
 
                 <Image 

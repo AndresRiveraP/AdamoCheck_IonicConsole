@@ -4,7 +4,8 @@ import { RNCamera } from 'react-native-camera';
 
 import LoadingModal from './LoadingModal';
 
-const CameraScreen = ({check,navigation}) => {
+const CameraScreen = ({route,navigation}) => {
+  const check = route.params.check;
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState('');
@@ -16,7 +17,6 @@ const CameraScreen = ({check,navigation}) => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
-      console.log(check);
       setCapturedImage(data.uri);
       setCameraView(false)
       setImageDisplay(true)
@@ -34,7 +34,7 @@ const CameraScreen = ({check,navigation}) => {
     }
     else if(res["message"] == 'Ok'){
       payload = res["payload"]
-      navigation.navigate('Verified', {payload});
+      navigation.navigate('Verified', {payload,check});
     }
     else{
       console.log(res["message"])

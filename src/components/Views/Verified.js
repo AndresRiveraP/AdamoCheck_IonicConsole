@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, ActivityIndicator } from 'react-native';
 
-const Verified = ({ route, navigation }) => {
+const Verified = ({ route, navigation}) => {
   var payload = route.params.payload;
   var picture = payload.firstFacialVerificationFrame;
   var name = payload.fullname;
   var id = payload.documentNumber;
+  var check = route.params.check
 
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -17,19 +18,18 @@ const Verified = ({ route, navigation }) => {
         style={styles.background}
       >
         <View style={styles.pictureContainer}>
-          {!imageLoaded && <ActivityIndicator size="large" color="#000" style={{marginTop : 140}}/>}
+          {!imageLoaded && <ActivityIndicator size="large" color="#FFF" style={{marginTop : 200}}/>}
           <FastImage
             source={{ uri: picture }}
             style={[styles.picture, { opacity: imageLoaded ? 1 : 0 }]}
             onLoad={() => {setImageLoaded(true), setTimeout(() => {
                 navigation.navigate('InitialScreen');
-            }, 3500); }}
-            onError={() => setImageLoaded(false)}
+            }, 3000); }}
           />
         </View>
 
         <View style={styles.welcomingText}>
-          <Text style={styles.welcome}>¡Welcome!</Text>
+          <Text style={styles.welcome}>{check==='in' ? 'Welcome!' : 'Farewell!'}</Text>
           <Text style={styles.name}>{name}</Text>
         </View>
 
