@@ -6,11 +6,10 @@ import { setContext } from 'apollo-link-context';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const HttpLink = createHttpLink({
-    uri : 'https://adamocheckback-production.up.railway.app/'
+    uri : 'https://adamocheckback.up.railway.app/'
 })
 
 const authLink = setContext(async (_,{headers}) => {
-    //Leer el token
     const token = await AsyncStorage.getItem('token');
     return {
         headers:{

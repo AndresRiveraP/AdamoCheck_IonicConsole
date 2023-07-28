@@ -56,6 +56,7 @@ const AdminLog = ({navigation}) => {
     
     } catch (error) {
         setMessage(error.message.replace('GraphQL error: ', ''));
+        console.log(error)
         return;
     }
   }
