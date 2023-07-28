@@ -14,13 +14,13 @@ const AUTENTICAR_USUARIO = gql`
     }
 `;
 
-const AdminLog = ({navigation}) => {
+const AdminLog = () => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
   const [validLog, setValidLog] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
-
+  
   const [authUser] = useMutation(AUTENTICAR_USUARIO);
 
   const validateForm = () =>{
@@ -38,13 +38,13 @@ const AdminLog = ({navigation}) => {
 
     setIsLoading(true);
     try {
-        const {data} = await authUser({
-            variables :{
-              input : {
-                identification : id,
-                password
-              }
-            }
+        const { data } = await authUser({
+            variables: {
+              input: {
+                identification: id,
+                password,
+              },
+            },
           });
     
           const {token} = data.authUser;
@@ -54,6 +54,7 @@ const AdminLog = ({navigation}) => {
           setValidLog(true);
           setIsLoading(false);
     
+
     } catch (error) {
         setMessage(error.message.replace('GraphQL error: ', ''));
         console.log(error)
