@@ -41,7 +41,7 @@ const AdminLog = ({navigation}) => {
         const {data} = await authUser({
             variables :{
               input : {
-                id,
+                identification : id,
                 password
               }
             }
