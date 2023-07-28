@@ -50,7 +50,7 @@ const AdminLog = () => {
           });
     
           const {token} = data.authUser;
-          console.log(token);
+          //console.log(token);
     
           await AsyncStorage.setItem('token', token);
           setValidLog(true);
@@ -58,20 +58,20 @@ const AdminLog = () => {
     
 
     } catch (error) {
-        setMessage(error.message.replace('GraphQL error: ', ''));
-        console.log(error);
         setIsLoading(false);
+        setMessage(error.message);
     }
   }
 
   const mostrarAlerta = () => {
+    ToastAndroid.showWithGravity(
+        message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
     setTimeout(() =>{
-        ToastAndroid.showWithGravity(
-            message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER
-          );
-    }, 2000);
+        setMessage(null);
+    }, 2500);
   }
 
   const keyboardGone = () => {
@@ -140,7 +140,7 @@ const AdminLog = () => {
         {validLog && (
             <Modal
                 animationType='fade'
-                onRequestClose={() => {setValidLog(false),navigation.navigate('InitialScreen')}}
+                onRequestClose={() => {navigation.navigate('InitialScreen')}}
             >
                 <AdminScreen/>
             </Modal>

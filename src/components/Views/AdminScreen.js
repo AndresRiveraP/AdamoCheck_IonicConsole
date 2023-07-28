@@ -1,15 +1,37 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import moment from 'moment';
-import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity} from 'react-native'
+import {SafeAreaView,ImageBackground, Text,View, StyleSheet,Image,Modal, TouchableOpacity, ToastAndroid} from 'react-native'
 import { Calendar } from 'react-native-calendars';
+import {gql, useQuery} from '@apollo/client';
+import MTable from './MTable.js';
+
+
+const FETCH_LOGS = gql `
+    query Query($date: String!) {
+        logsByDate(date: $date) {
+        identification
+        name
+        day
+        checkin
+        checkout
+        id
+        }
+    }
+`;
 
 const AdminScreen = () => {
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedEndDate, setSelectedEndDate] = useState(null);
-    const [calendarModal, setCalendarModal] = useState(false)
-    const [modalTable, setModalTable] = useState(false)
-    var url = 'http://192.168.0.44:8010/logs'
+    const [calendarModal, setCalendarModal] = useState(false);
+    const [modalTable, setModalTable] = useState(false);
+    const [logsU, setLogsU] = useState({});
 
+    useEffect(() => {
+        if (selectedStartDate) {
+          fetchingLogs();
+        }
+      }, [selectedStartDate]);
+    
     const openCalendar = () => {
         setSelectedStartDate(null)
         setSelectedEndDate(null)
@@ -26,6 +48,32 @@ const AdminScreen = () => {
         setSelectedEndDate(formattedDate);
     };
 
+    //Apollo useQuery
+    const { data } = useQuery(FETCH_LOGS, {
+        variables: {
+        date: selectedStartDate,
+        },
+        skip: !selectedStartDate, // Skip query if selectedStartDate is not set
+    });
+
+    const fetchingLogs = () => {
+        if (data?.logsByDate) { 
+            const logs = data.logsByDate.map((log) => {
+                const { checkin, checkout, id, identification, name } = log;
+                return {
+                    checkin,
+                    checkout,
+                    id,
+                    identification,
+                    name,
+                };
+            });
+    
+            setLogsU(logs);
+        } else {
+            setLogsU(null); 
+        }
+    };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,7 +83,7 @@ const AdminScreen = () => {
         >
             <Image 
                 source={require('../../assets/img/ic_white_c.png')}
-                 style={styles.logoA}
+                style={styles.logoA}
             />
 
             <View style={styles.adminMethods}>
@@ -65,7 +113,7 @@ const AdminScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.botonShow]}
-                    onPress={() => {fethingLogs(), setModalTable(true)}}
+                    onPress={() => {setModalTable(true),fetchingLogs()}}
                 >
                     <Image
                         source={require('../../assets/img/table.png')}
@@ -100,15 +148,19 @@ const AdminScreen = () => {
                 </View>
             </Modal>
 
-            {modalTable && (
-                <Modal
-                    animationType='slide'
-                    onRequestClose={setModalTable(false)}
-                >
-                    
-                </Modal>
-            )}
         </ImageBackground>
+
+        {modalTable && (
+        <Modal
+            animationType='slide'
+            onRequestClose={() => setModalTable(false)}
+        >
+            <MTable
+            logsU={logsU}
+            startDate={selectedStartDate}
+            />
+        </Modal>
+        )}
     </SafeAreaView>
   )
 }
