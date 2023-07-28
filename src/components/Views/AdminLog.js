@@ -7,11 +7,11 @@ import AdminScreen from './AdminScreen';
 import LoadingModal from './LoadingModal';
 
 const AUTENTICAR_USUARIO = gql`
-    mutation authUser($input: AutenthicateUserInput){
-      authUser(input: $input){
-        token
-      }
+  mutation Mutation($input: AutenthicateUserInput) {
+    authUser(input: $input) {
+      token
     }
+  }
 `;
 
 const AdminLog = () => {
