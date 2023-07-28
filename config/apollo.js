@@ -3,7 +3,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HttpLink = createHttpLink({
     uri : 'https://adamocheckback.up.railway.app/'

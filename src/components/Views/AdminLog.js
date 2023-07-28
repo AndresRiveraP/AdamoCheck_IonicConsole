@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity, Modal, ToastAndroid} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {gql, useMutation} from '@apollo/client';
 
 import AdminScreen from './AdminScreen';
@@ -50,7 +50,7 @@ const AdminLog = ({navigation}) => {
           const {token} = data.authUser;
           console.log(token);
     
-          await AsyncStorage.setItem('token', token)
+          await AsyncStorage.setItem('token', token);
           setValidLog(true);
           setIsLoading(false);
     
