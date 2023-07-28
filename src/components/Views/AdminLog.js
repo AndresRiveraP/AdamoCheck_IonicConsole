@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity, Modal, ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {gql, useMutation} from '@apollo/client';
+import {useNavigation} from '@react-navigation/native';
 
 import AdminScreen from './AdminScreen';
 import LoadingModal from './LoadingModal';
@@ -20,6 +21,7 @@ const AdminLog = () => {
   const [validLog, setValidLog] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const navigation = useNavigation();
 
   const [authUser] = useMutation(AUTENTICAR_USUARIO);
 
@@ -57,8 +59,8 @@ const AdminLog = () => {
 
     } catch (error) {
         setMessage(error.message.replace('GraphQL error: ', ''));
-        console.log("Error: ", error);
-        return;
+        console.log(error);
+        setIsLoading(false);
     }
   }
 
@@ -138,6 +140,7 @@ const AdminLog = () => {
         {validLog && (
             <Modal
                 animationType='fade'
+                onRequestClose={() => {setValidLog(false),navigation.navigate('InitialScreen')}}
             >
                 <AdminScreen/>
             </Modal>
