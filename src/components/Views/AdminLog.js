@@ -20,7 +20,7 @@ const AdminLog = () => {
   const [validLog, setValidLog] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  
+
   const [authUser] = useMutation(AUTENTICAR_USUARIO);
 
   const validateForm = () =>{
@@ -57,7 +57,7 @@ const AdminLog = () => {
 
     } catch (error) {
         setMessage(error.message.replace('GraphQL error: ', ''));
-        console.log(error)
+        console.log("Error: ", error);
         return;
     }
   }
