@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {SafeAreaView,ScrollView, View, Text, Image, StyleSheet} from 'react-native';
+import { Table, Row, Rows } from 'react-native-table-component';
 
 const MTable = ({ logsU, startDate }) => {
   const [logsData, setLogsData] = useState(null);
@@ -13,23 +14,25 @@ const MTable = ({ logsU, startDate }) => {
   return (
     <SafeAreaView>
       <View>
-      <Image
-        source={require('../../assets/img/ic.png')}
-        style={styles.image}
-      />
+        <Image
+          source={require('../../assets/img/ic.png')}
+          style={styles.image}
+        />
         <Text style={styles.title}>Looking over {startDate} logs</Text>
       </View>
 
-      <ScrollView style={styles.scroll}>
-        <View>
-          {logsData.map((log, index) => (
-            <View key={index}>
+      <ScrollView horizontal={true} style={styles.scroll}>
+        <Table style={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+          <Row data={['Day','Identification', 'Name', 'Check-in', 'Check-out']} style={ { height: 40, backgroundColor: '#f1f8ff' }}/>
+          
+          {logsData && logsData.map((log, index) => (
+            <View key={index} style>
               <Text>{log.name}</Text>
               <Text>{log.checkin}</Text>
               <Text>{log.checkout}</Text>
             </View>
           ))}
-        </View>
+        </Table>
       </ScrollView>
     </SafeAreaView>
   );
@@ -37,8 +40,8 @@ const MTable = ({ logsU, startDate }) => {
 
 const styles = StyleSheet.create({
   image : {
-    width: 106,
-    height: 207,
+    width: '40%',
+    height: '40%',
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -49,7 +52,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   scroll :{
-    marginTop: 30,
     width : '85%',
     backgroundColor: "#E7F4FF",
     alignSelf: 'center',
