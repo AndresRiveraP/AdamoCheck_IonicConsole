@@ -18,7 +18,6 @@
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-link-context": "^1.0.20",
     "apollo-link-http": "^1.5.17",
-    "axios": "^1.4.0",
     "expo-cli": "^6.3.10",
     "graphql": "^16.7.1",
     "moment": "^2.29.4",

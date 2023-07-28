@@ -6,7 +6,7 @@ import { setContext } from 'apollo-link-context';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const HttpLink = createHttpLink({
-    uri : 'http://192.168.0.34:4000'
+    uri : 'https://adamocheckback-production.up.railway.app/'
 })
 
 const authLink = setContext(async (_,{headers}) => {

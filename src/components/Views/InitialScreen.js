@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { ImageBackground,TouchableWithoutFeedback,View, Image, Pressable, Text,Modal,Animated,TouchableOpacity} from 'react-native'
+import { ImageBackground,TouchableWithoutFeedback,View, Image, Text,Modal,Animated,TouchableOpacity} from 'react-native'
 
 
 import AdminLog from './AdminLog';

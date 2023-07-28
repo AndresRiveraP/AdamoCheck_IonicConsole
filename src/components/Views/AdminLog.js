@@ -1,16 +1,27 @@
 import React, {useState} from 'react'
-import axios from 'axios';
-import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity, Modal} from 'react-native'
+import {SafeAreaView, Alert,TextInput, Image, StyleSheet, View,Text, KeyboardAvoidingView,Keyboard, TouchableWithoutFeedback,TouchableOpacity, Modal, ToastAndroid} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {gql, useMutation} from '@apollo/client';
 
 import AdminScreen from './AdminScreen';
 import LoadingModal from './LoadingModal';
 
-const AdminLog = () => {
+const AUTENTICAR_USUARIO = gql`
+    mutation authUser($input: AutenthicateUserInput){
+      authUser(input: $input){
+        token
+      }
+    }
+`;
+
+const AdminLog = ({navigation}) => {
   const [id,setId] = useState('')
   const [password, setPassword] = useState('')
   const [validLog, setValidLog] = useState(false)
-  const [buttonOpacity, setButtonOpacity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const [authUser] = useMutation(AUTENTICAR_USUARIO);
 
   const validateForm = () =>{
     if(id == '' || password == ''){
@@ -20,42 +31,43 @@ const AdminLog = () => {
   }
 
   const handleLogIn = async (id,password) =>{
-    setButtonOpacity(1);
     if(!validateForm()){
         Alert.alert('Atención', 'Debe completar todos los campos')
         return;
     }
 
+    setIsLoading(true);
     try {
-        setIsLoading(true)
-        var url = 'http://192.168.0.24:8010/admins';
-        //json-server --host 192.168.0.24 --port 8010 proofdb.json
-        const result = await axios.get(url)
-        var searchIndex = ((result.data).findIndex((admin) => admin.idNumber==id)) 
-        console.log(searchIndex)
-        if(searchIndex !== -1){
-            url = url+'/'+(searchIndex+1)
-            var pass = await axios.get(url)
-            if(password == pass.data.password){
-                console.log("Correct Login")
-                setValidLog(true)
+        const {data} = await authUser({
+            variables :{
+              input : {
+                id,
+                password
+              }
             }
-            else{
-                console.log("Incorrect Password")
-            }
-        }
-        else{
-            console.log("Admin User Not Found")
-        }
-
-        setTimeout(() =>{
-            setIsLoading(false)
-        },3000);
-
+          });
+    
+          const {token} = data.authUser;
+          console.log(token);
+    
+          await AsyncStorage.setItem('token', token)
+          setValidLog(true);
+          setIsLoading(false);
+    
     } catch (error) {
-        console.log(error)
+        setMessage(error.message.replace('GraphQL error: ', ''));
         return;
     }
+  }
+
+  const mostrarAlerta = () => {
+    setTimeout(() =>{
+        ToastAndroid.showWithGravity(
+            message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER
+          );
+    }, 2000);
   }
 
   const keyboardGone = () => {
@@ -81,7 +93,7 @@ const AdminLog = () => {
                         placeholder="ID" 
                         placeholderTextColor='#EAEAEA' 
                         style={styles.tInput} 
-                        onChangeText={setId}
+                        onChangeText={text => setId(text)}
                     />
                 </View>
                 <View style={styles.field}>
@@ -94,13 +106,13 @@ const AdminLog = () => {
                         placeholderTextColor='#EAEAEA'
                         secureTextEntry  
                         style={styles.tInput} 
-                        onChangeText={setPassword}
+                        onChangeText={text => setPassword(text)}
                     />
                 </View>
                 <View style={styles.fieldBoton}>
                     <TouchableOpacity
-                        style={[styles.boton, {opacity:buttonOpacity}]}
-                        onPress={() => {setButtonOpacity(0.4),handleLogIn(id,password)}}
+                        style={styles.boton}
+                        onPress={() => {handleLogIn(id,password)}}
                     >
                         <Image 
                             source={require('../../assets/img/enter.png')}
@@ -128,6 +140,8 @@ const AdminLog = () => {
                 <AdminScreen/>
             </Modal>
         )}
+
+        {message && mostrarAlerta()}
         </SafeAreaView>
     </TouchableWithoutFeedback>
   )
