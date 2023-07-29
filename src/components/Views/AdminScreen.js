@@ -23,6 +23,7 @@ const AdminScreen = () => {
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedEndDate, setSelectedEndDate] = useState(null);
     const [calendarModal, setCalendarModal] = useState(false);
+    const [message, setMessage] = useState(null);
     const [modalTable, setModalTable] = useState(false);
     const [logsU, setLogsU] = useState({});
 
@@ -75,6 +76,28 @@ const AdminScreen = () => {
         }
     };
 
+    const validate = () =>{
+        if(selectedStartDate === null){
+            setMessage('Select  one date at least');
+            return;
+        }
+        else{
+            setModalTable(true);
+            fetchingLogs();
+        }
+    }
+
+    const mostrarAlerta = () => {
+        ToastAndroid.showWithGravity(
+            message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER
+          );
+        setTimeout(() =>{
+            setMessage(null);
+        }, 2500);
+      }
+
   return (
     <SafeAreaView style={styles.container}>
         <ImageBackground
@@ -85,6 +108,8 @@ const AdminScreen = () => {
                 source={require('../../assets/img/ic_white_c.png')}
                 style={styles.logoA}
             />
+
+            {message && mostrarAlerta()}
 
             <View style={styles.adminMethods}>
                 <TouchableOpacity
@@ -113,7 +138,7 @@ const AdminScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.botonShow]}
-                    onPress={() => {setModalTable(true),fetchingLogs()}}
+                    onPress={() => {validate()}}
                 >
                     <Image
                         source={require('../../assets/img/table.png')}
