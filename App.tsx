@@ -47,7 +47,7 @@ const App = () => {
 
 
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={client} children={undefined}>
       <SafeAreaView style={styles.container}>
         {showSplash ? (
           <Animated.View style={[styles.container, { opacity: fadeAnim }]}>

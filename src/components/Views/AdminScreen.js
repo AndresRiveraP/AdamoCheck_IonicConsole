@@ -96,7 +96,7 @@ const AdminScreen = () => {
         setTimeout(() =>{
             setMessage(null);
         }, 2500);
-      }
+    }
 
   return (
     <SafeAreaView style={styles.container}>
