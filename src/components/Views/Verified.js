@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FastImage from 'react-native-fast-image';
 import {gql, useMutation, useQuery} from '@apollo/client';
 import moment from 'moment';
@@ -51,12 +51,29 @@ const Verified = ({ route, navigation}) => {
   const [addLog] = useMutation(ADD_LOG);
   const [updateLog] = useMutation(UPDATE_LOG);
 
-  //console.log(formattedDate);
-  //console.log(formattedTime);
+  var {data, loading, error} = useQuery(CHECK_LOG,{
+    variables : {
+      identification : id,
+      day : formattedDate,
+    },
+  });
 
+  var objectID = data ? data.checkLog : null;
+  
+  useEffect(() => {
+    if(!loading && !error){
+      if(check == "in"){
+        addingLog();
+      }
+      else{
+        updatingLog();
+      }
+    }
+  }, [objectID]);
+
+  
   const addingLog = async() => {
     try {
-
       const {data} = await addLog({
         variables : {
           input : {
@@ -68,8 +85,8 @@ const Verified = ({ route, navigation}) => {
           }
         }
       });
-
-      console.log(data);
+      
+      //console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -77,28 +94,19 @@ const Verified = ({ route, navigation}) => {
 
   const updatingLog = async() => {
     try {
-      const {data} = useQuery(CHECK_LOG,{
-        variables : {
-          identification : id,
-          day : formattedDate,
-        },
+      const {data} = await updateLog({
+        variables: {
+          updateLogId : objectID,
+          input:{
+            checkout : formattedTime
+          }
+        }
       });
 
-      var objectID = data.checkLog;
-
-      
-      
     } catch (error) {
       console.log(error);
     }
   };
-
-  if(check === 'in'){
-    addingLog();
-  }
-  else{
-    updatingLog();
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -107,13 +115,13 @@ const Verified = ({ route, navigation}) => {
         style={styles.background}
       >
         <View style={styles.pictureContainer}>
-          {!imageLoaded && <ActivityIndicator size="large" color="#FFF" style={{marginTop : 200}}/>}
+          {!imageLoaded && <ActivityIndicator size="large" color="#FFF" style={{marginTop : 250}}/>}
           <FastImage
             source={{ uri: picture }}
             style={[styles.picture, { opacity: imageLoaded ? 1 : 0 }]}
             onLoad={() => {setImageLoaded(true), setTimeout(() => {
                 navigation.navigate('InitialScreen');
-            }, 3000); }}
+            }, 3200); }}
           />
         </View>
 
