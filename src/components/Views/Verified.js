@@ -86,7 +86,7 @@ const Verified = ({ route, navigation}) => {
         }
       });
       
-      //console.log(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
