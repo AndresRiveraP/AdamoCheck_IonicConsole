@@ -42,7 +42,8 @@ const Verified = ({ route, navigation}) => {
   var name = payload.fullname;
   var id = payload.documentNumber;
   var check = route.params.check;
-
+  
+  var objectID = null;
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
   var formattedTime = moment(currentDate).format('h:mm A');
@@ -58,10 +59,10 @@ const Verified = ({ route, navigation}) => {
     },
   });
 
-  var objectID = data ? data.checkLog : null;
-  
   useEffect(() => {
     if(!loading && !error){
+      objectID = data.checkLog;
+      
       if(check == "in"){
         addingLog();
       }
@@ -69,7 +70,7 @@ const Verified = ({ route, navigation}) => {
         updatingLog();
       }
     }
-  }, [objectID]);
+  }, [data]);
 
   
   const addingLog = async() => {
