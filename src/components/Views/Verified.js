@@ -33,7 +33,7 @@ const UPDATE_LOG = gql`
 const CHECK_LOG = gql`
   query Query($identification: String!, $day: String!) {
     checkLog(identification: $identification, day: $day)
-}
+  }
 `
 
 const Verified = ({ route, navigation}) => {
