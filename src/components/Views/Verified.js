@@ -34,7 +34,7 @@ const CHECK_LOG = gql`
   query Query($identification: String!, $day: String!) {
     checkLog(identification: $identification, day: $day)
   }
-`
+`; 
 
 const Verified = ({ route, navigation}) => {
   var payload = route.params.payload;
@@ -51,22 +51,22 @@ const Verified = ({ route, navigation}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [addLog] = useMutation(ADD_LOG);
   const [updateLog] = useMutation(UPDATE_LOG);
-
+  
   var {data, loading, error} = useQuery(CHECK_LOG,{
-    variables : {
-      identification : id,
-      day : formattedDate,
-    },
+      variables : {
+        identification : id,
+        day : formattedDate,
+      },
   });
-
+  
   useEffect(() => {
     if(!loading && !error){
-      objectID = data.checkLog;
-      
       if(check == "in"){
         addingLog();
       }
       else{
+        objectID = data.checkLog;
+        console.log(objectID);
         updatingLog();
       }
     }

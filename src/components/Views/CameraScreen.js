@@ -57,7 +57,7 @@ const CameraScreen = ({route,navigation}) => {
       .then(response => response.text())
       .then((data) => {
         setShowLoading(false);
-        //console.log(data)
+        console.log(data)
         const res = JSON.parse(data)
         verifyResponse(res);
       });
