@@ -21,9 +21,10 @@ const Unverified = ({navigation}) => {
             </View>
 
             <View style={styles.redirectioning} >
-                <Text style={styles.nonBolded}>Puedes iniciar tu proceso de registro <Text style={styles.bolded}>en el siguiente enlace:</Text></Text>
+                <Text style={styles.nonBolded}>Puedes iniciar tu proceso de registro <Text style={styles.bolded}>en el siguiente enlace:{'\n'}</Text></Text>
                 <Image 
-                    source={require('../../assets/img/Captura.png')}
+                    source={require('../../assets/img/QR.png')}
+                    resizeMode="contain"
                     style={styles.qr}
                 />
             </View>
@@ -64,14 +65,14 @@ const styles = StyleSheet.create({
         textAlign: 'justify'
     },
     redirectioning:{
+        flex: 1,
+        backgroundColor: '#99dcec',
+        borderRadius: 10,
+        padding: 20,
         marginTop: 20,
         marginBottom: 60,
         width:'80%',
-        alignItems: 'center',
-        paddingVertical: 60,
-        paddingHorizontal:20,
-        backgroundColor: '#99dcec',
-        borderRadius: 10
+        alignItems: 'center',  
     },
     nonBolded: {
         fontSize: 20,
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
     },
     qr:{
-       marginTop: 40,
-       alignSelf:'center' 
+        width: '70%',
+        height: '70%',
     },
     botonR:{
         position: 'relative',

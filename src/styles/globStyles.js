@@ -24,7 +24,7 @@ export default StyleSheet.create({
         backgroundColor: '#9cd0de',
         borderRadius: 50,
         padding: 20,
-        marginTop: 40,
+        marginTop: '5%',
     },
     boton2:{
         flexDirection : 'row',
@@ -33,16 +33,18 @@ export default StyleSheet.create({
         backgroundColor: '#043655',
         borderRadius: 50,
         padding: 20,
-        marginTop: 40,
+        marginTop: '8%',
     },
     botonAdmin:{
-        position: 'relative',
+        width: '30%',
         marginTop: 40,
-        marginRight: 20,
+        marginRight: '8%',
         alignSelf:'flex-end',
         backgroundColor: '#FFF',
-        borderRadius: 50,
-        padding: 15,
+        borderRadius: 15,
+        paddingVertical: 5,
+        paddingRight: 15,
+        paddingLeft: 15,
     }, 
     profi:{
         maxWidth: 20,
@@ -56,6 +58,7 @@ export default StyleSheet.create({
     },
     label2:{
         color : '#000',
+        textAlign: 'center',
         fontSize: 16,
     }
 });

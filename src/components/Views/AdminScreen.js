@@ -78,7 +78,7 @@ const AdminScreen = () => {
 
     const validate = () =>{
         if(selectedStartDate === null){
-            setMessage('Select  one date at least');
+            setMessage('Select a date before requesting table');
             return;
         }
         else{
@@ -95,7 +95,7 @@ const AdminScreen = () => {
           );
         setTimeout(() =>{
             setMessage(null);
-        }, 2500);
+        }, 3500);
     }
 
   return (

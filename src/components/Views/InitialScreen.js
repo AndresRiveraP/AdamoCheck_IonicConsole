@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { ImageBackground,TouchableWithoutFeedback,View, Image, Text,Modal,Animated,TouchableOpacity} from 'react-native'
+import { ImageBackground,View, Image, Text,Modal,TouchableOpacity} from 'react-native'
 
 
 import AdminLog from './AdminLog';
@@ -8,28 +8,7 @@ import styles from '../../styles/globStyles.js'
 
 const InitialScreen = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState(false)
-  const [animacionBotones] = useState(new Animated.Value(1));
   var check = null;
-
-  const pressing = () =>{
-    Animated.spring(animacionBotones, {
-        toValue: 0.8,
-        useNativeDriver: true
-    }).start();
-  }
-
-  const unpressing = () =>{
-    Animated.spring(animacionBotones,{
-        toValue:1,
-        friction: 4,
-        tension: 10,
-        useNativeDriver: true
-    }).start();
-  }
-
-  const btnAnimation = {
-    transform: [{ scale: animacionBotones }]
-    }
 
   const handleCamera = () => {
     navigation.navigate('CameraScreen', {check})
@@ -44,17 +23,12 @@ const InitialScreen = ({navigation}) => {
         source={require('../../assets/img/imgBG01.png')}
         style={styles.background}
     >
-
-        <TouchableWithoutFeedback
-            onPressIn={ () => pressing() }
-            onPressOut={ () => {unpressing(),handleAdmin()}}
+        <TouchableOpacity
+            onPress={ () => {handleAdmin()}}
+            style={styles.botonAdmin}
         >
-            <Animated.View
-                style={[styles.botonAdmin,btnAnimation]}
-            >
-                <Text style={styles.label2}>Admin Log In</Text>
-            </Animated.View>
-        </TouchableWithoutFeedback>
+            <Text style={styles.label2}>Admin {'\n'}Log In</Text>
+        </TouchableOpacity>
 
         <View style={styles.container}>
             <Image 
@@ -66,7 +40,6 @@ const InitialScreen = ({navigation}) => {
                 style={[styles.boton]}
                 onPress={() => {check='in', handleCamera()}}
             >
-
                 <Image 
                     source={require('../../assets/img/profi.png')}
                     style={styles.profi}
@@ -93,8 +66,6 @@ const InitialScreen = ({navigation}) => {
                     style={styles.profi}
                 />
             </TouchableOpacity>
-        
-            
         </View>
 
 
