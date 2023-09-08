@@ -10,9 +10,10 @@ const CameraScreen = ({route,navigation}) => {
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState('');
   const [imageDisplay,setImageDisplay] = useState(false);
+
   const [showLoading, setShowLoading] = useState(false);
   var payload = null;
-  
+
   const takePicture = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
@@ -26,6 +27,7 @@ const CameraScreen = ({route,navigation}) => {
         setShowLoading(true);
         gotoAPIResponse(data.base64);
       }, 1000);
+      
   };
 
   const verifyResponse = (res) =>{

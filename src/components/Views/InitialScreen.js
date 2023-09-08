@@ -49,6 +49,7 @@ const InitialScreen = ({navigation}) => {
                     source={require('../../assets/img/profi.png')}
                     style={styles.profi}
                 />
+
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -67,8 +68,8 @@ const InitialScreen = ({navigation}) => {
                 />
             </TouchableOpacity>
         </View>
-
-
+        
+        
         {modalAdminLog && (
             <Modal
                 animationType='slide'
