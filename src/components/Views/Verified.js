@@ -51,7 +51,8 @@ const Verified = ({ route, navigation}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [addLog] = useMutation(ADD_LOG);
   const [updateLog] = useMutation(UPDATE_LOG);
-  
+
+
   var {data, loading, error} = useQuery(CHECK_LOG,{
       variables : {
         identification : id,
@@ -60,6 +61,7 @@ const Verified = ({ route, navigation}) => {
   });
   
   useEffect(() => {
+
     if(!loading && !error){
       if(check == "in"){
         addingLog();
