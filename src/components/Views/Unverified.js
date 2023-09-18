@@ -23,7 +23,7 @@ const Unverified = ({navigation}) => {
             <View style={styles.redirectioning} >
                 <Text style={styles.nonBolded}>Puedes iniciar tu proceso de registro <Text style={styles.bolded}>en el siguiente enlace:{'\n'}</Text></Text>
                 <Image 
-                    source={require('../../assets/img/QR.png')}
+                    source={require('../../assets/img/qr2.png')}
                     resizeMode="contain"
                     style={styles.qr}
                 />
@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
     },
     qr:{
-        width: '70%',
-        height: '70%',
+        width: '80%',
+        height: '80%',
     },
     botonR:{
         position: 'relative',

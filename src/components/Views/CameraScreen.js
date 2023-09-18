@@ -26,8 +26,7 @@ const CameraScreen = ({route,navigation}) => {
         setImageDisplay(false);
         setShowLoading(true);
         gotoAPIResponse(data.base64);
-      }, 1000);
-      
+      }, 500);
   };
 
   const verifyResponse = (res) =>{
