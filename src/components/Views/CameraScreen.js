@@ -1,5 +1,5 @@
 import React, {useState,useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet,Image, Modal} from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Image, Modal, Text} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
 import LoadingModal from './LoadingModal';
@@ -9,10 +9,20 @@ const CameraScreen = ({route,navigation}) => {
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState('');
-  const [imageDisplay,setImageDisplay] = useState(false);
-
+  const [countdown, setCountdown] = useState(3);
   const [showLoading, setShowLoading] = useState(false);
   var payload = null;
+
+  const startCountdown = () => {
+    const timer = setInterval(() => {
+      setCountdown((prevCount) => prevCount - 1);
+    }, 1000);
+
+    setTimeout(() => {
+      clearInterval(timer);
+      takePicture();
+    }, 3000);
+  };
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -20,10 +30,8 @@ const CameraScreen = ({route,navigation}) => {
       const data = await cameraRef.current.takePictureAsync(options);
       setCapturedImage(data.uri);
       setCameraView(false)
-      setImageDisplay(true)
 
       setTimeout(() => {
-        setImageDisplay(false);
         setShowLoading(true);
         gotoAPIResponse(data.base64);
       }, 500);
@@ -80,16 +88,16 @@ const CameraScreen = ({route,navigation}) => {
             type={RNCamera.Constants.Type.front}
             captureAudio={false}
           />
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
-            {/* Capture button UI */}
+         <TouchableOpacity style={styles.button} onPress={startCountdown}>
+            {countdown > 0 ? (
+              <Text style={styles.countdownText}>{countdown}</Text>
+            ) : (
+              <Text>Captured</Text>
+            )}
           </TouchableOpacity>
         </View>
       ):(
         <View>
-          {imageDisplay && (
-            <Image source={{ uri: capturedImage }} style={styles.image} />
-          )}
-
           {showLoading && (
             <Modal
               animationType='slide'
@@ -118,7 +126,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 25,
     borderRadius: 32,
+    width:'15%',
+    height: '10%',
     backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  countdownText: {
+    fontSize: 24,
   },
   image: {
     width: '100%',

@@ -1,7 +1,12 @@
 import React from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView} from 'react-native'
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+
+function dp(sizeInDp) {
+    const scale = PixelRatio.get();
+    return sizeInDp * scale;
+}
 
 const Unverified = ({navigation}) => {
   return (
@@ -12,7 +17,7 @@ const Unverified = ({navigation}) => {
         >
             <Image 
                 source={require('../../assets/img/eye.png')}
-                style={[{marginTop:40}]}
+                style={styles.eye}
             />
 
             <View style={styles.warning}>
@@ -49,6 +54,11 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         alignItems : 'center',
     },
+    eye:{
+        resizeMode: 'contain',
+        height: '25%',
+        width: '25%'
+    },
     warning:{
         width: '80%',
         alignItems: 'center',
@@ -56,13 +66,13 @@ const styles = StyleSheet.create({
     },
     Atention:{
         color: '#FFF',
-        fontSize: 30,
-        marginVertical : 10
+        fontSize: dp(40),
+        marginBottom: 15,
     },
     AtentionP:{
         color: '#FFF',
-        fontSize: 20,
-        textAlign: 'justify'
+        fontSize: dp(20),
+        textAlign: 'center'
     },
     redirectioning:{
         flex: 1,
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',  
     },
     nonBolded: {
-        fontSize: 20,
+        fontSize: dp(20),
         color:'#FFF',
         textAlign: 'center'
     },
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     labelU:{
         color : '#000',
         fontWeight: '500',
-        fontSize: 18,
+        fontSize: dp(16),
     }
 })
 export default Unverified
