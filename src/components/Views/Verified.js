@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import FastImage from 'react-native-fast-image';
 import {gql, useMutation, useQuery} from '@apollo/client';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, ActivityIndicator } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, ActivityIndicator, PixelRatio} from 'react-native';
+
+function dp(sizeInDp) {
+  const scale = PixelRatio.get();
+  return sizeInDp * scale;
+}
 
 const ADD_LOG = gql`
   mutation Mutation($input: LogInput) {
@@ -124,7 +129,7 @@ const Verified = ({ route, navigation}) => {
             style={[styles.picture, { opacity: imageLoaded ? 1 : 0 }]}
             onLoad={() => {setImageLoaded(true), setTimeout(() => {
                 navigation.navigate('InitialScreen');
-            }, 3200); }}
+            }, 4200); }}
           />
         </View>
 
@@ -181,12 +186,12 @@ const styles = StyleSheet.create({
   },
   welcome: {
     color: "#FFF",
-    fontSize: 30,
+    fontSize: dp(30),
   },
   name: {
-    marginTop: 10,
+    marginTop: 30,
     color: "#FFF",
-    fontSize: 18,
+    fontSize: dp(18),
   },
   identi: {
     marginTop: 60,
@@ -195,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     justifyContent: 'space-around',
-    padding: 20
+    padding: 30
   },
   ico: {
     alignSelf: 'flex-start',
@@ -205,11 +210,11 @@ const styles = StyleSheet.create({
   },
   idS: {
     color: '#FFF',
-    fontSize: 26,
+    fontSize: dp(26),
   },
   check: {
-    width: 35,
-    height: 35,
+    width: '8%',
+    resizeMode: 'contain',
     marginTop: 20,
   },
 });
