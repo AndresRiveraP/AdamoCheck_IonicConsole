@@ -27,7 +27,7 @@ const InitialScreen = ({navigation}) => {
             onPress={ () => {handleAdmin()}}
             style={styles.botonAdmin}
         >
-            <Text style={styles.label2}>Admin {'\n'}Log In</Text>
+            <Text style={styles.label2}>Admin {'\n'}<Text style={{ fontWeight: 'bold' }}>Log In</Text></Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

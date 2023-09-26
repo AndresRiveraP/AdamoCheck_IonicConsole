@@ -52,11 +52,9 @@ const MTable = ({ logsU, startDate }) => {
 
 
 const styles = StyleSheet.create({
-  container :{
-  },
   image : {
-    width: '50%',
-    height: '50%',
+    width: '30%',
+    height: '30%',
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -65,7 +63,7 @@ const styles = StyleSheet.create({
     color : 'black',
     fontWeight: '600',
     textAlign: 'center',
-    marginHorizontal: 15,
+    marginVertical: 30,
   },
   scroll :{
     width: '100%',

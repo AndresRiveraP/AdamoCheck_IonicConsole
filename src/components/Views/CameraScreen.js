@@ -10,13 +10,15 @@ const CameraScreen = ({route,navigation}) => {
   const [cameraView,setCameraView] = useState(true)
   const [capturedImage, setCapturedImage] = useState('');
   const [countdown, setCountdown] = useState(3);
+  const [countdownColor, setCountdownColor] = useState('white');
   const [showLoading, setShowLoading] = useState(false);
   var payload = null;
 
   const startCountdown = () => {
+    setCountdownColor('#FE9228');
     const timer = setInterval(() => {
       setCountdown((prevCount) => prevCount - 1);
-    }, 1000);
+    }, 800);
 
     setTimeout(() => {
       clearInterval(timer);
@@ -29,12 +31,12 @@ const CameraScreen = ({route,navigation}) => {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
       setCapturedImage(data.uri);
-      setCameraView(false)
-
+      
       setTimeout(() => {
+        setCameraView(false)
         setShowLoading(true);
         gotoAPIResponse(data.base64);
-      }, 500);
+      }, 1000);
   };
 
   const verifyResponse = (res) =>{
@@ -88,13 +90,13 @@ const CameraScreen = ({route,navigation}) => {
             type={RNCamera.Constants.Type.front}
             captureAudio={false}
           />
-         <TouchableOpacity style={styles.button} onPress={startCountdown}>
-            {countdown > 0 ? (
-              <Text style={styles.countdownText}>{countdown}</Text>
-            ) : (
-              <Text>Captured</Text>
-            )}
-          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={startCountdown}>
+              {countdown > 0 ? (
+                <Text style={[styles.coutdownText, {color: countdownColor}]}>{countdown}</Text>
+              ) : (
+                <Text style={[styles.coutdownText, {color: '#5FE90E'}]}>Go!</Text>
+              )}
+            </TouchableOpacity>
         </View>
       ):(
         <View>
@@ -123,22 +125,25 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: 30,
+    borderColor : 'white',
+    borderWidth : 5,
     alignSelf: 'center',
     padding: 25,
-    borderRadius: 32,
+    borderRadius: 100,
     width:'15%',
     height: '10%',
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  countdownText: {
-    fontSize: 24,
   },
   image: {
     width: '100%',
     height :'100%',
     resizeMode: 'cover',
+  },
+  coutdownText : {
+    fontSize: 34, 
+    fontWeight: 'bold', 
   },
   modalLoading:{
     flex:1,

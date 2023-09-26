@@ -72,12 +72,13 @@ const styles = StyleSheet.create({
     AtentionP:{
         color: '#FFF',
         fontSize: dp(20),
-        textAlign: 'center'
+        textAlign: 'center',
+        marginBottom: 20,
     },
     redirectioning:{
         flex: 1,
         backgroundColor: '#99dcec',
-        borderRadius: 10,
+        borderRadius: 20,
         padding: 20,
         marginTop: 20,
         marginBottom: 60,

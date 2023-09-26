@@ -200,16 +200,18 @@ const styles = StyleSheet.create({
         alignItems : 'center'
     },
     logoA :{
-        maxWidth: '50%',
-        maxHeight: '50%',
+        marginTop: '15%',
+        maxWidth: '30%',
+        maxHeight: '30%',
         resizeMode: 'contain',
         alignSelf : 'center'
     },
     adminMethods:{
+        marginTop : '10%',
         backgroundColor: "#FFF",
         width: '90%',
-        height: '50%',
-        borderRadius: 10,
+        height: '40%',
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },
