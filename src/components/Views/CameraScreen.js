@@ -52,6 +52,7 @@ const CameraScreen = ({route,navigation}) => {
 
   const gotoAPIResponse = async (base64Data) => {
     //Respuesta de la API
+    console.log(base64Data);
     try{
         fetch('https://adamo-onboarding-qa.limboteams.com/onboarding-processes/get-user-details-by-face', {
         method: 'POST',
