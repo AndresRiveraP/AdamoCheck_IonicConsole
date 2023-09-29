@@ -12,8 +12,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     logoA :{
-        maxWidth: '50%',
-        maxHeight: '50%',
+        maxWidth: '52%',
+        maxHeight: '52%',
         resizeMode: 'contain',
         alignSelf : 'center'
     },
@@ -36,29 +36,28 @@ export default StyleSheet.create({
         marginTop: '8%',
     },
     botonAdmin:{
-        width: '30%',
+        width: '20%',
         marginTop: 40,
         marginRight: '8%',
         alignSelf:'flex-end',
         backgroundColor: '#FFF',
-        borderRadius: 15,
-        paddingVertical: 5,
-        paddingRight: 15,
-        paddingLeft: 15,
+        borderRadius: 35,
+        paddingVertical: 10,
     }, 
     profi:{
-        maxWidth: 20,
-        maxHeight: 20,
+        maxWidth: 40,
+        maxHeight: 40,
         resizeMode: 'contain',
     },
     label:{
         color : '#FFF',
-        fontSize: 16,
+        fontSize: 20,
         paddingHorizontal: 50,
     },
     label2:{
         color : '#000',
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 20,
+        fontFamily: 'Noto Sans, sans-serif',
     }
 });
