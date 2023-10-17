@@ -3,10 +3,10 @@ import React from 'react'
 import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-function dp(sizeInDp) {
-    const scale = PixelRatio.get();
-    return sizeInDp * scale;
+function sp(size) {
+    return PixelRatio.getFontScale() * size;
 }
+
 
 const Unverified = ({navigation}) => {
   return (
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     },
     background:{
         flex:1,
-        resizeMode: 'cover',
+        resizeMode: 'contain',
         alignItems : 'center',
     },
     eye:{
         resizeMode: 'contain',
-        height: '25%',
-        width: '25%'
+        height: '20%',
+        width: '20%'
     },
     warning:{
         width: '80%',
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
     },
     Atention:{
         color: '#FFF',
-        fontSize: dp(40),
+        fontSize: sp(40),
         marginBottom: 15,
     },
     AtentionP:{
         color: '#FFF',
-        fontSize: dp(20),
+        fontSize: sp(20),
         textAlign: 'center',
         marginBottom: 20,
     },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',  
     },
     nonBolded: {
-        fontSize: dp(20),
+        fontSize: sp(20),
         color:'#FFF',
         textAlign: 'center'
     },
@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
     },
     qr:{
-        width: '80%',
-        height: '80%',
+        width: '70%',
+        height: '70%',
     },
     botonR:{
         position: 'relative',
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     labelU:{
         color : '#000',
         fontWeight: '500',
-        fontSize: dp(16),
+        fontSize: sp(16),
     }
 })
 export default Unverified

@@ -36,7 +36,7 @@ export default StyleSheet.create({
         marginTop: '8%',
     },
     botonAdmin:{
-        width: '20%',
+        width: '30%',
         marginTop: 40,
         marginRight: '8%',
         alignSelf:'flex-end',
