@@ -1,5 +1,5 @@
 import React, {useState,useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet,Image, Modal, Text} from 'react-native';
+import { SafeAreaView, View, TouchableOpacity, StyleSheet,Image, Modal, Text, ImageBackground} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
 import LoadingModal from './LoadingModal';
@@ -82,22 +82,27 @@ const CameraScreen = ({route,navigation}) => {
 }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {cameraView ? (
         <View style={styles.container}>
+          
           <RNCamera
             ref={cameraRef}
             style={styles.camera}
             type={RNCamera.Constants.Type.front}
             captureAudio={false}
-          />
-          <TouchableOpacity style={styles.button} onPress={startCountdown}>
-              {countdown > 0 ? (
-                <Text style={[styles.coutdownText, {color: countdownColor}]}>{countdown}</Text>
-              ) : (
-                <Text style={[styles.coutdownText, {color: '#5FE90E'}]}>Go!</Text>
-              )}
-            </TouchableOpacity>
+          >
+            <ImageBackground
+              source={require('../../assets/img/topcamera1.png')}
+              style={styles.topC}
+            >
+              <Image
+               source={require('../../assets/img/ic_white_c.png')}
+                style={styles.logoAID}
+              />
+            </ImageBackground>
+
+          </RNCamera>
         </View>
       ):(
         <View>
@@ -112,7 +117,7 @@ const CameraScreen = ({route,navigation}) => {
           
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -122,6 +127,19 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+  },
+  topC :{
+    top: 0,
+    resizeMode: 'cover',
+  },
+  bottomC:{
+    bottom: 0,
+  },
+  logoAID:{
+    position: 'absolute',
+    width : '30%',
+    resizeMode: 'contain',
+    alignSelf: 'center'
   },
   button: {
     position: 'absolute',

@@ -41,6 +41,7 @@ const Unverified = ({navigation}) => {
                 <Text style={styles.labelU}>Return Home</Text>
             </TouchableOpacity>
         </ImageBackground>
+        
     </SafeAreaView>
   )
 }

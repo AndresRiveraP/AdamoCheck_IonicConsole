@@ -1,5 +1,9 @@
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio} from "react-native";
+
+function sp(size) {
+    return PixelRatio.getFontScale() * size;
+}
 
 export default StyleSheet.create({
     background:{
@@ -18,8 +22,8 @@ export default StyleSheet.create({
         alignSelf : 'center'
     },
     boton:{
+        maxWidth: '60%',
         flexDirection : 'row',
-        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#9cd0de',
         borderRadius: 50,
@@ -27,12 +31,12 @@ export default StyleSheet.create({
         marginTop: '5%',
     },
     boton2:{
+        maxWidth: '60%',
         flexDirection : 'row',
-        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#043655',
         borderRadius: 50,
-        padding: 20,
+        padding : 20,
         marginTop: '8%',
     },
     botonAdmin:{
@@ -45,19 +49,19 @@ export default StyleSheet.create({
         paddingVertical: 10,
     }, 
     profi:{
-        maxWidth: 40,
-        maxHeight: 40,
+        maxWidth: 30,
+        maxHeight: 30,
         resizeMode: 'contain',
     },
     label:{
         color : '#FFF',
-        fontSize: 20,
-        paddingHorizontal: 50,
+        fontSize: sp(15),
+        paddingHorizontal: 40,
     },
     label2:{
         color : '#000',
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: sp(16),
         fontFamily: 'Noto Sans, sans-serif',
     }
 });

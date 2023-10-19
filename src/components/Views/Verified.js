@@ -4,9 +4,8 @@ import {gql, useMutation, useQuery} from '@apollo/client';
 import moment from 'moment';
 import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, ActivityIndicator, PixelRatio} from 'react-native';
 
-function dp(sizeInDp) {
-  const scale = PixelRatio.get();
-  return sizeInDp * scale;
+function sp(size) {
+  return PixelRatio.getFontScale() * size;
 }
 
 const ADD_LOG = gql`
@@ -42,6 +41,7 @@ const CHECK_LOG = gql`
 `; 
 
 const Verified = ({ route, navigation}) => {
+
   var payload = route.params.payload;
   var picture = payload.firstFacialVerificationFrame;
   var name = payload.fullname;
@@ -186,12 +186,12 @@ const styles = StyleSheet.create({
   },
   welcome: {
     color: "#FFF",
-    fontSize: dp(30),
+    fontSize: sp(30),
   },
   name: {
     marginTop: 30,
     color: "#FFF",
-    fontSize: dp(18),
+    fontSize: sp(18),
   },
   identi: {
     marginTop: 60,
@@ -210,12 +210,11 @@ const styles = StyleSheet.create({
   },
   idS: {
     color: '#FFF',
-    fontSize: dp(26),
+    fontSize: sp(26),
   },
   check: {
     width: '8%',
     resizeMode: 'contain',
-    marginTop: 20,
   },
 });
 
