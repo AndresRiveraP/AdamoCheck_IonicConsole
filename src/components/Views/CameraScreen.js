@@ -82,7 +82,7 @@ const CameraScreen = ({route,navigation}) => {
 }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {cameraView ? (
         <View style={styles.container}>
           
@@ -92,20 +92,35 @@ const CameraScreen = ({route,navigation}) => {
             type={RNCamera.Constants.Type.front}
             captureAudio={false}
           >
-            <ImageBackground
-              source={require('../../assets/img/topcamera1.png')}
-              style={styles.topC}
-            >
+            <View style={styles.top}>
               <Image
-               source={require('../../assets/img/ic_white_c.png')}
+                source={require('../../assets/img/topC.png')}
+                style={styles.topC}
+              />
+              <Image
+                source={require('../../assets/img/ic_white_c.png')}
                 style={styles.logoAID}
               />
-            </ImageBackground>
+            </View>
 
+            <Image
+              style={styles.gif}
+              source={require('../../assets/gif/faceframe.gif')}
+            />
+
+            <View style={styles.bottomC}>
+              <Image
+              source={require('../../assets/img/bottomC.png')}            
+              style={styles.bottomC}
+              />
+
+            </View>
+            
           </RNCamera>
         </View>
       ):(
         <View>
+          
           {showLoading && (
             <Modal
               animationType='slide'
@@ -117,7 +132,7 @@ const CameraScreen = ({route,navigation}) => {
           
         </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -128,18 +143,28 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
   },
-  topC :{
+  top :{
     top: 0,
-    resizeMode: 'cover',
+    height : '30%',
+  },
+  topC:{
+    top: 0,
   },
   bottomC:{
     bottom: 0,
   },
   logoAID:{
     position: 'absolute',
-    width : '30%',
+    top: '-40%',
+    width : '20%',
     resizeMode: 'contain',
     alignSelf: 'center'
+  },
+  gif:{
+    alignSelf: 'center',
+    top: '-20%',
+    width:"70%",
+    height:"70%",
   },
   button: {
     position: 'absolute',

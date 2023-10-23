@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {SafeAreaView,ScrollView, View, Text, Image, StyleSheet, FlatList} from 'react-native';
+import {SafeAreaView,ScrollView, View, Text, Image, StyleSheet, FlatList, ImageBackground} from 'react-native';
 
 
 const MTable = ({ logsU, startDate }) => {
@@ -33,20 +33,27 @@ const MTable = ({ logsU, startDate }) => {
   );
 
   return (
-    <SafeAreaView>
+    <ImageBackground
+      source={require('../../assets/img/imgBG02.png')}
+      style={styles.background}
+    >
+        <SafeAreaView>
+          <Image
+            source={require('../../assets/img/ic_white_c.png')}
+            style={styles.image}
+          />
+        
+        
+          <Text style={styles.title}>Looking over {startDate} logs</Text>
+          <FlatList
+            data={logsData}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <TableRow item={item} />}
+          />
+        </SafeAreaView>
 
-      <Image
-        source={require('../../assets/img/ic.png')}
-        style={styles.image}
-      />
-     
-      <Text style={styles.title}>Looking over {startDate} logs</Text>
-      <FlatList
-        data={logsData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <TableRow item={item} />}
-      />
-    </SafeAreaView>
+    </ImageBackground>
+    
   );
 };
 
@@ -57,6 +64,11 @@ const styles = StyleSheet.create({
     height: '30%',
     resizeMode: 'contain',
     alignSelf: 'center',
+  },
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    alignItems: 'center',
   },
   title :{
     fontSize: 22,
