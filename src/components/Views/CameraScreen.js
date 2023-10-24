@@ -7,7 +7,7 @@ import LoadingModal from './LoadingModal';
 const CameraScreen = ({route,navigation}) => {
   const check = route.params.check;
   const cameraRef = useRef(null);
-  const [cameraView,setCameraView] = useState(true)
+  const [cameraView,setCameraView] = useState(true);
   const [capturedImage, setCapturedImage] = useState('');
   const [countdown, setCountdown] = useState(3);
   const [countdownColor, setCountdownColor] = useState('white');
@@ -84,7 +84,7 @@ const CameraScreen = ({route,navigation}) => {
   return (
     <View style={styles.container}>
       {cameraView ? (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           
           <RNCamera
             ref={cameraRef}
@@ -103,21 +103,29 @@ const CameraScreen = ({route,navigation}) => {
               />
             </View>
 
-            <Image
-              style={styles.gif}
-              source={require('../../assets/gif/faceframe.gif')}
-            />
+            <View style={styles.gifC}>
+              <Image
+                style={styles.gif}
+                source={require('../../assets/gif/faceframe.gif')}
+              />
+            </View>
+            
 
-            <View style={styles.bottomC}>
+            <View style={styles.bottom}>
               <Image
               source={require('../../assets/img/bottomC.png')}            
               style={styles.bottomC}
               />
 
+              <Image
+                source={require('../../assets/img/camera.png')}
+                style={styles.cameraAID}
+              />
+
             </View>
             
           </RNCamera>
-        </View>
+        </SafeAreaView>
       ):(
         <View>
           
@@ -145,26 +153,51 @@ const styles = StyleSheet.create({
   },
   top :{
     top: 0,
-    height : '30%',
+    height : '25%',
+    width: '100%',
   },
   topC:{
+    position: 'absolute',
     top: 0,
-  },
-  bottomC:{
-    bottom: 0,
+    resizeMode: 'contain',
+    zIndex: -1,
   },
   logoAID:{
     position: 'absolute',
-    top: '-40%',
-    width : '20%',
+    maxWidth:'25%',
+    maxHeight: '25%',
+    marginTop: '5%',
     resizeMode: 'contain',
     alignSelf: 'center'
   },
+  gifC:{
+    alignSelf: 'center',
+    width: '70%',
+    height: '50%',
+  },
   gif:{
     alignSelf: 'center',
-    top: '-20%',
-    width:"70%",
-    height:"70%",
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain'
+  },
+  bottom :{
+    bottom: 0,
+    height : '25%',
+    width: '100%',
+  },
+  bottomC:{
+    position: 'absolute',
+    bottom : 0,
+    resizeMode: 'contain',
+    zIndex: -2,
+  },
+  cameraAID:{
+    position: 'absolute',
+    bottom: '25%',
+    maxHeight: '8%',
+    resizeMode: 'contain',
+    alignSelf: 'center'
   },
   button: {
     position: 'absolute',
