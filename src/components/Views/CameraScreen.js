@@ -1,30 +1,22 @@
 import React, {useState,useRef } from 'react';
-import { SafeAreaView, View, TouchableOpacity, StyleSheet,Image, Modal, Text, ImageBackground} from 'react-native';
+import { SafeAreaView, View, TouchableHighlight, StyleSheet,Image, Modal, Text, Dimensions, Platform, PixelRatio} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
 import LoadingModal from './LoadingModal';
+
+const {
+  width: SCREEN_WIDTH,
+  height: SCREEN_HEIGHT,
+} = Dimensions.get('window');
+
 
 const CameraScreen = ({route,navigation}) => {
   const check = route.params.check;
   const cameraRef = useRef(null);
   const [cameraView,setCameraView] = useState(true);
   const [capturedImage, setCapturedImage] = useState('');
-  const [countdown, setCountdown] = useState(3);
-  const [countdownColor, setCountdownColor] = useState('white');
   const [showLoading, setShowLoading] = useState(false);
   var payload = null;
-
-  const startCountdown = () => {
-    setCountdownColor('#FE9228');
-    const timer = setInterval(() => {
-      setCountdown((prevCount) => prevCount - 1);
-    }, 800);
-
-    setTimeout(() => {
-      clearInterval(timer);
-      takePicture();
-    }, 3000);
-  };
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -48,15 +40,16 @@ const CameraScreen = ({route,navigation}) => {
       navigation.navigate('Verified', {payload,check});
     }
     else{
-      console.log(res["message"])
+      console.log(res["message"]);
     }
   }
 
   const gotoAPIResponse = async (base64Data) => {
     //Respuesta de la API
     //console.log(base64Data);
+    
     try{
-        fetch('https://adamo-onboarding-qa.limboteams.com/onboarding-processes/get-user-details-by-face', {
+        fetch('https://id.adamoservices.co/onboarding-processes/get-user-details-by-face', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -117,13 +110,22 @@ const CameraScreen = ({route,navigation}) => {
               style={styles.bottomC}
               />
 
-              <Image
-                source={require('../../assets/img/camera.png')}
-                style={styles.cameraAID}
-              />
-
+              <TouchableHighlight
+                style={styles.touchableCamera}
+                onPress={() => takePicture()}
+              >
+                <View
+                style={styles.cameraBtn}
+                >
+                <Image
+                    source={require('../../assets/img/camera.png')}
+                    style={styles.cameraAID}
+                /> 
+                <Text style={{color: 'white', fontSize:20, fontWeight:600}}>Press here</Text>
+                </View>
+                
+              </TouchableHighlight>
             </View>
-            
           </RNCamera>
         </SafeAreaView>
       ):(
@@ -164,8 +166,8 @@ const styles = StyleSheet.create({
   },
   logoAID:{
     position: 'absolute',
-    maxWidth:'25%',
-    maxHeight: '25%',
+    maxWidth:'40%',
+    maxHeight: '40%',
     marginTop: '5%',
     resizeMode: 'contain',
     alignSelf: 'center'
@@ -192,12 +194,19 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     zIndex: -2,
   },
+  touchableCamera:{
+    position: 'relative',
+    maxHeight: '30%',
+    marginTop: '15%',
+  },
   cameraAID:{
-    position: 'absolute',
-    bottom: '25%',
-    maxHeight: '8%',
+    width: '100%',
+    height: '100%',
     resizeMode: 'contain',
-    alignSelf: 'center'
+    alignSelf: 'center',
+  },
+  cameraBtn:{
+    alignItems: 'center'
   },
   button: {
     position: 'absolute',
