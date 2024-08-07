@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { ImageBackground,View, Image, Text,Modal,TouchableOpacity} from 'react-native'
 
-import AdminLog from './AdminLog';
+import AdminLog from './AdminLog.js';
 import styles from '../../styles/globStyles.js';
 
 
