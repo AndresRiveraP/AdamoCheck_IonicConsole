@@ -4,14 +4,21 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-const Stack = createStackNavigator();
-
 import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
 import Verified from './Verified';
 import Unverified from './Unverified';
 
-const App = () => {
+export type RootStackParamList = {
+  InitialScreen: undefined;
+  CameraScreen: { check: string | null };
+  Verified: { payload: any; check: string | null };
+  Unverified: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+const App: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>

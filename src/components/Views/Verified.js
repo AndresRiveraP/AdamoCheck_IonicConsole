@@ -43,8 +43,9 @@ const CHECK_LOG = gql`
 const Verified = ({ route, navigation}) => {
 
   var payload = route.params.payload;
-  var picture = payload.firstFacialVerificationFrame;
-  var name = payload.fullname;
+  var picture = payload.profile;
+  var name = payload.name;
+  var lastName = payload.lastname;
   var id = payload.documentNumber;
   var check = route.params.check;
   
