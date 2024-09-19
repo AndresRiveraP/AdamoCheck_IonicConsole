@@ -24,22 +24,22 @@ const App: React.FC = () => {
       <Stack.Navigator>
         <Stack.Screen 
             name="InitialScreen" 
-            component={InitialScreen} 
+            component={InitialScreen as React.FC} 
             options={{ headerShown: false}}
         />
         <Stack.Screen
             name="CameraScreen"
-            component={CameraScreen}
+            component={CameraScreen as React.FC}
             options={{ headerShown: false } }
         />
          <Stack.Screen
             name="Verified"
-            component={Verified}
+            component={Verified as React.FC}
             options={{ headerShown: false } }
         />
          <Stack.Screen
             name="Unverified"
-            component={Unverified}
+            component={Unverified as React.FC}
             options={{ headerShown: false } }
         />
       </Stack.Navigator>
