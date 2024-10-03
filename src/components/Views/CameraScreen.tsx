@@ -59,7 +59,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
     if (res["message"] === 'Not Found') {
       navigation.navigate('Unverified');
     } else if (res["message"] === 'Usuario encontrado!') {
-      payload = res["payload"];
+      payload = res;
       navigation.navigate('Verified', { payload, check });
     } else {
       console.log(res["message"]);

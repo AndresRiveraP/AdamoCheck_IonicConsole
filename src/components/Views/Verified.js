@@ -8,6 +8,7 @@ function sp(size) {
   return PixelRatio.getFontScale() * size;
 }
 
+
 const ADD_LOG = gql`
   mutation Mutation($input: LogInput) {
     addLog(input: $input) {
@@ -41,14 +42,14 @@ const CHECK_LOG = gql`
 `; 
 
 const Verified = ({ route, navigation}) => {
-
-  var payload = route.params.payload;
+  const { payload, check } = route.params;
+  console.log(payload);
+  
   var picture = payload.profile;
   var name = payload.name;
   var lastName = payload.lastname;
-  var id = payload.documentNumber;
-  var check = route.params.check;
-  
+  var id = payload.id;
+
   var objectID = null;
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
@@ -136,7 +137,7 @@ const Verified = ({ route, navigation}) => {
 
         <View style={styles.welcomingText}>
           <Text style={styles.welcome}>{check==='in' ? 'Welcome!' : 'Farewell!'}</Text>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>{name}  {lastName}</Text>
         </View>
 
         <View style={styles.identi}>
