@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   },
   tInput: {
     flex: 0.9,
+    color: "#000"
   },
   fieldBoton: {
     flexDirection: 'row',

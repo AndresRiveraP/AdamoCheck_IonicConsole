@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
   },
   modalLabel: {
     marginLeft: 20,
+    color : "#000"
   },
 });
 
