@@ -7,8 +7,8 @@ import { ApolloProvider } from '@apollo/client';
 import {
   Image,
   View,
-  StyleSheet,
   Animated,
+  StyleSheet,
   SafeAreaView,
 } from 'react-native';
 
