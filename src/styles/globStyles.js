@@ -2,6 +2,16 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 
+const guidelineBaseWidth = 350;
+const guidelineBaseHeight = 680;
+
+const scaleWidthSize = size => {
+  return (width / guidelineBaseWidth) * size;
+};
+
+const scaleHeightSize = size => {
+  return (height / guidelineBaseHeight) * size;
+};
 
 export default StyleSheet.create({
   background: {
@@ -14,22 +24,22 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   logoA: {
-    width: width * 0.52, // 52% of base width
-    height: height * 0.52, // 52% of base height
+    width: scaleWidthSize(100),
+    height: scaleHeightSize(100),
     resizeMode: 'contain',
     alignSelf: 'center',
   },
   boton: {
-    width: '60%',
+    width: scaleWidthSize(180),
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
     borderRadius: 50,
-    padding: '5%',
+    padding: 20,
     marginTop: '5%',
   },
   boton2: {
-    width: '60%',
+    width: scaleWidthSize(180),
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -55,7 +65,7 @@ export default StyleSheet.create({
     color: '#FFF',
     fontSize: height * 0.02,
     paddingHorizontal: 40,
-    fontFamily: "Octarine-Light",
+    fontFamily: 'Octarine-Light',
   },
   label2: {
     color: '#000',

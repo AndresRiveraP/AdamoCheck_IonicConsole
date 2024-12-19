@@ -7,6 +7,7 @@ import {
   Modal,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 
 import AdminLog from './AdminLog';
@@ -17,6 +18,12 @@ interface InitialScreenProps {
     navigate: (screen: string, params?: {check: string | null}) => void;
   };
 }
+
+const {width} = Dimensions.get('window');
+const scaleFontSize = (size: number) => {
+  const guidelineBaseWidth = 350;
+  return (width / guidelineBaseWidth) * size;
+};
 
 const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState<boolean>(false);
@@ -46,7 +53,25 @@ const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
           source={require('../../assets/img/logoCheck.png')}
           style={styles.logoA}
         />
-        <Text style={{fontFamily: 'Guitar-Acoustic'}}>adamo<Text>check</Text></Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text
+            style={{
+              fontFamily: 'Guitar-Acoustic',
+              fontSize: scaleFontSize(50),
+              color: '#fff',
+            }}>
+            adamo
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Guitar-Acoustic',
+              fontSize: width * 0.15,
+              color: '#fff',
+              opacity: 0.1,
+            }}>
+            check
+          </Text>
+        </View>
 
         <TouchableOpacity
           style={[styles.boton]}
@@ -69,7 +94,7 @@ const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
           }}>
           <Image
             source={require('../../assets/img/profi.png')}
-            style={styles.profi} 
+            style={styles.profi}
           />
           <Text style={styles.label}>Check Out</Text>
         </TouchableOpacity>
