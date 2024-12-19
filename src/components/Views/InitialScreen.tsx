@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   View,
@@ -14,16 +14,16 @@ import styles from '../../styles/globStyles';
 
 interface InitialScreenProps {
   navigation: {
-    navigate: (screen: string, params?: { check: string | null }) => void;
+    navigate: (screen: string, params?: {check: string | null}) => void;
   };
 }
 
-const InitialScreen: React.FC<InitialScreenProps> = ({ navigation }) => {
+const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState<boolean>(false);
   let check: string | null = null;
 
   const handleCamera = () => {
-    navigation.navigate('CameraScreen', { check });
+    navigation.navigate('CameraScreen', {check});
   };
 
   const handleAdmin = () => {
@@ -32,19 +32,18 @@ const InitialScreen: React.FC<InitialScreenProps> = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require('../../assets/img/imgBG01.png')}
-      style={styles.background}
-    >
+      source={require('../../assets/img/backGround.png')}
+      style={styles.background}>
       <TouchableOpacity onPress={handleAdmin} style={styles.botonAdmin}>
         <Text style={styles.label2}>
           Admin {'\n'}
-          <Text style={{ fontWeight: 'bold' }}>Log In</Text>
+          <Text style={{fontWeight: 'bold'}}>Log In</Text>
         </Text>
       </TouchableOpacity>
 
       <View style={styles.container}>
         <Image
-          source={require('../../assets/img/ic_white_c.png')}
+          source={require('../../assets/img/logoCheck.png')}
           style={styles.logoA}
         />
 
@@ -53,17 +52,12 @@ const InitialScreen: React.FC<InitialScreenProps> = ({ navigation }) => {
           onPress={() => {
             check = 'in';
             handleCamera();
-          }}
-        >
+          }}>
           <Image
             source={require('../../assets/img/profi.png')}
             style={styles.profi}
           />
           <Text style={styles.label}>Check In</Text>
-          <Image
-            source={require('../../assets/img/profi.png')}
-            style={styles.profi}
-          />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -71,17 +65,12 @@ const InitialScreen: React.FC<InitialScreenProps> = ({ navigation }) => {
           onPress={() => {
             check = 'out';
             handleCamera();
-          }}
-        >
+          }}>
           <Image
             source={require('../../assets/img/profi.png')}
             style={styles.profi}
           />
           <Text style={styles.label}>Check Out</Text>
-          <Image
-            source={require('../../assets/img/profi.png')}
-            style={styles.profi}
-          />
         </TouchableOpacity>
       </View>
 
@@ -89,8 +78,7 @@ const InitialScreen: React.FC<InitialScreenProps> = ({ navigation }) => {
         <Modal
           animationType="slide"
           visible={modalAdminLog}
-          onRequestClose={() => setModalAdminLog(!modalAdminLog)}
-        >
+          onRequestClose={() => setModalAdminLog(!modalAdminLog)}>
           <AdminLog />
         </Modal>
       )}
