@@ -55,12 +55,12 @@ export default StyleSheet.create({
     color: '#FFF',
     fontSize: height * 0.02,
     paddingHorizontal: 40,
-    fontFamily: "Octarine-BoldOblique",
+    fontFamily: "Octarine-Light",
   },
   label2: {
     color: '#000',
     textAlign: 'center',
     fontSize: height * 0.02,
-    fontFamily: 'Octarine-BoldOblique',
+    fontFamily: 'Octarine-Light',
   },
 });

@@ -69,7 +69,7 @@ const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
           }}>
           <Image
             source={require('../../assets/img/profi.png')}
-            style={styles.profi}
+            style={styles.profi} 
           />
           <Text style={styles.label}>Check Out</Text>
         </TouchableOpacity>
