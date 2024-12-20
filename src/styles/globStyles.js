@@ -19,7 +19,9 @@ export default StyleSheet.create({
     resizeMode: 'cover',
     justifyContent: 'space-around',
   },
+
   container: {
+    top: '-5%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -30,7 +32,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
   },
   boton: {
-    width: scaleWidthSize(180),
+    width: scaleWidthSize(200),
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -39,7 +41,7 @@ export default StyleSheet.create({
     marginTop: '5%',
   },
   boton2: {
-    width: scaleWidthSize(180),
+    width: scaleWidthSize(200),
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -48,18 +50,24 @@ export default StyleSheet.create({
     marginTop: '8%',
   },
   botonAdmin: {
-    width: '30%',
-    marginTop: 40,
+    width: scaleWidthSize(120),
+    marginTop: '-10%',
     marginRight: '8%',
     alignSelf: 'flex-end',
-    backgroundColor: '#FFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     borderRadius: 35,
     paddingVertical: 10,
   },
   profi: {
-    width: 30,
-    height: 30,
+    width: scaleWidthSize(20),
+    height: scaleHeightSize(20),
     resizeMode: 'contain',
+  },
+  profi2: {
+    width: scaleWidthSize(20),
+    height: scaleHeightSize(20),
+    marginLeft: '10%',
+    marginRight: '5%',
   },
   label: {
     color: '#FFF',
@@ -68,9 +76,10 @@ export default StyleSheet.create({
     fontFamily: 'Octarine-Light',
   },
   label2: {
-    color: '#000',
+    color: '#fff',
     textAlign: 'center',
     fontSize: height * 0.02,
     fontFamily: 'Octarine-Light',
+    fontWeight: 'bold',
   },
 });

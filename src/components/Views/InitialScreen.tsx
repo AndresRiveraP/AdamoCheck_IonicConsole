@@ -20,6 +20,7 @@ interface InitialScreenProps {
 }
 
 const {width} = Dimensions.get('window');
+
 const scaleFontSize = (size: number) => {
   const guidelineBaseWidth = 350;
   return (width / guidelineBaseWidth) * size;
@@ -42,10 +43,16 @@ const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
       source={require('../../assets/img/backGround.png')}
       style={styles.background}>
       <TouchableOpacity onPress={handleAdmin} style={styles.botonAdmin}>
-        <Text style={styles.label2}>
-          Admin {'\n'}
-          <Text style={{fontWeight: 'bold'}}>Log In</Text>
-        </Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            source={require('../../assets/img/profi.png')}
+            style={[styles.profi2]}
+          />
+          <Text style={styles.label2}>
+            Admin
+            <Text style={{fontWeight: 'normal', color: '#fff'}}> Log In</Text>
+          </Text>
+        </View>
       </TouchableOpacity>
 
       <View style={styles.container}>
@@ -65,9 +72,9 @@ const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
           <Text
             style={{
               fontFamily: 'Guitar-Acoustic',
-              fontSize: width * 0.15,
+              fontSize: scaleFontSize(50),
               color: '#fff',
-              opacity: 0.1,
+              opacity: 0.4,
             }}>
             check
           </Text>
