@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import RNFS from 'react-native-fs';
 import {
   SafeAreaView,
@@ -12,10 +12,10 @@ import {
   Platform,
   PixelRatio,
 } from 'react-native';
-import { RNCamera, TakePictureResponse } from 'react-native-camera';
+import {RNCamera, TakePictureResponse} from 'react-native-camera';
 import LoadingModal from './LoadingModal';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 interface CameraScreenProps {
   route: {
@@ -24,11 +24,14 @@ interface CameraScreenProps {
     };
   };
   navigation: {
-    navigate: (screen: string, params?: { payload?: any; check?: string }) => void;
+    navigate: (
+      screen: string,
+      params?: {payload?: any; check?: string},
+    ) => void;
   };
 }
 
-const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
+const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
   const [cameraView, setCameraView] = useState<boolean>(true);
@@ -38,9 +41,10 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
 
   const takePicture = async () => {
     if (cameraRef.current) {
-      const options = { quality: 0.5, base64: true };
+      const options = {quality: 0.5, base64: true};
       try {
-        const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
+        const data: TakePictureResponse =
+          await cameraRef.current.takePictureAsync(options);
         setCapturedImage(data.uri);
         const base64String = data.base64 ?? '';
 
@@ -56,13 +60,13 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   };
 
   const verifyResponse = (res: any) => {
-    if (res["message"] === 'Not Found') {
+    if (res['message'] === undefined) {
       navigation.navigate('Unverified');
-    } else if (res["message"] === 'Usuario encontrado!') {
+    } else if (res['message'] === 'Usuario encontrado!') {
       payload = res;
-      navigation.navigate('Verified', { payload, check });
+      navigation.navigate('Verified', {payload, check});
     } else {
-      console.log(res["message"]);
+      console.log(`Esto es el console.log${res['message']}`);
     }
   };
 
@@ -70,19 +74,22 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
     console.log(base64Data);
 
     try {
-      const response = await fetch('https://n07j2t4w3c.execute-api.us-east-2.amazonaws.com/Prod/compare-face', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://n07j2t4w3c.execute-api.us-east-2.amazonaws.com/Prod/compare-face',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: base64Data,
+          }),
         },
-        body: JSON.stringify({
-          "image": base64Data,
-        }),
-      });
+      );
       const data = await response.text();
       setShowLoading(false);
-      console.log(data);
+      //console.log(data);
       const res = JSON.parse(data);
       verifyResponse(res);
     } catch (error) {
@@ -98,17 +105,17 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
             ref={cameraRef}
             style={styles.camera}
             type={RNCamera.Constants.Type.front}
-            captureAudio={false}
-          >
+            captureAudio={false}>
             <View style={styles.top}>
               <Image
                 source={require('../../assets/img/topC.png')}
                 style={styles.topC}
               />
               <Image
-                source={require('../../assets/img/ic_white_c.png')}
+                source={require('../../assets/img/logoCheck.png')}
                 style={styles.logoAID}
               />
+              <Text style={{color: '#fff'}}>Check In</Text>
             </View>
 
             <View style={styles.gifC}>
@@ -126,14 +133,16 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
 
               <TouchableHighlight
                 style={styles.touchableCamera}
-                onPress={takePicture}
-              >
+                onPress={takePicture}>
                 <View style={styles.cameraBtn}>
                   <Image
                     source={require('../../assets/img/camera.png')}
                     style={styles.cameraAID}
                   />
-                  <Text style={{ color: 'white', fontSize: 20, fontWeight: '600' }}>Press here</Text>
+                  <Text
+                    style={{color: 'white', fontSize: 20, fontWeight: '600'}}>
+                    Press here
+                  </Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -172,8 +181,8 @@ const styles = StyleSheet.create({
   },
   logoAID: {
     position: 'absolute',
-    maxWidth: '40%',
-    maxHeight: '40%',
+    maxWidth: '20%',
+    maxHeight: '20%',
     marginTop: '5%',
     resizeMode: 'contain',
     alignSelf: 'center',

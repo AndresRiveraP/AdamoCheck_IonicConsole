@@ -10,8 +10,13 @@ import {
   Dimensions,
 } from 'react-native';
 
+import {
+  scaleWidthSize,
+  scaleHeightSize,
+  scaleFontSize,
+} from '@/utils/scaleUtils';
 import AdminLog from './AdminLog';
-import styles from '../../styles/globStyles';
+import styles from '@/styles/globStyles';
 
 interface InitialScreenProps {
   navigation: {
@@ -21,10 +26,7 @@ interface InitialScreenProps {
 
 const {width} = Dimensions.get('window');
 
-const scaleFontSize = (size: number) => {
-  const guidelineBaseWidth = 350;
-  return (width / guidelineBaseWidth) * size;
-};
+// Remove the duplicate scaleFontSize function
 
 const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
   const [modalAdminLog, setModalAdminLog] = useState<boolean>(false);

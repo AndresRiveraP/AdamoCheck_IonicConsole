@@ -1,17 +1,10 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
-const {width, height} = Dimensions.get('window');
-
-const guidelineBaseWidth = 350;
-const guidelineBaseHeight = 680;
-
-const scaleWidthSize = size => {
-  return (width / guidelineBaseWidth) * size;
-};
-
-const scaleHeightSize = size => {
-  return (height / guidelineBaseHeight) * size;
-};
+import {
+  scaleWidthSize,
+  scaleHeightSize,
+  scaleFontSize,
+} from '../utils/scaleUtils';
 
 export default StyleSheet.create({
   background: {
@@ -71,14 +64,14 @@ export default StyleSheet.create({
   },
   label: {
     color: '#FFF',
-    fontSize: height * 0.02,
+    fontSize: scaleFontSize(12),
     paddingHorizontal: 40,
     fontFamily: 'Octarine-Light',
   },
   label2: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: height * 0.02,
+    fontSize: scaleFontSize(10),
     fontFamily: 'Octarine-Light',
     fontWeight: 'bold',
   },
