@@ -15,34 +15,7 @@ import { Calendar } from 'react-native-calendars';
 import { gql, useQuery } from '@apollo/client';
 import MTable from './MTable';
 
-const FETCH_LOGS = gql`
-  query Query($date: String!) {
-    logsByDate(date: $date) {
-      identification
-      name
-      day
-      checkin
-      checkout
-      id
-    }
-  }
-`;
 
-interface CustomDateObject {
-  dateString: string;
-  day: number;
-  month: number;
-  year: number;
-}
-
-interface Log {
-  identification: string;
-  name: string;
-  day: string;
-  checkin: string;
-  checkout: string;
-  id: string;
-}
 
 const AdminScreen: React.FC = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<string | null>(null);
@@ -51,13 +24,6 @@ const AdminScreen: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [modalTable, setModalTable] = useState<boolean>(false);
   const [logsU, setLogsU] = useState<Log[] | null>(null);
-
-  const { data } = useQuery(FETCH_LOGS, {
-    variables: {
-      date: selectedStartDate,
-    },
-    skip: !selectedStartDate,
-  });
 
   useEffect(() => {
     if (selectedStartDate) {

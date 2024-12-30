@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
-  Alert,
   TextInput,
   Image,
   StyleSheet,
@@ -15,36 +14,17 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { gql, useMutation } from '@apollo/client';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 
-import AdminScreen from './AdminScreen';
 import LoadingModal from './LoadingModal';
 
-type RootStackParamList = {
-  AdminScreen: undefined;
-  InitialScreen: undefined; 
-};
 
-const AUTENTICAR_USUARIO = gql`
-  mutation Mutation($input: AutenthicateUserInput) {
-    authUser(input: $input) {
-      token
-    }
-  }
-`;
-
-const AdminLog: React.FC = () => {
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [validLog, setValidLog] = useState<boolean>(false);
+const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>(null);
 
-  // Correctly type your navigation using `NavigationProp`
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  const [authUser] = useMutation(AUTENTICAR_USUARIO);
 
   const validateForm = (): boolean => {
     if (id === '' || password === '') {
@@ -53,49 +33,38 @@ const AdminLog: React.FC = () => {
     return true;
   };
 
-  const handleLogIn = async (id: string, password: string) => {
+  const handleLogin = async () => {
     if (!validateForm()) {
-      Alert.alert('Atención', 'Debe completar todos los campos');
+      setError('Please fill all fields');
       return;
     }
-
-    setIsLoading(true);
     try {
-      const { data } = await authUser({
-        variables: {
-          input: {
-            identification: id,
-            password,
-          },
+      setIsLoading(true);
+      const response = await fetch('https://adamocheckback.up.railway.app/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ id, password }),
       });
+    
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Login failed: ${response.status} ${JSON.stringify(errorData)}`);
+      }
 
-      const { token } = data?.authUser || { token: '' };
-
-      await AsyncStorage.setItem('token', token);
-      setValidLog(true);
+      const data = await response.json();
+      await AsyncStorage.setItem('user', JSON.stringify(data.user));
+      console.log('Login successful:', data);
+      
       setIsLoading(false);
-    } catch (error: any) {
+      navigation.navigate('AdminScreen');
+    } catch (error) {
+      console.error('Error:', error);
       setIsLoading(false);
-      setMessage(error.message);
+      setError('Invalid credentials');
     }
   };
-
-  const mostrarAlerta = () => {
-    if (message) {
-      ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.CENTER);
-      setTimeout(() => {
-        setMessage(null);
-      }, 2500);
-    }
-  };
-
-  // Trigger mostrarAlerta whenever message state changes
-  useEffect(() => {
-    if (message) {
-      mostrarAlerta();
-    }
-  }, [message]);
 
   const keyboardGone = () => {
     Keyboard.dismiss();
@@ -128,7 +97,7 @@ const AdminLog: React.FC = () => {
               />
             </View>
             <View style={styles.fieldBoton}>
-              <TouchableOpacity style={styles.boton} onPress={() => handleLogIn(id, password)}>
+              <TouchableOpacity style={styles.boton} onPress={handleLogin}>
                 <Image source={require('../../assets/img/enter.png')} style={styles.ico} />
                 <Text style={styles.label}>Log In</Text>
               </TouchableOpacity>
@@ -139,17 +108,6 @@ const AdminLog: React.FC = () => {
         {isLoading && (
           <Modal animationType="fade" style={styles.modalLoading}>
             <LoadingModal />
-          </Modal>
-        )}
-
-        {validLog && (
-          <Modal
-            animationType="fade"
-            onRequestClose={() => {
-              navigation.navigate('InitialScreen');
-            }}
-          >
-            <AdminScreen />
           </Modal>
         )}
       </SafeAreaView>
