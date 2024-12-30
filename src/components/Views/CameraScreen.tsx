@@ -115,7 +115,9 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
                 source={require('../../assets/img/logoCheck.png')}
                 style={styles.logoAID}
               />
-              <Text style={{color: '#fff'}}>Check In</Text>
+              <Text style={styles.checkText}>
+                {check === 'in' ? 'Check In' : 'Check Out'}
+              </Text>
             </View>
 
             <View style={styles.gifC}>
@@ -169,7 +171,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   top: {
-    top: 0,
+    display: 'flex',
+    flexDirection: 'column',
     height: '25%',
     width: '100%',
   },
@@ -180,12 +183,18 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   logoAID: {
-    position: 'absolute',
-    maxWidth: '20%',
-    maxHeight: '20%',
-    marginTop: '5%',
+    position: 'relative',
+    width: '50%',
+    height: '50%',
     resizeMode: 'contain',
+    marginTop: '10%',
     alignSelf: 'center',
+  },
+  checkText:{
+    color: '#fff', 
+    fontFamily: 'Guitar-Acoustic', 
+    textAlign:'center',
+    fontSize: 50,
   },
   gifC: {
     alignSelf: 'center',

@@ -54,7 +54,7 @@ const App = () => {
   useEffect(() => {
     const fadeOut = Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 3000,
+      duration: 1000,
       useNativeDriver: true,
     });
 
