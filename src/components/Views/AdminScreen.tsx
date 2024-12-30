@@ -12,18 +12,20 @@ import {
   ToastAndroid,
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { gql, useQuery } from '@apollo/client';
 import MTable from './MTable';
+import { scaleFontSize } from '@/utils/scaleUtils';
 
-
+interface CustomDateObject {
+  dateString: string;
+}
 
 const AdminScreen: React.FC = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<string | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<string | null>(null);
   const [calendarModal, setCalendarModal] = useState<boolean>(false);
+  const [logsU, setLogsU] = useState<any[] | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [modalTable, setModalTable] = useState<boolean>(false);
-  const [logsU, setLogsU] = useState<Log[] | null>(null);
 
   useEffect(() => {
     if (selectedStartDate) {
@@ -84,7 +86,6 @@ const AdminScreen: React.FC = () => {
     }
   };
 
-  // useEffect to handle mostrarAlerta side effect
   useEffect(() => {
     if (message) {
       mostrarAlerta();
@@ -94,7 +95,31 @@ const AdminScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={require('../../assets/img/imgBG02.png')} style={styles.background}>
-        <Image source={require('../../assets/img/ic_white_c.png')} style={styles.logoA} />
+        <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '10%'}}>
+          <Image
+            source={require('../../assets/img/logoCheck.png')}
+            style={{width: '30%', height: '30%', resizeMode: 'contain'}}
+          />
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: 'Guitar-Acoustic',
+                fontSize: scaleFontSize(40),
+                color: '#fff',
+              }}>
+              adamo
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Guitar-Acoustic',
+                fontSize: scaleFontSize(40),
+                color: '#fff',
+                opacity: 0.4,
+              }}>
+              check
+            </Text>
+          </View>
+        </View>
 
         <View style={styles.adminMethods}>
           <TouchableOpacity style={styles.boton} onPress={openCalendar}>
@@ -163,24 +188,15 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
-  },
-  logoA: {
-    marginTop: '15%',
-    maxWidth: '30%',
-    maxHeight: '30%',
-    resizeMode: 'contain',
-    alignSelf: 'center',
   },
   adminMethods: {
-    marginTop: '10%',
     backgroundColor: '#FFF',
     width: '90%',
     height: '40%',
-    borderRadius: 20,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   boton: {
     width: '80%',

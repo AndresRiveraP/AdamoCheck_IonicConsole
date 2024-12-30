@@ -1,50 +1,24 @@
 import React, {useState} from 'react';
-import {
-  ImageBackground,
-  View,
-  Image,
-  Text,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { ImageBackground, View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {
-  scaleWidthSize,
-  scaleHeightSize,
-  scaleFontSize,
-} from '@/utils/scaleUtils';
-import AdminLog from './AdminLog';
+import { scaleFontSize} from '@/utils/scaleUtils';
 import styles from '@/styles/globStyles';
 
-interface InitialScreenProps {
-  navigation: {
-    navigate: (screen: string, params?: {check: string | null}) => void;
-  };
-}
+import { NavigationProp } from '@react-navigation/native';
 
-const {width} = Dimensions.get('window');
 
-// Remove the duplicate scaleFontSize function
-
-const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
-  const [modalAdminLog, setModalAdminLog] = useState<boolean>(false);
+const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   let check: string | null = null;
 
   const handleCamera = () => {
-    navigation.navigate('CameraScreen', {check});
-  };
-
-  const handleAdmin = () => {
-    setModalAdminLog(true);
+    navigation.navigate('CameraScreen', { check });
   };
 
   return (
     <ImageBackground
       source={require('../../assets/img/backGround.png')}
       style={styles.background}>
-      <TouchableOpacity onPress={handleAdmin} style={styles.botonAdmin}>
+      <TouchableOpacity onPress={() => navigation.navigate('AdminLog')} style={styles.botonAdmin}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image
             source={require('../../assets/img/profi.png')}
@@ -108,15 +82,6 @@ const InitialScreen: React.FC<InitialScreenProps> = ({navigation}) => {
           <Text style={styles.label}>Check Out</Text>
         </TouchableOpacity>
       </View>
-
-      {modalAdminLog && (
-        <Modal
-          animationType="slide"
-          visible={modalAdminLog}
-          onRequestClose={() => setModalAdminLog(!modalAdminLog)}>
-          <AdminLog />
-        </Modal>
-      )}
     </ImageBackground>
   );
 };

@@ -39,7 +39,7 @@ const MTable = ({ logsU, startDate }) => {
     >
         <SafeAreaView>
           <Image
-            source={require('../../assets/img/ic_white_c.png')}
+            source={require('../../assets/img/logoCheck.png')}
             style={styles.image}
           />
         

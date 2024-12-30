@@ -9,18 +9,11 @@ import CameraScreen from './CameraScreen';
 import Verified from './Verified';
 import Unverified from './Unverified';
 import AdminLog from './AdminLog';
+import AdminScreen from './AdminScreen';
 
-export type RootStackParamList = {
-  InitialScreen: undefined;
-  CameraScreen: { check: string | null };
-  Verified: { payload: any; check: string | null };
-  Unverified: undefined;
-  AdminLog: undefined;
-};
+const Stack = createStackNavigator();
 
-const Stack = createStackNavigator<RootStackParamList>();
-
-const App: React.FC = () => {
+const Navigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -49,9 +42,14 @@ const App: React.FC = () => {
           component={AdminLog as React.FC} 
           options={{ headerShown: false }}
         /> 
+        <Stack.Screen 
+          name="AdminScreen" 
+          component={AdminScreen as React.FC} 
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default App;
+export default Navigator;

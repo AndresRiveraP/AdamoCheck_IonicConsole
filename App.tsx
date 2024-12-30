@@ -1,20 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-//Apollo
-import client from './config/apollo';
-import {ApolloProvider} from '@apollo/client';
-
-import {
-  Image,
-  View,
-  Animated,
-  StyleSheet,
-  SafeAreaView,
-  Dimensions,
-  Text,
-  ImageBackground,
-} from 'react-native';
-
+import {Image,View, Animated, StyleSheet, SafeAreaView, Dimensions, Text} from 'react-native';
 import Navigator from './src/components/Views/Navigator';
 
 const {width, height} = Dimensions.get('window');
@@ -84,17 +70,15 @@ const App = () => {
   }, []);
 
   return (
-    <ApolloProvider client={client}>
-      <SafeAreaView style={styles.container}>
-        {showSplash ? (
-          <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
-            <SplashScreen />
-          </Animated.View>
-        ) : (
-          <Navigator />
-        )}
-      </SafeAreaView>
-    </ApolloProvider>
+    <SafeAreaView style={styles.container}>
+      {showSplash ? (
+        <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
+          <SplashScreen />
+        </Animated.View>
+      ) : (
+        <Navigator />
+      )}
+    </SafeAreaView>
   );
 };
 

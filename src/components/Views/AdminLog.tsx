@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import {
-  SafeAreaView,
-  TextInput,
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Modal,
-  ToastAndroid,
-} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, TextInput, Image, StyleSheet, View, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity, Modal} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 
 import LoadingModal from './LoadingModal';
 
+import {
+  scaleFontSize,
+} from '../../utils/scaleUtils';
 
 const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [id, setId] = useState('');
@@ -47,12 +37,12 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
         },
         body: JSON.stringify({ id, password }),
       });
-    
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Login failed: ${response.status} ${JSON.stringify(errorData)}`);
       }
-
+  
       const data = await response.json();
       await AsyncStorage.setItem('user', JSON.stringify(data.user));
       console.log('Login successful:', data);
@@ -74,14 +64,38 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
     <TouchableWithoutFeedback onPress={keyboardGone}>
       <SafeAreaView style={styles.admon}>
         <KeyboardAvoidingView style={styles.keyboardAvoidingContainer} behavior="position">
-          <Image source={require('../../assets/img/ic.png')} style={styles.image} />
+          <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '20%'}}>
+            <Image
+              source={require('../../assets/img/logoCheck.png')}
+              style={{width: '40%', height: '40%', resizeMode: 'contain'}}
+            />
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontFamily: 'Guitar-Acoustic',
+                  fontSize: scaleFontSize(40),
+                  color: '#fff',
+                }}>
+                adamo
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Guitar-Acoustic',
+                  fontSize: scaleFontSize(40),
+                  color: '#fff',
+                  opacity: 0.4,
+                }}>
+                check
+              </Text>
+            </View>
+          </View>
 
           <View style={styles.fieldsC}>
             <View style={styles.field}>
               <Image source={require('../../assets/img/id.png')} style={styles.ico} />
               <TextInput
                 placeholder="ID"
-                placeholderTextColor="#EAEAEA"
+                placeholderTextColor="#000"
                 style={styles.tInput}
                 onChangeText={(text) => setId(text)}
               />
@@ -90,7 +104,7 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
               <Image source={require('../../assets/img/pass.png')} style={styles.ico} />
               <TextInput
                 placeholder="Password"
-                placeholderTextColor="#EAEAEA"
+                placeholderTextColor="#000"
                 secureTextEntry
                 style={styles.tInput}
                 onChangeText={(text) => setPassword(text)}
@@ -118,6 +132,8 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
 const styles = StyleSheet.create({
   admon: {
     flex: 1,
+    backgroundColor: '#7bb0bf',
+    fontFamily: 'Octarine-Bold',
   },
   keyboardAvoidingContainer: {
     flex: 1,
@@ -125,6 +141,7 @@ const styles = StyleSheet.create({
   },
   fieldsC: {
     width: '70%',
+    marginTop: '10%',
     justifyContent: 'center',
     alignContent: 'center',
   },
@@ -142,7 +159,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 15,
     borderRadius: 10,
-    borderColor: '#b4b4ac',
+    borderColor: '#000',
     justifyContent: 'flex-start',
   },
   tInput: {
@@ -154,7 +171,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: '#b4b4ac',
+    borderColor: '#000',
     backgroundColor: '#b9e4f4',
   },
   boton: {
@@ -168,6 +185,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   label: {
+    color: '#000',
     alignSelf: 'center',
   },
   modalLoading: {
