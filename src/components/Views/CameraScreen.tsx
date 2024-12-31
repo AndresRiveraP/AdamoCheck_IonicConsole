@@ -3,14 +3,12 @@ import RNFS from 'react-native-fs';
 import {
   SafeAreaView,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   StyleSheet,
   Image,
   Modal,
   Text,
   Dimensions,
-  Platform,
-  PixelRatio,
 } from 'react-native';
 import {RNCamera, TakePictureResponse} from 'react-native-camera';
 import LoadingModal from './LoadingModal';
@@ -37,6 +35,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [capturedImage, setCapturedImage] = useState<string>('');
   const [showLoading, setShowLoading] = useState<boolean>(false);
+
   let payload: any = null;
 
   const takePicture = async () => {
@@ -71,8 +70,6 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
   };
 
   const gotoAPIResponse = async (base64Data: string) => {
-    console.log(base64Data);
-
     try {
       const response = await fetch(
         'https://n07j2t4w3c.execute-api.us-east-2.amazonaws.com/Prod/compare-face',
@@ -89,7 +86,6 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
       );
       const data = await response.text();
       setShowLoading(false);
-      //console.log(data);
       const res = JSON.parse(data);
       verifyResponse(res);
     } catch (error) {
@@ -133,7 +129,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
                 style={styles.bottomC}
               />
 
-              <TouchableHighlight
+              <TouchableOpacity
                 style={styles.touchableCamera}
                 onPress={takePicture}>
                 <View style={styles.cameraBtn}>
@@ -146,7 +142,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
                     Press here
                   </Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </RNCamera>
         </SafeAreaView>

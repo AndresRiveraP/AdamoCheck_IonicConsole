@@ -38,7 +38,7 @@ const Unverified = ({navigation}) => {
                 style={[styles.botonR]}
                 onPress={() => {navigation.navigate('InitialScreen')}}
             >
-                <Text style={styles.labelU}>Return Home</Text>
+                <Text style={styles.labelU}>Return</Text>
             </TouchableOpacity>
         </ImageBackground>
         

@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 
 import {Image,View, Animated, StyleSheet, SafeAreaView, Dimensions, Text} from 'react-native';
 import Navigator from './src/components/Views/Navigator';
+import Toast from 'react-native-toast-message';
+import toastConfig from './src/config/toastConfig'; 
 
 const {width, height} = Dimensions.get('window');
 const guidelineBaseWidth = 350;
@@ -78,6 +80,7 @@ const App = () => {
       ) : (
         <Navigator />
       )}
+      <Toast config={toastConfig} />
     </SafeAreaView>
   );
 };
