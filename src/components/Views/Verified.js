@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 
@@ -10,7 +10,6 @@ function sp(size) {
 
 const Verified = ({ route, navigation }) => {
   const { payload, check } = route.params;
-  console.log(payload);
 
   var name = payload.name;
   var lastName = payload.lastname;
@@ -22,6 +21,7 @@ const Verified = ({ route, navigation }) => {
   var formattedTime = moment(currentDate).format('h:mm A');
 
   const [shouldRender, setShouldRender] = useState(false);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     const createLog = async () => {
@@ -44,6 +44,7 @@ const Verified = ({ route, navigation }) => {
         });
 
         const result = await response.json();
+        setResult(result);
 
         if (response.ok) {
           console.log('Log created successfully:', result);
@@ -98,13 +99,30 @@ const Verified = ({ route, navigation }) => {
             />
             <Text style={styles.idS}>{id}</Text>
           </View>
+          <View style={styles.identi}>
+            <Image
+              source={require('@/assets/img/user-role.png')}
+              style={styles.ico}
+            />
+            <Text style={styles.idS}>{result?.role}</Text>
+          </View>
+          <View style={styles.identi}>
+            <Image
+              source={require('@/assets/img/working-time.png')}
+              style={styles.ico}
+            />
+            {check === 'in' ?
+              <Text style={styles.idS}> Check In: {result?.log.checkin ?? "N/A"} </Text> : 
+              <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
+            }
+          </View>
         </View>
-        <View style={styles.footer}>
+        <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
           <Image
             source={require('@/assets/img/check.png')}
             style={styles.check}
           />
-        </View>
+        </TouchableOpacity>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -134,7 +152,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignSelf: 'center',
-    padding: '3%',
+    paddingHorizontal: '10%',
   },
   content: {
     marginLeft: '10%',
@@ -160,6 +178,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   idS: {
+    fontFamily: 'Octarine-Bold',
     color: '#FFF',
     fontSize: scaleFontSize(15),
     marginLeft: 10,
@@ -169,7 +188,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   check: {
-    width: '8%',
+    width: '15%',
     resizeMode: 'contain',
     alignSelf: 'flex-end',
     right: '15%',

@@ -45,7 +45,6 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
   
       const data = await response.json();
       await AsyncStorage.setItem('user', JSON.stringify(data.user));
-      console.log('Login successful:', data);
       
       setIsLoading(false);
       navigation.navigate('AdminScreen');

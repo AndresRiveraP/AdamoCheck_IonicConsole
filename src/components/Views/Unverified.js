@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio} from 'react-native'
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function sp(size) {
@@ -22,17 +22,18 @@ const Unverified = ({navigation}) => {
 
             <View style={styles.warning}>
                 <Text style={styles.Atention}>¡Atención!</Text>
-                <Text style={styles.AtentionP}>No te hemos encontrado registrado en AdamoID</Text>
+                <Text style={styles.AtentionP}>No te hemos encontrado registrado en la base de AdamoID</Text>
             </View>
 
-            <View style={styles.redirectioning} >
-                <Text style={styles.nonBolded}>Puedes iniciar tu proceso de registro <Text style={styles.bolded}>en el siguiente enlace:{'\n'}</Text></Text>
-                <Image 
-                    source={require('../../assets/img/QR.png')}
-                    resizeMode="contain"
-                    style={styles.qr}
+           {/*} <View style={styles.redirectioning} >
+                <Text style={styles.nonBolded}>Realiza tu check de forma manual</Text>
+                <TextInput
+                    placeholder="Tu Cédula"
+                    placeholderTextColor="#000"
+                    style={styles.tInput}
+                    onChangeText={(text) => setId(text)}
                 />
-            </View>
+            </View>*/}
 
             <TouchableOpacity
                 style={[styles.botonR]}
@@ -49,6 +50,7 @@ const Unverified = ({navigation}) => {
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        fontFamily: 'Octarine-Bold',
     },
     background:{
         flex:1,
@@ -94,9 +96,9 @@ const styles = StyleSheet.create({
     bolded:{
         fontWeight:'bold',
     },
-    qr:{
-        width: '70%',
-        height: '70%',
+    tInput: {
+        flex: 0.9,
+        color: "#000",
     },
     botonR:{
         position: 'relative',
@@ -106,7 +108,8 @@ const styles = StyleSheet.create({
         bottom: 20,
         paddingVertical: 10,
         paddingHorizontal: 25,
-        marginBottom: 20,
+        marginTop: '20%',
+        width: '50%',
     },
     labelU:{
         color : '#000',

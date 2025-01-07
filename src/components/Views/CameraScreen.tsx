@@ -1,5 +1,4 @@
-import React, {useState, useRef} from 'react';
-import RNFS from 'react-native-fs';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,10 +9,10 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import {RNCamera, TakePictureResponse} from 'react-native-camera';
+import { RNCamera, TakePictureResponse } from 'react-native-camera';
 import LoadingModal from './LoadingModal';
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface CameraScreenProps {
   route: {
@@ -24,12 +23,12 @@ interface CameraScreenProps {
   navigation: {
     navigate: (
       screen: string,
-      params?: {payload?: any; check?: string},
+      params?: { payload?: any; check?: string },
     ) => void;
   };
 }
 
-const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
+const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
   const [cameraView, setCameraView] = useState<boolean>(true);
@@ -38,12 +37,19 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
 
   let payload: any = null;
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      takePicture();
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const takePicture = async () => {
     if (cameraRef.current) {
-      const options = {quality: 0.5, base64: true};
+      const options = { quality: 0.5, base64: true };
       try {
-        const data: TakePictureResponse =
-          await cameraRef.current.takePictureAsync(options);
+        const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
         setCapturedImage(data.uri);
         const base64String = data.base64 ?? '';
 
@@ -63,9 +69,9 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
       navigation.navigate('Unverified');
     } else if (res['message'] === 'Usuario encontrado!') {
       payload = res;
-      navigation.navigate('Verified', {payload, check});
+      navigation.navigate('Verified', { payload, check });
     } else {
-      console.log(`Esto es el console.log${res['message']}`);
+      console.log(`${res['message']}`);
     }
   };
 
@@ -134,13 +140,9 @@ const CameraScreen: React.FC<CameraScreenProps> = ({route, navigation}) => {
                 onPress={takePicture}>
                 <View style={styles.cameraBtn}>
                   <Image
-                    source={require('../../assets/img/camera.png')}
+                    source={require('../../assets/gif/elipsis.gif')}
                     style={styles.cameraAID}
                   />
-                  <Text
-                    style={{color: 'white', fontSize: 20, fontWeight: '600'}}>
-                    Press here
-                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -186,10 +188,10 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     alignSelf: 'center',
   },
-  checkText:{
-    color: '#fff', 
-    fontFamily: 'Guitar-Acoustic', 
-    textAlign:'center',
+  checkText: {
+    color: '#fff',
+    fontFamily: 'Guitar-Acoustic',
+    textAlign: 'center',
     fontSize: 50,
   },
   gifC: {
@@ -220,8 +222,8 @@ const styles = StyleSheet.create({
     marginTop: '15%',
   },
   cameraAID: {
-    width: '100%',
-    height: '100%',
+    width: '125%',
+    height: '125%',
     resizeMode: 'contain',
     alignSelf: 'center',
   },
