@@ -10,12 +10,12 @@ function sp(size) {
 
 const Verified = ({ route, navigation }) => {
   const { payload, check } = route.params;
-
+  
+  console.log({payload, check});
   var name = payload.name;
   var lastName = payload.lastname;
   var id = payload.id;
 
-  var objectID = null;
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
   var formattedTime = moment(currentDate).format('h:mm A');
