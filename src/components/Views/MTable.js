@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {SafeAreaView,ScrollView, View, Text, Image, StyleSheet, FlatList, ImageBackground} from 'react-native';
 
 
-const MTable = ({ logsU, startDate }) => {
+const MTable = ({ logsU, startDate, endDate}) => {
   const [logsData, setLogsData] = useState(null);
 
   useEffect(() => {
     setLogsData(logsU);
   }, [logsU]);
 
-  //console.log(logsData);
-
-  // Render each row of the table
   const TableRow = ({ item }) => (
     <View style={styles.tableRow}>
       <View style={styles.rowItem}>

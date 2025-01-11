@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, TextInput, Image, StyleSheet, View, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, TouchableOpacity, Modal} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 import LoadingModal from './LoadingModal';
 
@@ -26,6 +27,13 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const handleLogin = async () => {
     if (!validateForm()) {
       setError('Please fill all fields');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please fill all fields',
+        position: 'top',
+        visibilityTime: 3000,
+      });
       return;
     }
     try {
@@ -48,13 +56,25 @@ const AdminLog = ({ navigation }: { navigation: NavigationProp<any> }) => {
       
       setIsLoading(false);
       navigation.navigate('AdminScreen');
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Login successful',
+        position: 'top',
+        visibilityTime: 1000,
+      });
     } catch (error) {
-      console.error('Error:', error);
       setIsLoading(false);
-      setError('Invalid credentials');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error instanceof Error ? error.message : 'An unknown error occurred',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+      console.error('Login error:', error);
     }
-  };
-
+};
   const keyboardGone = () => {
     Keyboard.dismiss();
   };

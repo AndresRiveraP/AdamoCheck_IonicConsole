@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import {
   SafeAreaView,
@@ -9,9 +9,9 @@ import {
   Image,
   Modal,
   TouchableOpacity,
-  ToastAndroid,
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import Toast from 'react-native-toast-message';
 import MTable from './MTable';
 import { scaleFontSize } from '@/utils/scaleUtils';
 
@@ -26,12 +26,6 @@ const AdminScreen: React.FC = () => {
   const [logsU, setLogsU] = useState<any[] | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [modalTable, setModalTable] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (selectedStartDate) {
-      fetchingLogs();
-    }
-  }, [selectedStartDate]);
 
   const openCalendar = () => {
     setSelectedStartDate(null);
@@ -49,48 +43,41 @@ const AdminScreen: React.FC = () => {
     setSelectedEndDate(formattedDate);
   };
 
-  const fetchingLogs = () => {
-    if (data?.logsByDate) {
-      const logs = data.logsByDate.map((log: Log) => {
-        const { checkin, checkout, id, identification, name } = log;
-        return {
-          checkin,
-          checkout,
-          id,
-          identification,
-          name,
-        };
-      });
-      setLogsU(logs);
-    } else {
-      setLogsU(null);
-    }
-  };
-
-  const validate = () => {
+  const validate =  async () => {
     if (!selectedStartDate) {
       setMessage('Select a date before requesting table');
+      Toast.show({
+        type: 'warning',
+        text1: 'Warning',
+        text2: message || undefined,
+        position: 'top',
+        visibilityTime: 2500,
+      })
       return;
     } else {
-      setModalTable(true);
-      fetchingLogs();
+      console.log("Selected Start Date: ", selectedStartDate);
+      console.log("Selected End Date: ", selectedEndDate);
+      let range: {
+        startDate: string | null,
+        endDate: string | null
+      } = {
+        startDate: selectedStartDate,
+        endDate: selectedEndDate
+      };
+
+
+      const response = await fetch('https://adamocheckback.up.railway.app/api/logs/gettingLogs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(range),
+      });
+
+      const result = await response.json();
+      console.log(result);
     }
   };
-
-  const mostrarAlerta = () => {
-    if (message) {
-      ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.CENTER);
-      setTimeout(() => {
-        setMessage(null);
-      }, 3500);
-    }
-  };
-
-  useEffect(() => {
-    if (message) {
-      mostrarAlerta();
-    }
-  }, [message]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -175,7 +162,7 @@ const AdminScreen: React.FC = () => {
 
       {modalTable && (
         <Modal animationType="slide" onRequestClose={() => setModalTable(false)}>
-          <MTable logsU={logsU} startDate={selectedStartDate} />
+          <MTable logsU={logsU} startDate={selectedStartDate} endDate={selectedEndDate} />
         </Modal>
       )}
     </SafeAreaView>
