@@ -1,99 +1,153 @@
 import React, { useState, useEffect } from 'react';
-import {SafeAreaView,ScrollView, View, Text, Image, StyleSheet, FlatList, ImageBackground} from 'react-native';
+import { SafeAreaView, View, Text, Image, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import { scaleFontSize } from '@/utils/scaleUtils';
 
-
-const MTable = ({ logsU, startDate, endDate}) => {
+const MTable = ({ logsU, startDate, endDate }) => {
   const [logsData, setLogsData] = useState(null);
 
   useEffect(() => {
     setLogsData(logsU);
+    console.log("The Logs:\n", logsU); 
   }, [logsU]);
+
+  const TableHeader = () => (
+    <View style={styles.tableHeader}>
+      <View style={styles.headerItem}>
+        <Text style={styles.headerText}>Date</Text>
+      </View>
+      <View style={styles.headerItem}>
+        <Text style={styles.headerText}>ID</Text>
+      </View>
+      <View style={styles.headerItem}>
+        <Text style={styles.headerText}>Name</Text>
+      </View>
+      <View style={styles.headerItem}>
+        <Text style={styles.headerText}>Check-in</Text>
+      </View>
+      <View style={styles.headerItem}>
+        <Text style={styles.headerText}>Check-out</Text>
+      </View>
+    </View>
+  );
 
   const TableRow = ({ item }) => (
     <View style={styles.tableRow}>
       <View style={styles.rowItem}>
-        <Text>{startDate}</Text>
+        <Text style={styles.rowItemText}>{startDate}</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text>{item.identification}</Text>
+        <Text style={styles.rowItemText}>{item.identification}</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text>{item.name}</Text>
+        <Text style={styles.rowItemText}>{item.name}</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text>{item.checkin}</Text>
+        <Text style={styles.rowItemText}>{item.checkin}</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text>{item.checkout}</Text>
+        <Text style={styles.rowItemText}>{item.checkout}</Text>
       </View>
     </View>
   );
 
   return (
     <ImageBackground
-      source={require('../../assets/img/imgBG02.png')}
+      source={require('@/assets/img/imgBG02.png')}
       style={styles.background}
     >
-        <SafeAreaView>
-          <Image
-            source={require('../../assets/img/logoCheck.png')}
-            style={styles.image}
-          />
-        
-        
-          <Text style={styles.title}>Looking over {startDate} logs</Text>
-          <FlatList
-            data={logsData}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <TableRow item={item} />}
-          />
-        </SafeAreaView>
-
+      <SafeAreaView style={styles.safe}>
+        <FlatList
+          data={logsData}
+          keyExtractor={(item) => item._id.toString()}
+          renderItem={({ item }) => <TableRow item={item} />}
+          ListHeaderComponent={() => (
+            <>
+              <View style={styles.header}>
+                <Image
+                  source={require('@/assets/img/logoCheck.png')}
+                  style={styles.image}
+                />
+                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}> 
+                  <Text style={{ fontFamily: 'Guitar-Acoustic', fontSize: scaleFontSize(20), color: '#fff',}}>
+                    adamo
+                  </Text>
+                  <Text style={{  fontFamily: 'Guitar-Acoustic', fontSize: scaleFontSize(20),color: '#fff', opacity: 0.4,}}>
+                    check
+                  </Text>
+                </View>
+                <Text style={styles.title}>{startDate} to {endDate} records</Text>
+              </View>
+              <TableHeader />
+            </>
+          )}
+        />
+      </SafeAreaView>
     </ImageBackground>
-    
   );
 };
 
-
 const styles = StyleSheet.create({
-  image : {
-    width: '30%',
-    height: '30%',
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
   background: {
     flex: 1,
     resizeMode: 'cover',
     alignItems: 'center',
   },
-  title :{
-    fontSize: 22,
-    color : 'black',
+  safe: {
+    flex: 1,
+    paddingVertical: '10%',
+    paddingHorizontal: '3%',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  image: {
+    width: '20%',
+    height: undefined,
+    aspectRatio: 1,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  title: {
+    fontSize: scaleFontSize(16),
+    color: 'white',
+    fontFamily: 'Octarine-Bold',
     fontWeight: '600',
     textAlign: 'center',
     marginVertical: 30,
   },
-  scroll :{
-    width: '100%',
-    padding : 10,
-    backgroundColor: "#E7F4FF",
-    alignSelf: 'center',
-    alignContent :'center',
-    borderRadius: 10,
+  tableHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FFF',
+  },
+  headerItem: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: scaleFontSize(10),
   },
   tableRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 10,
     borderBottomWidth: 1,
-    borderColor: '#ccc',
-    paddingVertical: 10,
-    paddingHorizontal: 5,
+    borderBottomColor: '#fff',
   },
   rowItem: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  rowItemText: {
+    color: 'white',
+    fontSize: scaleFontSize(8),
   },
 });
 

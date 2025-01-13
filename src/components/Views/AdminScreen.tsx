@@ -55,8 +55,6 @@ const AdminScreen: React.FC = () => {
       })
       return;
     } else {
-      console.log("Selected Start Date: ", selectedStartDate);
-      console.log("Selected End Date: ", selectedEndDate);
       let range: {
         startDate: string | null,
         endDate: string | null
@@ -75,7 +73,8 @@ const AdminScreen: React.FC = () => {
       });
 
       const result = await response.json();
-      console.log(result);
+      setLogsU(result); 
+      setModalTable(true);
     }
   };
 
