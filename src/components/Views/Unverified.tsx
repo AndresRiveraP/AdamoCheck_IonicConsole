@@ -53,7 +53,7 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
                 const result = await response.json();
         
                 if (response.ok) {
-                    console.log('Employee fetched successfully:', result);
+                    //console.log('Employee fetched successfully:', result);
                     const payload = {
                         id: result.idNumber,
                         name: result.name,

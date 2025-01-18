@@ -7,7 +7,7 @@ const MTable = ({ logsU, startDate, endDate }) => {
 
   useEffect(() => {
     setLogsData(logsU);
-    console.log("The Logs:\n", logsU); 
+    //console.log("The Logs:\n", logsU); 
   }, [logsU]);
 
   const TableHeader = () => (

@@ -65,14 +65,14 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   };
 
   const verifyResponse = (res: any) => {
-    console.log(res);
+    //console.log(res);
     if (res['message'] ==  undefined) {
       navigation.navigate('Unverified', {check});
     } else if (res['message'] === 'Usuario encontrado!') {
       payload = res;
       navigation.navigate('Verified', { payload, check });
     } else {
-      console.log(`${res['message']}`);
+      //console.log(`${res['message']}`);
     }
   };
 
