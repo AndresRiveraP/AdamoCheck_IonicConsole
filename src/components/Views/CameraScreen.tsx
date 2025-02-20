@@ -72,7 +72,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       payload = res;
       navigation.navigate('Verified', { payload, check });
     } else {
-      //console.log(`${res['message']}`);
+      console.log(`${res['message']}`);
     }
   };
 
