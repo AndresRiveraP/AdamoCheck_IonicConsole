@@ -33,7 +33,6 @@ const Verified = ({ route, navigation }) => {
         checkout: check === 'out' ? formattedTime : null,
         checkType: check,
       };
-
       try {
         const response = await fetch('https://adamocheckback.up.railway.app/api/logs', {
           method: 'POST',
@@ -68,6 +67,13 @@ const Verified = ({ route, navigation }) => {
     };
 
     createLog();
+
+    const timer = setTimeout(() => {
+      navigation.navigate('InitialScreen');
+    }, 4000);
+
+    return () => clearTimeout(timer);
+
   }, []);
 
   if (!shouldRender) {
