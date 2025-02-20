@@ -40,7 +40,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       takePicture();
-    }, 700);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);

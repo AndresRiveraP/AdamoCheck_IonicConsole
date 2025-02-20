@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import moment from 'moment';
 import {
@@ -14,6 +15,8 @@ import { Calendar } from 'react-native-calendars';
 import Toast from 'react-native-toast-message';
 import MTable from './MTable';
 import { scaleFontSize } from '@/utils/scaleUtils';
+import RNFS from 'react-native-fs';
+import { PermissionsAndroid, Alert, Platform } from 'react-native';
 
 interface CustomDateObject {
   dateString: string;
@@ -77,6 +80,83 @@ const AdminScreen: React.FC = () => {
       setModalTable(true);
     }
   };
+  const requestStoragePermission = async () => {
+    try {
+        if (Platform.OS === 'android') {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: 'Permiso de almacenamiento',
+                    message: 'La aplicación necesita acceso al almacenamiento para descargar archivos.',
+                    buttonPositive: 'Aceptar',
+                }
+            );
+
+            if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                Alert.alert("Permiso denegado", "No puedes descargar el archivo sin conceder permisos.");
+                return false;
+            }
+        }
+        return true;
+    } catch (err) {
+        console.error("Error solicitando permisos:", err);
+        return false;
+    }
+  };
+  const downloadCSV = async (selectedStartDate: string, selectedEndDate: string) => {
+    try {
+        const hasPermission = await requestStoragePermission();
+        if (!hasPermission) return;
+
+        console.log("📅 Fechas seleccionadas:", selectedStartDate, "→", selectedEndDate);
+
+        const response = await fetch('https://adamocheckback.up.railway.app/api/logs/downloadingLogs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                startDate: selectedStartDate,
+                endDate: selectedEndDate,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al descargar el archivo');
+        }
+
+        const csvData = await response.text();
+
+        const cleanStartDate = selectedStartDate.replace(/[/\\:*?"<>|]/g, "-");
+        const cleanEndDate = selectedEndDate.replace(/[/\\:*?"<>|]/g, "-");
+
+        const fileName = `logs_${cleanStartDate}_to_${cleanEndDate}.csv`;
+        const path = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+
+        await RNFS.writeFile(path, csvData, 'utf8');
+
+        console.log("✅ Archivo CSV guardado en:", path);
+        Toast.show({
+          type: 'success',
+          text1: 'Descarga completada',
+          text2: `Guardado como:\n${fileName}`,
+          position: 'bottom',
+          visibilityTime: 4000,
+          autoHide: true
+      });
+      
+
+    } catch (error) {
+        console.error("❌ Error descargando el CSV:", error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'No se pudo descargar el archivo CSV.',
+          position: 'bottom',
+          visibilityTime: 3000,
+      });
+    }
+};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -121,7 +201,20 @@ const AdminScreen: React.FC = () => {
 
           <TouchableOpacity
             style={styles.boton}
-            onPress={() => console.log('Downloading .csv...')}
+            onPress={() => {
+              if (selectedStartDate && selectedEndDate) {
+                downloadCSV(selectedStartDate, selectedEndDate);
+              } else {
+                setMessage('Select a date before requesting table');
+                Toast.show({
+                  type: 'warning',
+                  text1: 'Warning',
+                  text2: message || undefined,
+                  position: 'top',
+                  visibilityTime: 2500,
+                })
+              }
+            }}
           >
             <Image source={require('../../assets/img/csvicon.png')} style={styles.ico} />
             <Text style={styles.modalLabel}>Download as .csv</Text>
