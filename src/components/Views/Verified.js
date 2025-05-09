@@ -46,10 +46,10 @@ const Verified = ({ route, navigation }) => {
         setResult(result);
 
         if (response.ok) {
-          //console.log('Log created successfully:', result);
+          console.log('Log created successfully:', result);
           setShouldRender(true);
         } else if (response.status === 400) {
-          //console.log('Error creating log:', result.message);
+          console.log('Error creating log:', result.message);
           Toast.show({
             type: 'warning',
             text1: 'Warning',

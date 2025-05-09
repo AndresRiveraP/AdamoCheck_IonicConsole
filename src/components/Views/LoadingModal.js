@@ -10,6 +10,7 @@ const LoadingModal = () => {
         resizeMode="contain"
         repeat={true}
         paused={false}
+        disableFocus={true}
     />
   )
 }
