@@ -88,7 +88,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1, //DON'T TOUCH
-    backgroundColor: '1f1f1f',
+    backgroundColor: '#1f1f1f',
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'center',

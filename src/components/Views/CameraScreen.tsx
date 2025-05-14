@@ -9,8 +9,9 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import { RNCamera, TakePictureResponse } from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 import LoadingModal from './LoadingModal';
+import oneFaceData from '../../assets/apiTesters/1face.json'; // Import the JSON file
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -32,45 +33,46 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
   const [cameraView, setCameraView] = useState<boolean>(true);
-  const [capturedImage, setCapturedImage] = useState<string>('');
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
   let payload: any = null;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      takePicture();
-    }, 500);
+  const timer = setTimeout(() => {
+    setCameraView(false);
+    setShowLoading(true);
+    gotoAPIResponse(oneFaceData.image); 
+  }, 500);
 
-    return () => clearTimeout(timer);
-  }, []);
+  return () => clearTimeout(timer);
+}, []);
 
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const options = { quality: 0.5, base64: true };
-      try {
-        const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
-        setCapturedImage(data.uri);
-        const base64String = data.base64 ?? '';
+  // Commented out the takePicture function
+  // const takePicture = async () => {
+  //   if (cameraRef.current) {
+  //     const options = { quality: 0.5, base64: true };
+  //     try {
+  //       const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
+  //       setCapturedImage(data.uri);
+  //       const base64String = data.base64 ?? '';
 
-        setTimeout(() => {
-          setCameraView(false);
-          setShowLoading(true);
-          gotoAPIResponse(base64String);
-        }, 1000);
-      } catch (error) {
-        console.log('Error taking picture: ', error);
-      }
-    }
-  };
+  //       setTimeout(() => {
+  //         setCameraView(false);
+  //         setShowLoading(true);
+  //         gotoAPIResponse(base64String);
+  //       }, 1000);
+  //     } catch (error) {
+  //       console.log('Error taking picture: ', error);
+  //     }
+  //   }
+  // };
 
   const verifyResponse = (res: any) => {
-    //console.log(res);
-    if (res['message'] ==  undefined) {
-      navigation.navigate('Unverified', {check});
+    if (res['message'] == undefined) {
+      navigation.navigate('Unverified', { check });
     } else if (res['message'] === 'Usuario encontrado!') {
       payload = res;
-      navigation.navigate('Verified', { payload, check });
+      navigation.navigate('Verified2', { payload, check });
     } else {
       console.log(`${res['message']}`);
     }
@@ -123,13 +125,6 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
               </Text>
             </View>
 
-            <View style={styles.gifC}>
-              <Image
-                style={styles.gif}
-                source={require('../../assets/gif/faceframe.gif')}
-              />
-            </View>
-
             <View style={styles.bottom}>
               <Image
                 source={require('../../assets/img/bottomC.png')}
@@ -138,7 +133,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
 
               <TouchableOpacity
                 style={styles.touchableCamera}
-                onPress={takePicture}>
+                onPress={() => {}}>
                 <View style={styles.cameraBtn}>
                   <Image
                     source={require('../../assets/gif/elipsis.gif')}
@@ -195,11 +190,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 50,
   },
-  gifC: {
-    alignSelf: 'center',
-    width: '70%',
-    height: '50%',
-  },
   gif: {
     alignSelf: 'center',
     height: '100%',
@@ -207,6 +197,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   bottom: {
+    position: 'absolute',
     bottom: 0,
     height: '25%',
     width: '100%',
