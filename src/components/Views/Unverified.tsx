@@ -1,9 +1,9 @@
 import Toast from 'react-native-toast-message';
 import React, {useState} from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, Modal} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, Modal, TouchableOpacity} from 'react-native'
 import LoadingModal from './LoadingModal';
+import { scaleFontSize } from '@/utils/scaleUtils';
 
 function sp(size: number) {
     return PixelRatio.getFontScale() * size;
@@ -20,6 +20,7 @@ interface UnverifiedProps {
         screen: string,
         params?: { payload?: any; check?: string },
       ) => void;
+      reset: (state: { index: number; routes: { name: string; params?: any }[] }) => void;
     };
   }
 
@@ -71,6 +72,16 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
         }
     }
 
+    const handleRetry = () => {
+    console.log('Retry pressed, check value:', check);
+    navigation.reset({
+        index: 0,
+        routes: [
+            { name: 'CameraScreen', params: { check } }
+        ],
+    });
+};
+
   return (
     <View style={styles.container}>
     {showLoading ?  (
@@ -85,20 +96,25 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
             source={require('../../assets/img/imgBG02.png')}
             style={styles.background}
             >
-            <Image 
-                source={require('../../assets/img/eye.png')}
-                style={styles.eye}
-            />
+            
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '15%' }}>
+                <Text style={[ styles.title,{ color: '#fff'}]}>adamo</Text>
+                <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
+            </View>
 
             <View style={styles.warning}>
-                <Text style={styles.Atention}>Warning!</Text>
-                <Text style={styles.AtentionP}>We could not find you registered in the Adamo ID database</Text>
+                <Image
+                    source={require('../../assets/img/face_check.png')}
+                    style={styles.cuteFace}
+                    />
+                <Text style={styles.Atention}>FACE NOT DETECTED</Text>
+                <Text style={styles.AtentionP}>Please enter your ID number or retry</Text>
             </View>
 
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder='Your Identification Number'
+                    placeholder='Your ID'
                     placeholderTextColor='#FFF'
                     keyboardType='numeric'
                     maxLength={15}
@@ -109,12 +125,21 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
             </View>           
 
 
-            <TouchableOpacity
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '5%', gap: 15 }}>
+                <TouchableOpacity
                 style={[styles.botonV]}
-                onPress={() => {VerifyWithId(documentId)}}    
-            >
-                <Text style={styles.labelV}>Verify</Text>
-            </TouchableOpacity>
+                onPress={() => {VerifyWithId(documentId)}}   >
+                    <Text style={styles.labelV}>Verify</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.botonW]}
+                    onPress={handleRetry}
+                >
+                    <Text style={styles.labelB}>Retry</Text>
+                </TouchableOpacity>
+            </View>
+           
 
             <TouchableOpacity
                 style={[styles.botonR]}
@@ -139,10 +164,12 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         alignItems : 'center',
     },
-    eye:{
-        resizeMode: 'contain',
+    cuteFace:{
+        width: '30%',
         height: '30%',
-        width: '30%'
+        resizeMode: 'contain',
+        marginTop: '10%',
+        alignSelf: 'center',
     },
     warning:{
         width: '80%',
@@ -151,15 +178,16 @@ const styles = StyleSheet.create({
     },
     Atention:{
         color: '#FFF',
-        fontSize: sp(45),
-        fontFamily: 'Octarine-Bold',
-        marginBottom: 15,
+        fontSize: sp(25),
+        fontWeight: '700',
+        fontFamily: 'Octarine',
+        marginBottom: '5%',
     },
     AtentionP:{
         color: '#FFF',
-        fontSize: sp(25),
+        fontSize: sp(20),
         textAlign: 'center',
-        fontWeight: '400',
+        fontWeight: '500',
         marginBottom: 20,
     },
     botonV:{
@@ -167,31 +195,50 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         backgroundColor: '#029941',
         borderRadius: 40,
-        bottom: 20,
         paddingVertical: '1%',
-        paddingHorizontal: '5%',
-        marginTop: '10%',
-        width: '50%',
+        paddingHorizontal: '7%',
+        marginTop: '5%',
     },
-    labelV:{
-        color: "#FFF",
-        fontWeight: '500',
-        fontFamily: 'Octarine-Light',
-        fontSize: sp(36),
-    },
-    botonR:{
+    botonW:{
         position: 'relative',
         alignSelf:'center',
         backgroundColor: '#FFF',
         borderRadius: 40,
-        bottom: 20,
+        paddingVertical: '1%',
+        paddingHorizontal: '7%',
+        marginTop: '5%',
+    },
+    labelV:{
+        color: "#FFF",
+        fontWeight: '600',
+        fontFamily: 'Octarine',
+        fontSize: sp(32),
+    },
+    labelB:{
+        color: "#2bbfed",
+        fontWeight: '600',
+        fontFamily: 'Octarine',
+        fontSize: sp(32),
+    },
+    labelU:{
+        color : '#FFF',
+        fontWeight: '600',
+        fontFamily: 'Octarine',
+        fontSize: sp(32),
+    },
+    botonR:{
+        position: 'relative',
+        alignSelf:'center',
+        alignItems: 'center',
+        backgroundColor: '#000',
+        borderRadius: 40,
         paddingVertical: '1%',
         paddingHorizontal: '5%',
         marginTop: '5%',
         width: '50%',
     },
     inputContainer: {
-        marginTop: '4%'
+        width: '50%'
     },
     input: {
         display: 'flex',
@@ -205,15 +252,13 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         fontSize: sp(20),
     },
-    labelU:{
-        color : '#000',
-        fontWeight: '500',
-        fontFamily: 'Octarine-Light',
-        fontSize: sp(34),
-    },
     modalLoading: {
         flex: 1,
         justifyContent: 'center',
       },
+    title: {
+        fontFamily: 'Guitar-Acoustic',
+        fontSize: scaleFontSize(35),
+    },
 })
 export default Unverified

@@ -10,8 +10,6 @@ import Verified from './Verified';
 import Verified2 from './Verified2';
 import Verified3 from './Verified3';
 import Unverified from './Unverified';
-import AdminLog from './AdminLog';
-import AdminScreen from './AdminScreen';
 
 const Stack = createStackNavigator();
 
@@ -48,16 +46,6 @@ const Navigator = () => {
             name="Unverified"
             component={Unverified as React.FC}
             options={{ headerShown: false } }
-        />
-        <Stack.Screen 
-          name="AdminLog" 
-          component={AdminLog as React.FC} 
-          options={{ headerShown: false }}
-        /> 
-        <Stack.Screen 
-          name="AdminScreen" 
-          component={AdminScreen as React.FC} 
-          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

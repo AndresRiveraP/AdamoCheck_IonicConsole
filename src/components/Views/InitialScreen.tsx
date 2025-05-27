@@ -14,6 +14,42 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     navigation.navigate('CameraScreen', { check });
   };
 
+  const requestCameraPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'This app needs access to your camera to proceed.',
+            buttonPositive: 'OK',
+            buttonNegative: 'Cancel',
+          }
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert('Permission Denied', 'Camera access is required to proceed.');
+          return false;
+        }
+        return true;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    }
+    return true
+  };
+
+  useEffect(() => {
+    const checkPermission = async () => {
+      const hasPermission = await requestCameraPermission();
+      if (!hasPermission) {
+        Alert.alert('Permission Denied', 'Camera access is required to proceed.');
+      }
+    };
+    checkPermission();
+  }, []);
+
+
   return (
     <ImageBackground
       source={require('../../assets/img/backGround.png')}

@@ -96,7 +96,7 @@ const Verified3 = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 400000);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -110,11 +110,23 @@ const Verified3 = ({ route, navigation }) => {
       <ImageBackground
         source={require('@/assets/img/backGround.png')}
         style={styles.background}>
+
+        <View style={styles.identi}>
+          <Image
+            source={require('@/assets/img/working-time.png')}
+            style={styles.icoCheck}
+          />
+          {check === 'in' ?
+            <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
+            <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
+          }
+        
+        </View>
           
         <View style={styles.textContainer}>
           <View style={styles.salut}>
             <Text style={styles.welcome}>
-                {check === 'in' ? 'Hi!' : 'Bye!'}
+                {check === 'in' ? 'Hi!' : 'Farewell!'}
             </Text>
             <Image
               source={require('@/assets/img/logoCheck.png')}
@@ -134,16 +146,6 @@ const Verified3 = ({ route, navigation }) => {
             />
             <Text style={styles.idS}>{id1}</Text>
           </View>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/working-time.png')}
-              style={styles.ico}
-            />
-            {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
-            }
-          </View>
         </View>
 
         <View style={styles.franx}></View>
@@ -151,7 +153,7 @@ const Verified3 = ({ route, navigation }) => {
         <View style={styles.textContainer}>
           <View style={[styles.salut, {width: '80%'}]}>
             <Text style={styles.welcome}>
-                {check === 'in' ? 'Hi!' : 'Bye!'}
+                {check === 'in' ? 'Hi!' : 'Farewell!'}
             </Text>
             <Image
               source={require('@/assets/img/logoCheck.png')}
@@ -171,17 +173,6 @@ const Verified3 = ({ route, navigation }) => {
             />
             <Text style={styles.idS}>{id2}</Text>
           </View>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/working-time.png')}
-              style={styles.ico}
-            />
-            {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
-            }
-         
-          </View>
         </View>
 
         <View style={styles.franx}></View>
@@ -189,7 +180,7 @@ const Verified3 = ({ route, navigation }) => {
         <View style={styles.textContainer}>
           <View style={[styles.salut, {width: '80%'}]}>
             <Text style={styles.welcome}>
-                {check === 'in' ? 'Hi!' : 'Bye!'}
+                {check === 'in' ? 'Hi!' : 'Farewell!'}
             </Text>
             <Image
               source={require('@/assets/img/logoCheck.png')}
@@ -209,17 +200,7 @@ const Verified3 = ({ route, navigation }) => {
             />
             <Text style={styles.idS}>{id3}</Text>
           </View>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/working-time.png')}
-              style={styles.ico}
-            />
-            {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
-            }
-         
-          </View>
+
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -249,7 +230,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   textContainer: {
-    height: '50%',
+    flex: 1,
     alignSelf: 'center',
     paddingHorizontal: '10%',
   },
@@ -259,14 +240,14 @@ const styles = StyleSheet.create({
   welcome: {
     color: '#FFF',
     fontWeight: 'bold',
-    marginTop: '10%',
-    fontSize: scaleFontSize(40),
-    lineHeight: scaleFontSize(40)
+    marginTop: '3%',
+    fontSize: scaleFontSize(35),
+    lineHeight: scaleFontSize(35)
   },
   name: {
     color: '#FFF',
     fontWeight: 'bold',
-    fontSize: scaleFontSize(20),
+    fontSize: scaleFontSize(22),
   },
   salut:{
     display: 'flex',
@@ -289,7 +270,13 @@ const styles = StyleSheet.create({
   identi: {
     marginTop: 20,
     flexDirection: 'row',
+    alignSelf: 'center',
     alignItems: 'center',
+  },
+  icoCheck:{
+    width: scaleWidthSize(35),
+    height: scaleWidthSize(35),
+    resizeMode: 'contain',
   },
   ico: {
     width: scaleWidthSize(20),

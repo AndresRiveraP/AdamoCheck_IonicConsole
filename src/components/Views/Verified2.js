@@ -102,7 +102,7 @@ const Verified = ({ route, navigation }) => {
         <View style={styles.textContainer}>
           <View style={styles.salut}>
             <Text style={styles.welcome}>
-                {check === 'in' ? 'Hi!' : 'Bye!'}
+                {check === 'in' ? 'Hi!' : 'Farewell!'}
             </Text>
             <Image
               source={require('@/assets/img/logoCheck.png')}
@@ -146,7 +146,7 @@ const Verified = ({ route, navigation }) => {
         <View style={styles.textContainer}>
           <View style={[styles.salut, {width: '80%'}]}>
             <Text style={styles.welcome}>
-                {check === 'in' ? 'Hi!' : 'Bye!'}
+                {check === 'in' ? 'Hi!' : 'Farewell!'}
             </Text>
             <Image
               source={require('@/assets/img/logoCheck.png')}
