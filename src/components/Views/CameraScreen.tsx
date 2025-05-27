@@ -9,10 +9,10 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import { RNCamera } from 'react-native-camera';
+import { RNCamera, TakePictureResponse } from 'react-native-camera';
 import LoadingModal from './LoadingModal';
 import oneFaceData from '../../assets/apiTesters/1face.json'; // Import the JSON file
-import twoFacesData from '../../assets/apiTesters/2faces.json'; 
+import twoFacesData from '../../assets/apiTesters/2facesR.json'; 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -35,46 +35,65 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const cameraRef = useRef<RNCamera>(null);
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [showLoading, setShowLoading] = useState<boolean>(false);
-
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
+  
   let payload: any = null;
 
   useEffect(() => {
-  const timer = setTimeout(() => {
-    setCameraView(false);
-    setShowLoading(true);
-    gotoAPIResponse(twoFacesData.image); 
-  }, 500);
+    const timer = setTimeout(() => {
+      if (isTestMode) {
+        setCameraView(false);
+        setShowLoading(true);
+        gotoAPIResponse(twoFacesData.image); 
+      } else {
+        takePicture();
+      }
+    }, 500);
 
-  return () => clearTimeout(timer);
-}, []);
+    return () => clearTimeout(timer);
+  }, [isTestMode]);
 
-  // Commented out the takePicture function
-  // const takePicture = async () => {
-  //   if (cameraRef.current) {
-  //     const options = { quality: 0.5, base64: true };
-  //     try {
-  //       const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
-  //       setCapturedImage(data.uri);
-  //       const base64String = data.base64 ?? '';
+  const takePicture = async () => {
+    if (cameraRef.current) {
+        const options = { 
+        quality: 0.75, 
+        base64: true,
+        width: undefined, 
+        height: undefined,
+        fixOrientation: true,
+        forceUpOrientation: true
+      };
 
-  //       setTimeout(() => {
-  //         setCameraView(false);
-  //         setShowLoading(true);
-  //         gotoAPIResponse(base64String);
-  //       }, 1000);
-  //     } catch (error) {
-  //       console.log('Error taking picture: ', error);
-  //     }
-  //   }
-  // };
+      try {
+        const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
+        setCapturedImage(data.uri);
+        const base64String = data.base64 ?? '';
+
+        setTimeout(() => {
+          setCameraView(false);
+          setShowLoading(true);
+          gotoAPIResponse(base64String);
+        }, 1000);
+      } catch (error) {
+        console.log('Error taking picture: ', error);
+      }
+    }
+  };
+
+  const toggleTestMode = () => {
+    setIsTestMode(!isTestMode);
+  };
 
   const verifyResponse = (res: any) => {
-    if (res.statusCode != 200) {
+    console.log('Response from API:\n\n', res);
+
+    if (res.statusCode !== 200) {
       navigation.navigate('Unverified', { check });
-    } else if (res.statusCode=== 200 && res.body.matches.length > 0) {
+    } else if (res.statusCode === 200 && res.body.matches.length > 0) {
       console.log("Payload Sent: ", res.body.matches);
       payload = res.body.matches;
-      switch (res.body.faces_count) {
+      switch (payload.length) {
         case 1:
           navigation.navigate('Verified', {payload, check });
           break;
@@ -125,7 +144,10 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
             ref={cameraRef}
             style={styles.camera}
             type={RNCamera.Constants.Type.front}
-            captureAudio={false}>
+            captureAudio={false}
+            ratio="16:9"
+            defaultVideoQuality={RNCamera.Constants.VideoQuality["1080p"]}
+            >
             <View style={styles.top}>
               <Image
                 source={require('../../assets/img/topC.png')}
@@ -148,7 +170,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
 
               <TouchableOpacity
                 style={styles.touchableCamera}
-                onPress={() => {}}>
+                onPress={toggleTestMode}>
                 <View style={styles.cameraBtn}>
                   <Image
                     source={require('../../assets/gif/elipsis.gif')}
