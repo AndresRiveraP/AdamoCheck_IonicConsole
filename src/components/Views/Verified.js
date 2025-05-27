@@ -12,9 +12,9 @@ const Verified = ({ route, navigation }) => {
   const { payload, check } = route.params;
   
   console.log({payload, check});
-  var name = payload.name;
-  var lastName = payload.lastname;
-  var id = payload.id;
+  var name = payload[0].name;
+  var lastName = payload[0].lastname;
+  var id = payload[0].id;
 
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');

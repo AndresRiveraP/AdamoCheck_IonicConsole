@@ -12,6 +12,7 @@ import {
 import { RNCamera } from 'react-native-camera';
 import LoadingModal from './LoadingModal';
 import oneFaceData from '../../assets/apiTesters/1face.json'; // Import the JSON file
+import twoFacesData from '../../assets/apiTesters/2faces.json'; 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -41,7 +42,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const timer = setTimeout(() => {
     setCameraView(false);
     setShowLoading(true);
-    gotoAPIResponse(oneFaceData.image); 
+    gotoAPIResponse(twoFacesData.image); 
   }, 500);
 
   return () => clearTimeout(timer);
@@ -68,11 +69,25 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   // };
 
   const verifyResponse = (res: any) => {
-    if (res['message'] == undefined) {
+    if (res.statusCode != 200) {
       navigation.navigate('Unverified', { check });
-    } else if (res['message'] === 'Usuario encontrado!') {
-      payload = res;
-      navigation.navigate('Verified2', { payload, check });
+    } else if (res.statusCode=== 200 && res.body.matches.length > 0) {
+      console.log("Payload Sent: ", res.body.matches);
+      payload = res.body.matches;
+      switch (res.body.faces_count) {
+        case 1:
+          navigation.navigate('Verified', {payload, check });
+          break;
+        case 2:
+          navigation.navigate('Verified2', { payload, check });
+          break;
+        case 3: 
+          navigation.navigate('Verified3', { payload, check });
+          break;
+        default:
+          navigation.navigate('Verified', {payload, check });
+          break;
+      }
     } else {
       console.log(`${res['message']}`);
     }
@@ -81,7 +96,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const gotoAPIResponse = async (base64Data: string) => {
     try {
       const response = await fetch(
-        'https://n07j2t4w3c.execute-api.us-east-2.amazonaws.com/Prod/compare-face',
+        'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',
         {
           method: 'POST',
           headers: {

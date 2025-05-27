@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
 
   container: {
-    top: '-5%',
+    marginTop: '10%',
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -18,18 +18,7 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     <ImageBackground
       source={require('../../assets/img/backGround.png')}
       style={styles.background}>
-      <TouchableOpacity onPress={() => navigation.navigate('AdminLog')} style={styles.botonAdmin}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            source={require('../../assets/img/profi.png')}
-            style={[styles.profi2]}
-          />
-          <Text style={styles.label2}>
-            Admin
-            <Text style={{fontWeight: 'normal', color: '#fff'}}> Log In</Text>
-          </Text>
-        </View>
-      </TouchableOpacity>
+
 
       <View style={styles.container}>
         <Image

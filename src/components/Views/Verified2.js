@@ -11,10 +11,13 @@ function sp(size) {
 const Verified = ({ route, navigation }) => {
   const { payload, check } = route.params;
   
-  console.log({payload, check});
-  var name = payload.name;
-  var lastName = payload.lastname;
-  var id = payload.id;
+  var name1 = payload[0].name;
+  var lastName1 = payload[0].lastname;
+  var id1 = payload[0].id;
+
+  var name2 = payload[1].name;
+  var lastName2 = payload[1].lastname;
+  var id2 = payload[1].id;
 
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
@@ -25,28 +28,39 @@ const Verified = ({ route, navigation }) => {
 
   useEffect(() => {
     const createLog = async () => {
-      const logData = {
-        day: formattedDate,
-        identification: id,
-        name: `${name} ${lastName}`,
-        checkin: check === 'in' ? formattedTime : null,
-        checkout: check === 'out' ? formattedTime : null,
-        checkType: check,
-      };
+      const logs = [
+        {
+          day: formattedDate,
+          identification: id1,
+          name: `${name1} ${lastName1}`,
+          checkin: check === 'in' ? formattedTime : null,
+          checkout: check === 'out' ? formattedTime : null,
+          checkType: check,
+        },
+        {
+          day: formattedDate,
+          identification: id2,
+          name: `${name2} ${lastName2}`,
+          checkin: check === 'in' ? formattedTime : null,
+          checkout: check === 'out' ? formattedTime : null,
+          checkType: check,
+        }
+      ];
+
       try {
-        const response = await fetch('https://adamocheckback.up.railway.app/api/logs', {
+        const response = await fetch('https://adamocheckback.up.railway.app/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(logData),
+          body: JSON.stringify({logs}),
         });
 
         const result = await response.json();
         setResult(result);
 
         if (response.ok) {
-          console.log('Log created successfully:', result);
+          console.log('Log created successfully: \n\n\n', result);
           setShouldRender(true);
         } else if (response.status === 400) {
           console.log('Error creating log:', result.message);
@@ -85,11 +99,7 @@ const Verified = ({ route, navigation }) => {
       <ImageBackground
         source={require('@/assets/img/backGround.png')}
         style={styles.background}>
-        {/*<View style={styles.header}>
-          <Text style={styles.title}>adamo</Text>
-          <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
-        </View>}*/}
-
+          
         <View style={styles.textContainer}>
           <View style={styles.salut}>
             <Text style={styles.welcome}>
@@ -102,23 +112,23 @@ const Verified = ({ route, navigation }) => {
           </View>
           
           <Text style={styles.name}>
-            {name}
+            {name1}
             {'\n'}
-            {lastName}
+            {lastName1}
           </Text>
           <View style={styles.identi}>
             <Image
               source={require('@/assets/img/logoCheck.png')}
               style={styles.ico}
             />
-            <Text style={styles.idS}>{id}</Text>
+            <Text style={styles.idS}>{id1}</Text>
           </View>
           <View style={styles.identi}>
             <Image
               source={require('@/assets/img/user-role.png')}
               style={styles.ico}
             />
-            <Text style={styles.idS}>{result?.role}</Text>
+            <Text style={styles.idS}>{result[0]?.role}</Text>
           </View>
           <View style={styles.identi}>
             <Image
@@ -126,8 +136,8 @@ const Verified = ({ route, navigation }) => {
               style={styles.ico}
             />
             {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
+              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
+              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
             }
           </View>
         </View>
@@ -154,23 +164,23 @@ const Verified = ({ route, navigation }) => {
           
 
           <Text style={styles.name}>
-            {name}
+            {name2}
             {'\n'}
-            {lastName}
+            {lastName2}
           </Text>
           <View style={styles.identi}>
             <Image
               source={require('@/assets/img/logoCheck.png')}
               style={styles.ico}
             />
-            <Text style={styles.idS}>{id}</Text>
+            <Text style={styles.idS}>{id2}</Text>
           </View>
           <View style={styles.identi}>
             <Image
               source={require('@/assets/img/user-role.png')}
               style={styles.ico}
             />
-            <Text style={styles.idS}>{result?.role}</Text>
+            <Text style={styles.idS}>{result[1]?.role}</Text>
           </View>
           <View style={styles.identi}>
             <Image
@@ -178,8 +188,8 @@ const Verified = ({ route, navigation }) => {
               style={styles.ico}
             />
             {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
+              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
+              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
             }
          
           </View>
