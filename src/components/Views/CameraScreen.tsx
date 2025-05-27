@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { RNCamera, TakePictureResponse } from 'react-native-camera';
 import LoadingModal from './LoadingModal';
+
 import oneFaceData from '../../assets/apiTesters/1face.json'; // Import the JSON file
 import twoFacesData from '../../assets/apiTesters/2facesR.json'; 
+import threeFacesData from '../../assets/apiTesters/3faces.json'; 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -36,7 +38,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(false);
+  const [isTestMode, setIsTestMode] = useState<boolean>(true);
   
   let payload: any = null;
 
@@ -45,11 +47,11 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       if (isTestMode) {
         setCameraView(false);
         setShowLoading(true);
-        gotoAPIResponse(twoFacesData.image); 
+        gotoAPIResponse(threeFacesData.image); 
       } else {
         takePicture();
       }
-    }, 500);
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [isTestMode]);
@@ -57,10 +59,8 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const takePicture = async () => {
     if (cameraRef.current) {
         const options = { 
-        quality: 0.75, 
+        quality: 0.78, 
         base64: true,
-        width: undefined, 
-        height: undefined,
         fixOrientation: true,
         forceUpOrientation: true
       };
@@ -145,6 +145,13 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
             style={styles.camera}
             type={RNCamera.Constants.Type.front}
             captureAudio={false}
+            flashMode={RNCamera.Constants.FlashMode.off}
+            androidCameraPermissionOptions={{
+              title: 'Permission to use camera',
+              message: 'We need your permission to use your camera',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}
             ratio="16:9"
             defaultVideoQuality={RNCamera.Constants.VideoQuality["1080p"]}
             >

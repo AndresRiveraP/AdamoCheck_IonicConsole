@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { ImageBackground, View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { ImageBackground, View, Image, Text, TouchableOpacity, StyleSheet, Platform, PermissionsAndroid, Alert} from 'react-native';
 
 import { scaleFontSize} from '@/utils/scaleUtils';
 import styles from '@/styles/globStyles';

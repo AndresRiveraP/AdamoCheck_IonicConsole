@@ -8,6 +8,7 @@ import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
 import Verified from './Verified';
 import Verified2 from './Verified2';
+import Verified3 from './Verified3';
 import Unverified from './Unverified';
 import AdminLog from './AdminLog';
 import AdminScreen from './AdminScreen';
@@ -36,6 +37,11 @@ const Navigator = () => {
         <Stack.Screen
             name="Verified2"
             component={Verified2 as React.FC}
+            options={{ headerShown: false } }
+        />
+        <Stack.Screen 
+            name="Verified3"
+            component={Verified3 as React.FC}
             options={{ headerShown: false } }
         />
          <Stack.Screen

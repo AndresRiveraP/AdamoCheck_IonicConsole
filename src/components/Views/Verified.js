@@ -70,7 +70,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4000);
+    }, 2500);
 
     return () => clearTimeout(timer);
 

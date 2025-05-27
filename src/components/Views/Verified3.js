@@ -8,7 +8,7 @@ function sp(size) {
   return PixelRatio.getFontScale() * size;
 }
 
-const Verified = ({ route, navigation }) => {
+const Verified3 = ({ route, navigation }) => {
   const { payload, check } = route.params;
   
   var name1 = payload[0].name;
@@ -18,6 +18,10 @@ const Verified = ({ route, navigation }) => {
   var name2 = payload[1].name;
   var lastName2 = payload[1].lastname;
   var id2 = payload[1].id;
+
+  var name3 = payload[2].name;
+  var lastName3 = payload[2].lastname;
+  var id3 = payload[2].id;
 
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
@@ -41,6 +45,14 @@ const Verified = ({ route, navigation }) => {
           day: formattedDate,
           identification: id2,
           name: `${name2} ${lastName2}`,
+          checkin: check === 'in' ? formattedTime : null,
+          checkout: check === 'out' ? formattedTime : null,
+          checkType: check,
+        },
+        {
+          day: formattedDate,
+          identification: id3,
+          name: `${name3} ${lastName3}`,
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
@@ -84,7 +96,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3500);
+    }, 400000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -121,13 +133,6 @@ const Verified = ({ route, navigation }) => {
               style={styles.ico}
             />
             <Text style={styles.idS}>{id1}</Text>
-          </View>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/user-role.png')}
-              style={styles.ico}
-            />
-            <Text style={styles.idS}>{result[0]?.role}</Text>
           </View>
           <View style={styles.identi}>
             <Image
@@ -168,10 +173,41 @@ const Verified = ({ route, navigation }) => {
           </View>
           <View style={styles.identi}>
             <Image
-              source={require('@/assets/img/user-role.png')}
+              source={require('@/assets/img/working-time.png')}
               style={styles.ico}
             />
-            <Text style={styles.idS}>{result[1]?.role}</Text>
+            {check === 'in' ?
+              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
+              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
+            }
+         
+          </View>
+        </View>
+
+        <View style={styles.franx}></View>
+
+        <View style={styles.textContainer}>
+          <View style={[styles.salut, {width: '80%'}]}>
+            <Text style={styles.welcome}>
+                {check === 'in' ? 'Hi!' : 'Bye!'}
+            </Text>
+            <Image
+              source={require('@/assets/img/logoCheck.png')}
+              style={styles.ico1}
+            />
+          </View>
+
+          <Text style={styles.name}>
+            {name3}
+            {'\n'}
+            {lastName3}
+          </Text>
+          <View style={styles.identi}>
+            <Image
+              source={require('@/assets/img/logoCheck.png')}
+              style={styles.ico}
+            />
+            <Text style={styles.idS}>{id3}</Text>
           </View>
           <View style={styles.identi}>
             <Image
@@ -282,4 +318,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Verified;
+export default Verified3;
