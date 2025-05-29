@@ -48,7 +48,7 @@ const Verified = ({ route, navigation }) => {
       ];
 
       try {
-        const response = await fetch('https://adamocheckback.up.railway.app/api/logs/create2Logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3500);
+    }, 350000);
 
     return () => clearTimeout(timer);
   }, []);

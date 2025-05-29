@@ -34,7 +34,7 @@ const Verified = ({ route, navigation }) => {
         checkType: check,
       };
       try {
-        const response = await fetch('https://adamocheckback.up.railway.app/api/logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -43,21 +43,15 @@ const Verified = ({ route, navigation }) => {
         });
 
         const result = await response.json();
+
         setResult(result);
 
-        if (response.ok) {
+        if (response.status === 200) {
           console.log('Log created successfully:', result);
           setShouldRender(true);
-        } else if (response.status === 400) {
-          console.log('Error creating log:', result.message);
-          Toast.show({
-            type: 'warning',
-            text1: 'Warning',
-            text2: result.message,
-            position: 'top',
-            visibilityTime: 3000,
-          });
-          navigation.navigate('InitialScreen');
+        } else if (response.status === 201 || response.status === 202) {
+          console.log("Already something: ",  result);
+          setShouldRender(true);
         } else {
           console.error('Error creating log:', result.message);
         }
@@ -70,7 +64,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 2500);
+    }, 3200);
 
     return () => clearTimeout(timer);
 
@@ -89,6 +83,7 @@ const Verified = ({ route, navigation }) => {
           <Text style={styles.title}>adamo</Text>
           <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
         </View>
+        {result.status !== 200 ? (<></>) : (
         <View style={styles.textContainer}>
           <Text style={styles.welcome}>
             {check === 'in' ? 'Welcome!' : 'Farewell!'}
@@ -122,13 +117,38 @@ const Verified = ({ route, navigation }) => {
               <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
             }
           </View>
-        </View>
-        <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-          <Image
-            source={require('@/assets/img/check.png')}
-            style={styles.check}
-          />
-        </TouchableOpacity>
+        </View>)}
+
+
+        {result.message === "You are already checked in" && (
+          <View style={styles.alreadyChecked}>
+            <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+              <Image
+                source={require('@/assets/img/check.png')}
+                style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+              />
+            </TouchableOpacity>
+            <View style={styles.whitened}>
+              <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+            </View>
+          </View>
+        )  
+        }
+
+        {result.message === "Already checked out / Not checked in" && (
+          <View style={styles.alreadyChecked}>
+            <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+              <Image
+                source={require('@/assets/img/check.png')}
+                style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+              />
+            </TouchableOpacity>
+            <View style={styles.whitened}>
+              <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+            </View>
+          </View>
+        )}
+
       </ImageBackground>
     </SafeAreaView>
   );
@@ -198,6 +218,28 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'flex-end',
     right: '15%',
+  },
+  alreadyChecked:{
+    position: 'relative',
+    flexDirection: 'column',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: '25%',
+  },
+  whitened:{
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    padding: scaleHeightSize(20),
+    borderRadius: scaleWidthSize(10),
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textChecked: {
+    color: '#FFF',
+    fontSize: scaleFontSize(25),
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
 

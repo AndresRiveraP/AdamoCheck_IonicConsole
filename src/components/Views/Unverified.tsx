@@ -43,7 +43,7 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
         } else{
             try {
                 setShowLoading(true);
-                const response = await fetch('https://adamocheckback.up.railway.app/api/logs/unverified', {
+                const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/unverified', {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json',
