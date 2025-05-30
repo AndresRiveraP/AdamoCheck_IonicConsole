@@ -38,7 +38,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   
   let payload: any = null;
 
@@ -51,7 +51,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       } else {
         takePicture();
       }
-    }, 700);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [isTestMode]);
@@ -59,7 +59,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const takePicture = async () => {
     if (cameraRef.current) {
         const options = { 
-        quality: 0.77,
+        quality: 0.85,
         base64: true,
         fixOrientation: true,
         forceUpOrientation: true
@@ -74,7 +74,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
           setCameraView(false);
           setShowLoading(true);
           gotoAPIResponse(base64String);
-        }, 400);
+        }, 500);
       } catch (error) {
         console.log('Error taking picture: ', error);
       }
