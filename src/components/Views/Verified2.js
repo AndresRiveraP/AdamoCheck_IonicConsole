@@ -149,7 +149,7 @@ const Verified = ({ route, navigation }) => {
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
                 <Image
                   source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
+                  style={{ width: scaleWidthSize(25), height: scaleWidthSize(25) }}
                 />
               </TouchableOpacity>
               <View style={styles.whitened}>
@@ -164,7 +164,7 @@ const Verified = ({ route, navigation }) => {
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
                 <Image
                   source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
+                  style={{ width: scaleWidthSize(25), height: scaleWidthSize(25) }}
                 />
               </TouchableOpacity>
               <View style={styles.whitened}>
@@ -181,7 +181,7 @@ const Verified = ({ route, navigation }) => {
 
         <View style={styles.textContainer}>
           <View style={styles.salut}>
-            {result[0].statusCode !== 200 ? (<></>) : (
+            {result[1].statusCode !== 200 ? (<></>) : (
             <Text style={styles.welcome}>
                 {check === 'in' ? 'Hi!' : 'Farewell!'}
             </Text>)}
@@ -197,7 +197,7 @@ const Verified = ({ route, navigation }) => {
             {'\n'}
             {lastName2}
           </Text>
-          {result[0].statusCode === 200 && ( <>
+          {result[1].statusCode === 200 && ( <>
           <View style={styles.identi}>
             <Image
               source={require('@/assets/img/logoCheck.png')}
@@ -218,8 +218,8 @@ const Verified = ({ route, navigation }) => {
               style={styles.ico}
             />
             {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
+              <Text style={styles.idS}> Check In: {result[1]?.log.checkin ?? "N/A"} </Text> : 
+              <Text style={styles.idS}> Check Out: {result[1]?.log.checkout ?? "N/A"}</Text>
             }
           </View>
           </>)}
@@ -229,7 +229,7 @@ const Verified = ({ route, navigation }) => {
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
                 <Image
                   source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
+                  style={{ width: scaleWidthSize(25), height: scaleWidthSize(25) }}
                 />
               </TouchableOpacity>
               <View style={styles.whitened}>
@@ -244,7 +244,7 @@ const Verified = ({ route, navigation }) => {
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
                 <Image
                   source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
+                  style={{ width: scaleWidthSize(25), height: scaleWidthSize(25) }}
                 />
               </TouchableOpacity>
               <View style={styles.whitened}>
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   franx:{
-    height: 2,
+    height: 1.5,
     backgroundColor: '#FFF',
   },
   ico1:{
@@ -337,13 +337,14 @@ const styles = StyleSheet.create({
     fontSize: scaleFontSize(15),
     marginLeft: 10,
   },
-  footer: {
+ footer: {
     display: 'flex',
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     alignItems: 'center',
-    right: '-60%',
+    justifyContent: 'center',
     width: scaleWidthSize(57),
     height: scaleHeightSize(57),
+    marginTop: 10,
   },
   check: {
     width: '100%',
@@ -362,7 +363,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
     padding: scaleHeightSize(20),
     borderRadius: scaleWidthSize(10),
-    width: '95%',
+    width: '98%',
     alignItems: 'center',
     justifyContent: 'center',
   },

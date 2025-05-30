@@ -13,7 +13,7 @@ import { RNCamera, TakePictureResponse } from 'react-native-camera';
 import LoadingModal from './LoadingModal';
 
 import oneFaceData from '../../assets/apiTesters/1face.json'; 
-import twoFacesData from '../../assets/apiTesters/2faces.json'; 
+import twoFacesData from '../../assets/apiTesters/2facesR.json'; 
 import threeFacesData from '../../assets/apiTesters/3faces.json'; 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -38,7 +38,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   
   let payload: any = null;
 
@@ -47,7 +47,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       if (isTestMode) {
         setCameraView(false);
         setShowLoading(true);
-        gotoAPIResponse(twoFacesData.image); 
+        gotoAPIResponse(threeFacesData.image); 
       } else {
         takePicture();
       }
@@ -59,7 +59,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const takePicture = async () => {
     if (cameraRef.current) {
         const options = { 
-        quality: 0.75,
+        quality: 0.77,
         base64: true,
         fixOrientation: true,
         forceUpOrientation: true
