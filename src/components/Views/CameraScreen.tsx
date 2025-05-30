@@ -38,7 +38,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(false);
+  const [isTestMode, setIsTestMode] = useState<boolean>(true);
   
   let payload: any = null;
 
@@ -47,7 +47,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       if (isTestMode) {
         setCameraView(false);
         setShowLoading(true);
-        gotoAPIResponse(threeFacesData.image); 
+        gotoAPIResponse(oneFaceData.image); 
       } else {
         takePicture();
       }

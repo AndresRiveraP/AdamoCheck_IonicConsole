@@ -3,6 +3,7 @@ import moment from 'moment';
 import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
+import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
@@ -106,6 +107,7 @@ const Verified3 = ({ route, navigation }) => {
   }
 
   return (
+    <AnimatedScreenWrapper>
     <SafeAreaView style={styles.container}>
       <ImageBackground
         source={require('@/assets/img/backGround.png')}
@@ -308,6 +310,7 @@ const Verified3 = ({ route, navigation }) => {
 
       </ImageBackground>
     </SafeAreaView>
+    </AnimatedScreenWrapper>
   );
 };
 

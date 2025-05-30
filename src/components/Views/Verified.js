@@ -3,6 +3,7 @@ import moment from 'moment';
 import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
+import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
@@ -75,82 +76,84 @@ const Verified = ({ route, navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require('@/assets/img/backGround.png')}
-        style={styles.background}>
-        <View style={styles.header}>
-          <Text style={styles.title}>adamo</Text>
-          <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
-        </View>
-        {result.statusCode !== 200 ? (<></>) : (
-        <View style={styles.textContainer}>
-          <Text style={styles.welcome}>
-            {check === 'in' ? 'Welcome!' : 'Farewell!'}
-          </Text>
-          <Text style={styles.name}>
-            {name}
-            {'\n'}
-            {lastName}
-          </Text>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/logoCheck.png')}
-              style={styles.ico}
-            />
-            <Text style={styles.idS}>{id}</Text>
+    <AnimatedScreenWrapper>
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={require('@/assets/img/backGround.png')}
+          style={styles.background}>
+          <View style={styles.header}>
+            <Text style={styles.title}>adamo</Text>
+            <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
           </View>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/user-role.png')}
-              style={styles.ico}
-            />
-            <Text style={styles.idS}>{result?.role}</Text>
-          </View>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/working-time.png')}
-              style={styles.ico}
-            />
-            {check === 'in' ?
-              <Text style={styles.idS}> Check In: {result?.log.checkin ?? "N/A"} </Text> : 
-              <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
-            }
-          </View>
-        </View>)}
-
-
-        {result.message === "You are already checked in" && (
-          <View style={styles.alreadyChecked}>
-            <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+          {result.statusCode !== 200 ? (<></>) : (
+          <View style={styles.textContainer}>
+            <Text style={styles.welcome}>
+              {check === 'in' ? 'Welcome!' : 'Farewell!'}
+            </Text>
+            <Text style={styles.name}>
+              {name}
+              {'\n'}
+              {lastName}
+            </Text>
+            <View style={styles.identi}>
               <Image
-                source={require('@/assets/img/check.png')}
-                style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+                source={require('@/assets/img/logoCheck.png')}
+                style={styles.ico}
               />
-            </TouchableOpacity>
-            <View style={styles.whitened}>
-              <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+              <Text style={styles.idS}>{id}</Text>
             </View>
-          </View>
-        )  
-        }
-
-        {result.message === "Already checked out / Not checked in" && (
-          <View style={styles.alreadyChecked}>
-            <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+            <View style={styles.identi}>
               <Image
-                source={require('@/assets/img/check.png')}
-                style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+                source={require('@/assets/img/user-role.png')}
+                style={styles.ico}
               />
-            </TouchableOpacity>
-            <View style={styles.whitened}>
-              <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+              <Text style={styles.idS}>{result?.role}</Text>
             </View>
-          </View>
-        )}
+            <View style={styles.identi}>
+              <Image
+                source={require('@/assets/img/working-time.png')}
+                style={styles.ico}
+              />
+              {check === 'in' ?
+                <Text style={styles.idS}> Check In: {result?.log.checkin ?? "N/A"} </Text> : 
+                <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
+              }
+            </View>
+          </View>)}
 
-      </ImageBackground>
-    </SafeAreaView>
+
+          {result.message === "You are already checked in" && (
+            <View style={styles.alreadyChecked}>
+              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+                <Image
+                  source={require('@/assets/img/check.png')}
+                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+                />
+              </TouchableOpacity>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+              </View>
+            </View>
+          )  
+          }
+
+          {result.message === "Already checked out / Not checked in" && (
+            <View style={styles.alreadyChecked}>
+              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+                <Image
+                  source={require('@/assets/img/check.png')}
+                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+                />
+              </TouchableOpacity>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+              </View>
+            </View>
+          )}
+
+        </ImageBackground>
+      </SafeAreaView>
+    </AnimatedScreenWrapper>
   );
 };
 
