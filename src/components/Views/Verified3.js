@@ -96,7 +96,7 @@ const Verified3 = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3500);
+    }, 350000000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -125,13 +125,15 @@ const Verified3 = ({ route, navigation }) => {
           
         <View style={styles.textContainer}>
           <View style={styles.salut}>
-            <Text style={styles.welcome}>
-                {check === 'in' ? 'Hi!' : 'Farewell!'}
-            </Text>
-            <Image
-              source={require('@/assets/img/logoCheck.png')}
-              style={styles.ico1}
-            />
+            {result[0].statusCode !== 200 ? (<></>) : (
+              <Text style={styles.welcome}>
+                  {check === 'in' ? 'Hi!' : 'Farewell!'}
+              </Text>
+            )}
+              <Image
+                source={require('@/assets/img/logoCheck.png')}
+                style={styles.ico1}
+              />
           </View>
           
           <Text style={styles.name}>
@@ -139,13 +141,62 @@ const Verified3 = ({ route, navigation }) => {
             {'\n'}
             {lastName1}
           </Text>
-          <View style={styles.identi}>
-            <Image
-              source={require('@/assets/img/logoCheck.png')}
-              style={styles.ico}
-            />
-            <Text style={styles.idS}>{id1}</Text>
-          </View>
+           {result[0].statusCode === 200 && ( <>
+              <View style={styles.identi}>
+                <Image
+                  source={require('@/assets/img/logoCheck.png')}
+                  style={styles.ico}
+                />
+                <Text style={styles.idS}>{id1}</Text>
+              </View>
+              <View style={styles.identi}>
+                <Image
+                  source={require('@/assets/img/user-role.png')}
+                  style={styles.ico}
+                />
+                <Text style={styles.idS}>{result[0]?.role}</Text>
+              </View>
+              <View style={styles.identi}>
+                <Image
+                  source={require('@/assets/img/working-time.png')}
+                  style={styles.ico}
+                />
+                {check === 'in' ?
+                  <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
+                  <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
+                }
+              </View>
+              </>)}
+
+          {result[0].message === "You are already checked in" && (
+            <View style={styles.alreadyChecked}>
+              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+                <Image
+                  source={require('@/assets/img/check.png')}
+                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+                />
+              </TouchableOpacity>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+              </View>
+            </View>
+          )  
+        }
+  
+          {result[0].message === "Already checked out / Not checked in" && (
+            <View style={styles.alreadyChecked}>
+              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
+                <Image
+                  source={require('@/assets/img/check.png')}
+                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
+                />
+              </TouchableOpacity>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+              </View>
+            </View>
+          )}
+        
         </View>
 
         <View style={styles.franx}></View>
@@ -302,6 +353,27 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'contain',
     zIndex: 3,
+  },
+  alreadyChecked:{
+    position: 'relative',
+    flexDirection: 'column',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  whitened:{
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    padding: scaleHeightSize(14),
+    borderRadius: scaleWidthSize(6),
+    width: '98%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textChecked: {
+    color: '#FFF',
+    fontSize: scaleFontSize(14),
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
 
