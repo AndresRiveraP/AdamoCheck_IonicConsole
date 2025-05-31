@@ -8,7 +8,6 @@ interface AnimatedScreenWrapperProps {
 }
 
 const AnimatedScreenWrapper: React.FC<AnimatedScreenWrapperProps> = ({ children }) => {
-  // Change from width to -width to start from left instead of right
   const slideAnim = useRef(new Animated.Value(-width)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 

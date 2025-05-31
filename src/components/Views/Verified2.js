@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';  
+
+const { width } = Dimensions.get('window');
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
@@ -27,8 +29,21 @@ const Verified = ({ route, navigation }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [result, setResult] = useState(null);
 
+  const apiCallMade = useRef(false);
+
+  const firstSlideAnim = useRef(new Animated.Value(-width)).current;
+  const firstFadeAnim = useRef(new Animated.Value(0)).current;
+  const secondSlideAnim = useRef(new Animated.Value(-width)).current;
+  const secondFadeAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     const createLog = async () => {
+
+      if (apiCallMade.current) return;
+      
+      // Mark that the API call is being made
+      apiCallMade.current = true;
+
       const logs = [
         {
           day: formattedDate,
@@ -83,12 +98,43 @@ const Verified = ({ route, navigation }) => {
 
     createLog();
 
+    if (shouldRender) {
+      // First container animation
+      Animated.parallel([
+        Animated.timing(firstSlideAnim, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(firstFadeAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start();
+
+      setTimeout(() => {
+        Animated.parallel([
+          Animated.timing(secondSlideAnim, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+          }),
+          Animated.timing(secondFadeAnim, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+          }),
+        ]).start();
+      }, 400); // 300ms delay between animations
+    }
+
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [shouldRender]);
 
   if (!shouldRender) {
     return null;
@@ -101,7 +147,15 @@ const Verified = ({ route, navigation }) => {
           source={require('@/assets/img/backGround.png')}
           style={styles.background}>
             
-          <View style={styles.textContainer}>
+         <Animated.View 
+            style={[
+              styles.textContainer, 
+              { 
+                opacity: firstFadeAnim,
+                transform: [{ translateX: firstSlideAnim }] 
+              }
+            ]}
+          >
             <View style={styles.salut}>
               {result[0].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -175,13 +229,14 @@ const Verified = ({ route, navigation }) => {
               </View>
             )}
           
-          </View>
+          </Animated.View>
 
           
 
           <View style={styles.franx}></View>
 
-          <View style={styles.textContainer}>
+          <Animated.View 
+            style={[styles.textContainer, { opacity: secondFadeAnim,transform: [{ translateX: secondSlideAnim }] }]}>
             <View style={styles.salut}>
               {result[1].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -255,7 +310,7 @@ const Verified = ({ route, navigation }) => {
               </View>
             )}
           
-          </View>
+          </Animated.View>
         </ImageBackground>
       </SafeAreaView>
     </AnimatedScreenWrapper>

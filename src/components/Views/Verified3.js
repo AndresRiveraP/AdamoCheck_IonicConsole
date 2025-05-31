@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
+
+const {width} = Dimensions.get('window');
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
@@ -31,8 +33,23 @@ const Verified3 = ({ route, navigation }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [result, setResult] = useState(null);
 
+  // Add API call tracking ref
+  const apiCallMade = useRef(false);
+  
+  // Add animation refs for all three containers
+  const firstSlideAnim = useRef(new Animated.Value(-width)).current;
+  const firstFadeAnim = useRef(new Animated.Value(0)).current;
+  const secondSlideAnim = useRef(new Animated.Value(-width)).current;
+  const secondFadeAnim = useRef(new Animated.Value(0)).current;
+  const thirdSlideAnim = useRef(new Animated.Value(-width)).current;
+  const thirdFadeAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     const createLog = async () => {
+      if (apiCallMade.current) return;
+
+      apiCallMade.current = true;
+
       const logs = [
         {
           day: formattedDate,
@@ -95,12 +112,60 @@ const Verified3 = ({ route, navigation }) => {
 
     createLog();
 
+    if (shouldRender) {
+    // First container animation
+    Animated.parallel([
+      Animated.timing(firstSlideAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(firstFadeAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Second container animation with delay
+    setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(secondSlideAnim, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(secondFadeAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, 200); 
+
+    // Third container animation with longer delay
+    setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(thirdSlideAnim, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(thirdFadeAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, 1000);
+  }
+
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4000);
+    }, 4000000000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [shouldRender]);
 
   if (!shouldRender) {
     return null;
@@ -125,7 +190,8 @@ const Verified3 = ({ route, navigation }) => {
         
         </View>
           
-        <View style={styles.textContainer}>
+        <Animated.View 
+            style={[styles.textContainer, { opacity: secondFadeAnim,transform: [{ translateX: secondSlideAnim }]}]}>
           <View style={styles.salut}>
             {result[0].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -182,11 +248,18 @@ const Verified3 = ({ route, navigation }) => {
             </View>
           )}
         
-        </View>
+        </Animated.View>
 
         <View style={styles.franx}></View>
 
-        <View style={styles.textContainer}>
+        <Animated.View 
+            style={[
+              styles.textContainer, 
+              { 
+                opacity: thirdFadeAnim,
+                transform: [{ translateX: thirdSlideAnim }] 
+              }
+            ]}>
           <View style={styles.salut}>
             {result[1].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -243,12 +316,19 @@ const Verified3 = ({ route, navigation }) => {
             </View>
           )}
         
-        </View>
+        </Animated.View>
 
 
         <View style={styles.franx}></View>
 
-        <View style={styles.textContainer}>
+       <Animated.View 
+          style={[
+            styles.textContainer, 
+            { 
+              opacity: thirdFadeAnim,
+              transform: [{ translateX: thirdSlideAnim }] 
+            }
+        ]}>
           <View style={styles.salut}>
             {result[2].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -305,7 +385,7 @@ const Verified3 = ({ route, navigation }) => {
             </View>
           )}
         
-        </View>
+        </Animated.View>
 
 
       </ImageBackground>

@@ -47,7 +47,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       if (isTestMode) {
         setCameraView(false);
         setShowLoading(true);
-        gotoAPIResponse(twoFacesData.image); 
+        gotoAPIResponse(threeFacesData.image); 
       } else {
         takePicture();
       }
