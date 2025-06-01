@@ -38,7 +38,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const [cameraView, setCameraView] = useState<boolean>(true);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   
   let payload: any = null;
 
@@ -47,11 +47,11 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       if (isTestMode) {
         setCameraView(false);
         setShowLoading(true);
-        gotoAPIResponse(threeFacesData.image); 
+        gotoAPIResponse(oneFaceData.image); 
       } else {
         takePicture();
       }
-    }, 1000);
+    }, 600);
 
     return () => clearTimeout(timer);
   }, [isTestMode]);
@@ -74,7 +74,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
           setCameraView(false);
           setShowLoading(true);
           gotoAPIResponse(base64String);
-        }, 500);
+        }, 300);
       } catch (error) {
         console.log('Error taking picture: ', error);
       }
@@ -86,6 +86,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   };
 
   const verifyResponse = (res: any) => {
+    console.log("Response from API: ", res);
     if (res.statusCode !== 200) {
       navigation.navigate('Unverified', { check });
     } else if (res.statusCode === 200 && res.body.matches.length > 0) {

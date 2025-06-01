@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, BackHandler} from 'react-native';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
+import { useFocusEffect } from '@react-navigation/native';
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
@@ -23,6 +23,18 @@ const Verified = ({ route, navigation }) => {
 
   const [shouldRender, setShouldRender] = useState(false);
   const [result, setResult] = useState(null);
+
+  useFocusEffect(
+  React.useCallback(() => {
+    const onBackPress = () => {
+      navigation.navigate('InitialScreen');
+      return true; // Prevents default back behavior
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [navigation])
+);
 
   useEffect(() => {
     const createLog = async () => {
@@ -47,6 +59,7 @@ const Verified = ({ route, navigation }) => {
 
         setResult(result);
 
+        console.log('Result', response);
         if (response.status === 200) {
           console.log('Log created successfully:', result);
           setShouldRender(true);
@@ -65,7 +78,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4000);
+    }, 40000000);
 
     return () => clearTimeout(timer);
 
@@ -85,7 +98,7 @@ const Verified = ({ route, navigation }) => {
             <Text style={styles.title}>adamo</Text>
             <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
           </View>
-          {result.statusCode !== 200 ? (<></>) : (
+          {result.status !== 200 ? (<></>) : (
           <View style={styles.textContainer}>
             <Text style={styles.welcome}>
               {check === 'in' ? 'Welcome!' : 'Farewell!'}

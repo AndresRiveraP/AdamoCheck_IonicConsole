@@ -1,9 +1,11 @@
 import Toast from 'react-native-toast-message';
 import React, {useState} from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, Modal, TouchableOpacity} from 'react-native'
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, Modal, TouchableOpacity,BackHandler} from 'react-native'
 import LoadingModal from './LoadingModal';
 import { scaleFontSize } from '@/utils/scaleUtils';
+import AnimatedScreenWrapper from './AnimatedScreenWrapper';
+import { useFocusEffect } from '@react-navigation/native';
 
 function sp(size: number) {
     return PixelRatio.getFontScale() * size;
@@ -54,15 +56,15 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
                 const result = await response.json();
         
                 if (response.ok) {
-                    //console.log('Employee fetched successfully:', result);
+                    console.log('Employee fetched successfully:', result);
                     const payload = {
-                        id: result.idNumber,
-                        name: result.name,
-                        lastname: result.lastname,
+                        id: result[0].employee.idNumber,
+                        name: result[0].employee.name,
+                        lastname: result[0].employee.lastname,
                       };
 
                     setShowLoading(false);
-                    navigation.navigate('Verified', {payload :payload,  check});
+                    navigation.navigate('Verified', {payload :[payload],  check});
                 } else {
                     console.error('Error fetching employeee:', result.message);
                 }
@@ -71,6 +73,18 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
             }
         }
     }
+
+    useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate('InitialScreen');
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [navigation])
+  );
 
     const handleRetry = () => {
     console.log('Retry pressed, check value:', check);
@@ -91,6 +105,7 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
         </Modal>
     </View>
     ) : (
+        <AnimatedScreenWrapper>
         <SafeAreaView style={styles.container}>
             <ImageBackground
             source={require('../../assets/img/imgBG02.png')}
@@ -148,8 +163,8 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
                 <Text style={styles.labelU}>Return</Text>
             </TouchableOpacity>
         </ImageBackground>
-        
     </SafeAreaView>
+    </AnimatedScreenWrapper>
     )}
     </View>
   )

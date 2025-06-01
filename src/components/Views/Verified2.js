@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions} from 'react-native';
+import { ImageBackground, StyleSheet, View, Imge, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions, BackHandler} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';  
+import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -11,7 +12,21 @@ function sp(size) {
   return PixelRatio.getFontScale() * size;
 }
 
+
 const Verified = ({ route, navigation }) => {
+
+  useFocusEffect(
+  React.useCallback(() => {
+    const onBackPress = () => {
+      navigation.navigate('InitialScreen');
+      return true; // Prevents default back behavior
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [navigation])
+);
+
   const { payload, check } = route.params;
   
   var name1 = payload[0].name;

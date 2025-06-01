@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions, BackHandler } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
+import { useFocusEffect } from '@react-navigation/native';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 
 const {width} = Dimensions.get('window');
@@ -43,6 +44,18 @@ const Verified3 = ({ route, navigation }) => {
   const secondFadeAnim = useRef(new Animated.Value(0)).current;
   const thirdSlideAnim = useRef(new Animated.Value(-width)).current;
   const thirdFadeAnim = useRef(new Animated.Value(0)).current;
+
+  useFocusEffect(
+  React.useCallback(() => {
+    const onBackPress = () => {
+      navigation.navigate('InitialScreen');
+      return true; // Prevents default back behavior
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [navigation])
+);
 
   useEffect(() => {
     const createLog = async () => {
@@ -141,7 +154,7 @@ const Verified3 = ({ route, navigation }) => {
           useNativeDriver: true,
         }),
       ]).start();
-    }, 200); 
+    }, 300); 
 
     // Third container animation with longer delay
     setTimeout(() => {
@@ -157,7 +170,7 @@ const Verified3 = ({ route, navigation }) => {
           useNativeDriver: true,
         }),
       ]).start();
-    }, 1000);
+    }, 600);
   }
 
     const timer = setTimeout(() => {
@@ -184,14 +197,20 @@ const Verified3 = ({ route, navigation }) => {
             style={styles.icoCheck}
           />
           {check === 'in' ?
-            <Text style={styles.idS}> Check In: {result[0]?.log.checkin ?? "N/A"} </Text> : 
-            <Text style={styles.idS}> Check Out: {result[0]?.log.checkout ?? "N/A"}</Text>
+            <Text style={styles.idS}> Check In: {formattedTime ?? "N/A"} </Text> : 
+            <Text style={styles.idS}> Check Out: {formattedTime ?? "N/A"}</Text>
           }
         
         </View>
           
         <Animated.View 
-            style={[styles.textContainer, { opacity: secondFadeAnim,transform: [{ translateX: secondSlideAnim }]}]}>
+          style={[
+            styles.textContainer, 
+            { 
+              opacity: firstFadeAnim,
+              transform: [{ translateX: firstSlideAnim }] 
+            }
+        ]}>
           <View style={styles.salut}>
             {result[0].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -252,14 +271,14 @@ const Verified3 = ({ route, navigation }) => {
 
         <View style={styles.franx}></View>
 
-        <Animated.View 
-            style={[
-              styles.textContainer, 
-              { 
-                opacity: thirdFadeAnim,
-                transform: [{ translateX: thirdSlideAnim }] 
-              }
-            ]}>
+       <Animated.View 
+          style={[
+            styles.textContainer, 
+            { 
+              opacity: secondFadeAnim,
+              transform: [{ translateX: secondSlideAnim }] 
+            }
+          ]}>
           <View style={styles.salut}>
             {result[1].statusCode !== 200 ? (<></>) : (
               <Text style={styles.welcome}>
@@ -465,8 +484,8 @@ const styles = StyleSheet.create({
     top: "4%"
   },
   icoCheck:{
-    width: scaleWidthSize(35),
-    height: scaleWidthSize(35),
+    width: scaleWidthSize(40),
+    height: scaleWidthSize(40),
     resizeMode: 'contain',
   },
   ico: {

@@ -25,27 +25,28 @@ const Navigator = () => {
         <Stack.Screen
             name="CameraScreen"
             component={CameraScreen as React.FC}
-            options={{ headerShown: false } }
+            options={{ headerShown: false, headerLeft: () => null,} }
         />
          <Stack.Screen
             name="Verified"
             component={Verified as React.FC}
-            options={{ headerShown: false } }
+            options={{ headerShown: false , headerLeft: () => null,
+        }} 
         />
         <Stack.Screen
             name="Verified2"
             component={Verified2 as React.FC}
-            options={{ headerShown: false } }
+            options={{ headerShown: false, headerLeft: () => null, } }
         />
         <Stack.Screen 
             name="Verified3"
             component={Verified3 as React.FC}
-            options={{ headerShown: false } }
+            options={{ headerShown: false, headerLeft: () => null, } }
         />
          <Stack.Screen
             name="Unverified"
             component={Unverified as React.FC}
-            options={{ headerShown: false } }
+            options={{ headerShown: false, headerLeft: () => null} }
         />
       </Stack.Navigator>
     </NavigationContainer>
