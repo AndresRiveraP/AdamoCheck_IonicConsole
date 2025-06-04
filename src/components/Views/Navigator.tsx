@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
+import LoadingScreen from './LoadingModal';
 import Verified from './Verified';
 import Verified2 from './Verified2';
 import Verified3 from './Verified3';
@@ -27,6 +28,11 @@ const Navigator = () => {
             component={CameraScreen as React.FC}
             options={{ headerShown: false, headerLeft: () => null,} }
         />
+        <Stack.Screen
+            name="LoadingScreen"
+            component={LoadingScreen as React.FC}
+            options={{ headerShown: false, headerLeft: () => null,} }
+          />
          <Stack.Screen
             name="Verified"
             component={Verified as React.FC}

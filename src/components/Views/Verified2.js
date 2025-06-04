@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Imge, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions, BackHandler} from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions, BackHandler} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';  

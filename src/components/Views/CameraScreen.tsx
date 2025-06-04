@@ -5,15 +5,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Modal,
   Text,
   Dimensions,
 } from 'react-native';
 import { RNCamera, TakePictureResponse } from 'react-native-camera';
-import LoadingModal from './LoadingModal';
 
 import oneFaceData from '../../assets/apiTesters/1face.json'; 
-import twoFacesData from '../../assets/apiTesters/2facesR.json'; 
+import twoFacesData from '../../assets/apiTesters/2faces.json'; 
 import threeFacesData from '../../assets/apiTesters/3faces.json'; 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -27,7 +25,11 @@ interface CameraScreenProps {
   navigation: {
     navigate: (
       screen: string,
-      params?: { payload?: any; check?: string },
+      params?: { payload?: any; check?: string; base64Data?: string },
+    ) => void;
+    replace: (
+      screen: string,
+      params?: { payload?: any; check?: string; base64Data?: string },
     ) => void;
   };
 }
@@ -35,31 +37,27 @@ interface CameraScreenProps {
 const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
-  const [cameraView, setCameraView] = useState<boolean>(true);
-  const [showLoading, setShowLoading] = useState<boolean>(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(false);
+  const [isTestMode, setIsTestMode] = useState<boolean>(true);
   
-  let payload: any = null;
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isTestMode) {
-        setCameraView(false);
-        setShowLoading(true);
-        gotoAPIResponse(oneFaceData.image); 
+        navigation.replace('LoadingScreen', { 
+          check,
+          base64Data: oneFaceData.image
+        });
       } else {
         takePicture();
       }
-    }, 600);
+    }, 1000);
 
     return () => clearTimeout(timer);
-  }, [isTestMode]);
+  }, [isTestMode, navigation, check]);
 
   const takePicture = async () => {
     if (cameraRef.current) {
         const options = { 
-        quality: 0.85,
+        quality: 0.9,
         base64: true,
         fixOrientation: true,
         forceUpOrientation: true
@@ -67,16 +65,15 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
 
       try {
         const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
-        setCapturedImage(data.uri);
         const base64String = data.base64 ?? '';
 
-        setTimeout(() => {
-          setCameraView(false);
-          setShowLoading(true);
-          gotoAPIResponse(base64String);
-        }, 300);
+        navigation.navigate('LoadingScreen', {
+          check,
+          base64Data: base64String
+        });
       } catch (error) {
         console.log('Error taking picture: ', error);
+        navigation.navigate('Unverified', { check });
       }
     }
   };
@@ -85,117 +82,57 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
     setIsTestMode(!isTestMode);
   };
 
-  const verifyResponse = (res: any) => {
-    console.log("Response from API: ", res);
-    if (res.statusCode !== 200) {
-      navigation.navigate('Unverified', { check });
-    } else if (res.statusCode === 200 && res.body.matches.length > 0) {
-      console.log("Payload Sent: ", res.body.matches);
-      payload = res.body.matches;
-      switch (payload.length) {
-        case 1:
-          navigation.navigate('Verified', {payload, check });
-          break;
-        case 2:
-          navigation.navigate('Verified2', { payload, check });
-          break;
-        case 3: 
-          navigation.navigate('Verified3', { payload, check });
-          break;
-        default:
-          navigation.navigate('Verified', {payload, check });
-          break;
-      }
-    } else {
-      console.log(`${res['message']}`);
-    }
-  };
-
-  const gotoAPIResponse = async (base64Data: string) => {
-    try {
-      const response = await fetch(
-        'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            image: base64Data,
-          }),
-        },
-      );
-      const data = await response.text();
-      setShowLoading(false);
-      const res = JSON.parse(data);
-      verifyResponse(res);
-    } catch (error) {
-      console.log('API call error: ', error);
-    }
-  };
-
   return (
     <View style={styles.container}>
-      {cameraView ? (
-        <SafeAreaView style={styles.container}>
-          <RNCamera
-            ref={cameraRef}
-            style={styles.camera}
-            type={RNCamera.Constants.Type.front}
-            captureAudio={false}
-            flashMode={RNCamera.Constants.FlashMode.off}
-            androidCameraPermissionOptions={{
-              title: 'Permission to use camera',
-              message: 'We need your permission to use your camera',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel',
-            }}
-            ratio="16:9"
-            defaultVideoQuality={RNCamera.Constants.VideoQuality["1080p"]}
-            >
-            <View style={styles.top}>
-              <Image
-                source={require('../../assets/img/topC.png')}
-                style={styles.topC}
-              />
-              <Image
-                source={require('../../assets/img/logoCheck.png')}
-                style={styles.logoAID}
-              />
-              <Text style={styles.checkText}>
-                {check === 'in' ? 'Check In' : 'Check Out'}
-              </Text>
-            </View>
+      <SafeAreaView style={styles.container}>
+        <RNCamera
+          ref={cameraRef}
+          style={styles.camera}
+          type={RNCamera.Constants.Type.front}
+          captureAudio={false}
+          flashMode={RNCamera.Constants.FlashMode.off}
+          androidCameraPermissionOptions={{
+            title: 'Permission to use camera',
+            message: 'We need your permission to use your camera',
+            buttonPositive: 'Ok',
+            buttonNegative: 'Cancel',
+          }}
+          ratio="16:9"
+          defaultVideoQuality={RNCamera.Constants.VideoQuality["1080p"]}
+          >
+          <View style={styles.top}>
+            <Image
+              source={require('../../assets/img/topC.png')}
+              style={styles.topC}
+            />
+            <Image
+              source={require('../../assets/img/logoCheck.png')}
+              style={styles.logoAID}
+            />
+            <Text style={styles.checkText}>
+              {check === 'in' ? 'Check In' : 'Check Out'}
+            </Text>
+          </View>
 
-            <View style={styles.bottom}>
-              <Image
-                source={require('../../assets/img/bottomC.png')}
-                style={styles.bottomC}
-              />
+          <View style={styles.bottom}>
+            <Image
+              source={require('../../assets/img/bottomC.png')}
+              style={styles.bottomC}
+            />
 
-              <TouchableOpacity
-                style={styles.touchableCamera}
-                onPress={toggleTestMode}>
-                <View style={styles.cameraBtn}>
-                  <Image
-                    source={require('../../assets/gif/elipsis.gif')}
-                    style={styles.cameraAID}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </RNCamera>
-        </SafeAreaView>
-      ) : (
-        <View>
-          {showLoading && (
-            <Modal animationType="slide" style={styles.modalLoading}>
-              <LoadingModal />
-            </Modal>
-          )}
-        </View>
-      )}
+            <TouchableOpacity
+              style={styles.touchableCamera}
+              onPress={toggleTestMode}>
+              <View style={styles.cameraBtn}>
+                <Image
+                  source={require('./assets/gif/elipsis.gif')}
+                  style={styles.cameraAID}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </RNCamera>
+      </SafeAreaView>
     </View>
   );
 };
@@ -287,10 +224,6 @@ const styles = StyleSheet.create({
   coutdownText: {
     fontSize: 34,
     fontWeight: 'bold',
-  },
-  modalLoading: {
-    flex: 1,
-    justifyContent: 'center',
   },
 });
 

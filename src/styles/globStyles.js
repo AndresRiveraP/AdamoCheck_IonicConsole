@@ -42,15 +42,6 @@ export default StyleSheet.create({
     padding: 20,
     marginTop: '8%',
   },
-  botonAdmin: {
-    width: scaleWidthSize(120),
-    marginTop: '-10%',
-    marginRight: '8%',
-    alignSelf: 'flex-end',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderRadius: 35,
-    paddingVertical: 10,
-  },
   profi: {
     width: scaleWidthSize(20),
     height: scaleHeightSize(20),
