@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, SafeAreaView, View, Dimensions, Text, TouchableOpacity, TextInput, PixelRatio } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Dimensions, Text, TouchableOpacity, TextInput, PixelRatio, ToastAndroid } from 'react-native';
 import Video from 'react-native-video';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 
@@ -90,11 +90,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           {apiCallError && (
             <>
               <View style={{top:'-10%' , alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: '500', color: 'red', textAlign: 'center' }}>There seems to be a connection failure. {'\n'} Please retry or type your ID.</Text>
+                <Text style={{ fontSize: 16, fontWeight: '500', color: 'red', textAlign: 'center' }}>There seems to be a latency failure. {'\n'} Please retry or type your ID.</Text>
                 <View>
-                  <TouchableOpacity style={{ marginTop: 20, padding: 10, backgroundColor: '#000', borderRadius: 5 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', textAlign: 'center' }} onPress={() => navigation.navigate('CameraScreen')}>Retry</Text>
+                  <TouchableOpacity style={{ marginTop: 20, padding: 10, backgroundColor: '#000', borderRadius: 5 }} onPress={() => navigation.navigate('InitialScreen')}>
+                    <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', textAlign: 'center' }} >Retry</Text>
                   </TouchableOpacity>
+
                   <View style={styles.inputContainer}>
                     <TextInput
                       style={styles.input}
@@ -108,8 +109,19 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
                     />
                   </View>     
 
-                    <TouchableOpacity style={{display: 'flex', alignItems: 'center', backgroundColor: '#'}}  onPress={() => navigation.navigate('InitialScreen')}>
-                    <Text style={{ fontSize: 16, color: '#000', marginTop: 20 }}>Continue</Text>
+                    <TouchableOpacity 
+                      style={{
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        backgroundColor: '#2bbfed', 
+                        borderRadius: 10,
+                        paddingVertical: 10, 
+                        paddingHorizontal: 20 
+                      }}  
+                      onPress={() => [ToastAndroid.show('Your ID is stored for today', ToastAndroid.SHORT), navigation.navigate('InitialScreen')]}
+                    >
+                      <Text style={{ fontSize: 16, color: '#000', alignSelf: "center" }}>Continue</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
@@ -141,8 +153,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   inputContainer: {
-      width: '50%',
-      border: '1px solid rgb(110, 110, 110)',
+    marginTop: 20,
+    width: '50%',
   },
   input: {
     display: 'flex',
