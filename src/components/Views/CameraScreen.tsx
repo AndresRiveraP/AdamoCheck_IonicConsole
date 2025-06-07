@@ -42,7 +42,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       if (isTestMode) {
           navigation.replace('LoadingScreen', { 
             check,
-            base64Data: threeFacesData.image,
+            base64Data: twoFacesData.image,
             source: 'camera'
           });
       } else {

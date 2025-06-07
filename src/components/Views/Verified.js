@@ -78,7 +78,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3000); // 3000 milliseconds = 3 seconds
+    }, 3400); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -98,7 +98,7 @@ const Verified = ({ route, navigation }) => {
             <Text style={styles.title}>adamo</Text>
             <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
           </View>
-          {result.status !== 200 ? (<></>) : (
+          {result.statusCode !== 200 ? (<></>) : (
           <View style={styles.textContainer}>
             <Text style={styles.welcome}>
               {check === 'in' ? 'Welcome!' : 'Farewell!'}

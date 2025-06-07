@@ -115,3 +115,5 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
+//FQ I'm proud of you

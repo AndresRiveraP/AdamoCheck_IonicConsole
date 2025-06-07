@@ -60,7 +60,7 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
 
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{display:'flex', flexDirection: 'row', alignSelf: 'center'}}>
             <Image
             source={require('../../assets/img/logoCheck.png')}
             style={styles.logoA}
