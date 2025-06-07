@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import { ImageBackground, View, Image, Text, TouchableOpacity, StyleSheet, Platform, PermissionsAndroid, Alert} from 'react-native';
+import React, {useEffect} from 'react';
+import { ImageBackground, View, Image, Text, TouchableOpacity, Platform, PermissionsAndroid, Alert, PixelRatio} from 'react-native';
 
 import { scaleFontSize} from '@/utils/scaleUtils';
 import styles from '@/styles/globStyles';
 
 import { NavigationProp } from '@react-navigation/native';
 
+const sp = (size: number) => {
+  return size * PixelRatio.getFontScale();
+}
 
 const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   let check: string | null = null;
@@ -57,10 +60,24 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
 
       <View style={styles.container}>
-        <Image
-          source={require('../../assets/img/logoCheck.png')}
-          style={styles.logoA}
-        />
+        <View style={{flexDirection: 'row'}}>
+            <Image
+            source={require('../../assets/img/logoCheck.png')}
+            style={styles.logoA}
+          />
+          <Text style={{
+            fontFamily: 'Guitar-Acoustic',
+            textAlign: 'left',
+            alignSelf: 'flex-end',
+            left: '-25%',
+            color: 'white',
+            fontSize: sp(50),
+            fontWeight: '500',
+            transform: [{ rotate: '-30deg' }] 
+          }}>
+            2.4!
+          </Text>
+        </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text
             style={{

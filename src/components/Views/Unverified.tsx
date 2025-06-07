@@ -157,14 +157,14 @@ const styles = StyleSheet.create({
     },
     Atention:{
         color: '#FFF',
-        fontSize: sp(25),
+        fontSize: sp(40),
         fontWeight: '700',
         fontFamily: 'Octarine',
         marginBottom: '5%',
     },
     AtentionP:{
         color: '#FFF',
-        fontSize: sp(20),
+        fontSize: sp(35),
         textAlign: 'center',
         fontWeight: '500',
         marginBottom: 20,
@@ -191,19 +191,19 @@ const styles = StyleSheet.create({
         color: "#FFF",
         fontWeight: '600',
         fontFamily: 'Octarine',
-        fontSize: sp(32),
+        fontSize: sp(45),
     },
     labelB:{
         color: "#2bbfed",
         fontWeight: '600',
         fontFamily: 'Octarine',
-        fontSize: sp(32),
+        fontSize: sp(45),
     },
     labelU:{
         color : '#FFF',
         fontWeight: '600',
         fontFamily: 'Octarine',
-        fontSize: sp(32),
+        fontSize: sp(45),
     },
     botonR:{
         position: 'relative',
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
         paddingVertical: '1%',
         paddingHorizontal: '5%',
         marginTop: '5%',
-        width: '50%',
+        width: '55%',
     },
     inputContainer: {
         width: '50%'
