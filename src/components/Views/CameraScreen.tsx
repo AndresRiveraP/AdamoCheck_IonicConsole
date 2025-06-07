@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Image,
   Text,
-  Dimensions,
 } from 'react-native';
 import { RNCamera, TakePictureResponse } from 'react-native-camera';
 
@@ -14,7 +13,6 @@ import oneFaceData from '../../assets/apiTesters/1face.json';
 import twoFacesData from '../../assets/apiTesters/2faces.json'; 
 import threeFacesData from '../../assets/apiTesters/3faces.json'; 
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface CameraScreenProps {
   route: {
@@ -25,11 +23,11 @@ interface CameraScreenProps {
   navigation: {
     navigate: (
       screen: string,
-      params?: { payload?: any; check?: string; base64Data?: string },
+      params?: { payload?: any; check?: string; base64Data?: string; source?: string },
     ) => void;
     replace: (
       screen: string,
-      params?: { payload?: any; check?: string; base64Data?: string },
+      params?: { payload?: any; check?: string; base64Data?: string; source?: string },
     ) => void;
   };
 }
@@ -37,15 +35,16 @@ interface CameraScreenProps {
 const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isTestMode) {
-        navigation.replace('LoadingScreen', { 
-          check,
-          base64Data: oneFaceData.image
-        });
+          navigation.replace('LoadingScreen', { 
+            check,
+            base64Data: threeFacesData.image,
+            source: 'camera'
+          });
       } else {
         takePicture();
       }
@@ -67,9 +66,10 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
         const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
         const base64String = data.base64 ?? '';
 
-        navigation.navigate('LoadingScreen', {
+       navigation.navigate('LoadingScreen', {
           check,
-          base64Data: base64String
+          base64Data: base64String,
+          source: 'camera'
         });
       } catch (error) {
         console.log('Error taking picture: ', error);

@@ -1,8 +1,7 @@
 import Toast from 'react-native-toast-message';
 import React, {useState} from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, Modal, TouchableOpacity,BackHandler} from 'react-native'
-import LoadingModal from './LoadingModal';
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, TouchableOpacity,BackHandler} from 'react-native'
 import { scaleFontSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import { useFocusEffect } from '@react-navigation/native';
@@ -20,7 +19,7 @@ interface UnverifiedProps {
     navigation: {
       navigate: (
         screen: string,
-        params?: { payload?: any; check?: string },
+        params?: { payload?: any; check?: string; documentId?: string; source?: string; base64Data?: string },
       ) => void;
       reset: (state: { index: number; routes: { name: string; params?: any }[] }) => void;
     };
@@ -28,50 +27,25 @@ interface UnverifiedProps {
 
 const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
     const {check} = route.params;
-
     const [documentId, setDocumentId] = useState('');
-    const [showLoading, setShowLoading] = useState<boolean>(false);
 
-    const VerifyWithId = async (documentId: string | any[]) => {
-
-        if (documentId.length < 5) {
-          Toast.show({
-            type: 'warning',
-            text1: 'Warning',
-            text2: "Please enter a valid identification number",
-            position: 'top',
-            visibilityTime: 3000,
-          });
-        } else{
-            try {
-                setShowLoading(true);
-                const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/unverified', {
-                    method: 'POST',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({identification : documentId}),
-                });
-        
-                const result = await response.json();
-        
-                if (response.ok) {
-                    console.log('Employee fetched successfully:', result);
-                    const payload = {
-                        id: result[0].employee.idNumber,
-                        name: result[0].employee.name,
-                        lastname: result[0].employee.lastname,
-                      };
-
-                    setShowLoading(false);
-                    navigation.navigate('Verified', {payload :[payload],  check});
-                } else {
-                    console.error('Error fetching employeee:', result.message);
-                }
-            } catch (error) {
-            console.error('Error fetching employee:', error);
-            }
-        }
+    const VerifyWithId = async (documentId: string) => {
+    if (documentId.length < 6) {
+        Toast.show({
+        type: 'warning',
+        text1: 'Warning',
+        text2: "Please enter a valid identification number",
+        position: 'top',
+        visibilityTime: 3000,
+        });
+    } else {
+        navigation.navigate('LoadingScreen', {
+            check,
+            documentId,
+            source: 'unverified',
+            base64Data: '' // Empty string as it's not needed for this flow
+        });
+    }
     }
 
     useFocusEffect(
@@ -97,76 +71,66 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
 };
 
   return (
-    <View style={styles.container}>
-    {showLoading ?  (
-    <View>
-        <Modal animationType="slide" style={styles.modalLoading}>
-            <LoadingModal />
-        </Modal>
-    </View>
-    ) : (
-        <AnimatedScreenWrapper>
-        <SafeAreaView style={styles.container}>
-            <ImageBackground
-            source={require('../../assets/img/imgBG02.png')}
-            style={styles.background}
-            >
-            
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '15%' }}>
-                <Text style={[ styles.title,{ color: '#fff'}]}>adamo</Text>
-                <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
-            </View>
-
-            <View style={styles.warning}>
-                <Image
-                    source={require('../../assets/img/face_check.png')}
-                    style={styles.cuteFace}
-                    />
-                <Text style={styles.Atention}>FACE NOT DETECTED</Text>
-                <Text style={styles.AtentionP}>Please enter your ID number or retry</Text>
-            </View>
-
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Your ID'
-                    placeholderTextColor='#FFF'
-                    keyboardType='numeric'
-                    maxLength={15}
-                    textAlign='center'
-                    value={documentId}
-                    onChangeText={setDocumentId}
-                />
-            </View>           
-
-
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '5%', gap: 15 }}>
-                <TouchableOpacity
-                style={[styles.botonV]}
-                onPress={() => {VerifyWithId(documentId)}}   >
-                    <Text style={styles.labelV}>Verify</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={[styles.botonW]}
-                    onPress={handleRetry}
+    <AnimatedScreenWrapper>
+            <SafeAreaView style={styles.container}>
+                <ImageBackground
+                source={require('../../assets/img/imgBG02.png')}
+                style={styles.background}
                 >
-                    <Text style={styles.labelB}>Retry</Text>
-                </TouchableOpacity>
-            </View>
-           
+                
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '15%' }}>
+                    <Text style={[ styles.title,{ color: '#fff'}]}>adamo</Text>
+                    <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
+                </View>
 
-            <TouchableOpacity
-                style={[styles.botonR]}
-                onPress={() => {navigation.navigate('InitialScreen')}}
-            >
-                <Text style={styles.labelU}>Return</Text>
-            </TouchableOpacity>
-        </ImageBackground>
-    </SafeAreaView>
+                <View style={styles.warning}>
+                    <Image
+                        source={require('../../assets/img/face_check.png')}
+                        style={styles.cuteFace}
+                        />
+                    <Text style={styles.Atention}>FACE NOT DETECTED</Text>
+                    <Text style={styles.AtentionP}>Please enter your ID number or retry</Text>
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Your ID'
+                        placeholderTextColor='#FFF'
+                        keyboardType='numeric'
+                        maxLength={15}
+                        textAlign='center'
+                        value={documentId}
+                        onChangeText={setDocumentId}
+                    />
+                </View>           
+
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '5%', gap: 15 }}>
+                    <TouchableOpacity
+                    style={[styles.botonV]}
+                    onPress={() => {VerifyWithId(documentId)}}   >
+                        <Text style={styles.labelV}>Verify</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[styles.botonW]}
+                        onPress={handleRetry}
+                    >
+                        <Text style={styles.labelB}>Retry</Text>
+                    </TouchableOpacity>
+                </View>
+            
+
+                <TouchableOpacity
+                    style={[styles.botonR]}
+                    onPress={() => {navigation.navigate('InitialScreen')}}
+                >
+                    <Text style={styles.labelU}>Return</Text>
+                </TouchableOpacity>
+            </ImageBackground>
+        </SafeAreaView>
     </AnimatedScreenWrapper>
-    )}
-    </View>
   )
 }
 

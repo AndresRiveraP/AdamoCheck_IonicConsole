@@ -8,6 +8,8 @@ interface LoadingScreenProps {
     params: {
       base64Data: string;
       check: string;
+      source?: string;
+      documentId?: string;
     };
   };
   navigation: any;
@@ -20,49 +22,76 @@ function sp(size: number) {
 }
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
-  const { base64Data, check } = route.params;
   const [apiCallError, setApiCallError] = useState(false);
   const [documentId, setDocumentId] = useState('');
 
   useEffect(() => {
     const processData = async () => {
+      const { source, base64Data, check, documentId } = route.params;
+
       try {
-        const response = await fetch(
-          'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',
-          {
+        if (!source || source === 'camera') {
+          const response = await fetch(
+            'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',
+            {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                image: base64Data,
+              }),
+            },
+          );
+          const data = await response.text();
+          const res = JSON.parse(data);
+          
+          if (res.statusCode !== 200) {
+            navigation.replace('Unverified', { check });
+          } else if (res.statusCode === 200 && res.body.matches.length > 0) {
+            const payload = res.body.matches;
+            switch (payload.length) {
+              case 1:
+                navigation.replace('Verified', { payload, check });
+                break;
+              case 2:
+                navigation.replace('Verified2', { payload, check });
+                break;
+              case 3:
+                navigation.replace('Verified3', { payload, check });
+                break;
+              default:
+                navigation.replace('Verified', { payload, check });
+                break;
+            }
+          } else {
+            navigation.replace('Unverified', { check });
+          }
+        } else if (source === 'unverified' && documentId) {
+          const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/unverified', {
             method: 'POST',
             headers: {
-              Accept: 'application/json',
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              image: base64Data,
-            }),
-          },
-        );
-        const data = await response.text();
-        const res = JSON.parse(data);
-        
-        if (res.statusCode !== 200) {
-          navigation.replace('Unverified', { check });
-        } else if (res.statusCode === 200 && res.body.matches.length > 0) {
-          const payload = res.body.matches;
-          switch (payload.length) {
-            case 1:
-              navigation.replace('Verified', { payload, check });
-              break;
-            case 2:
-              navigation.replace('Verified2', { payload, check });
-              break;
-            case 3:
-              navigation.replace('Verified3', { payload, check });
-              break;
-            default:
-              navigation.replace('Verified', { payload, check });
-              break;
+            body: JSON.stringify({identification: documentId}),
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok) {
+            console.log('Employee fetched successfully:', result);
+            const payload = {
+              id: result[0].employee.idNumber,
+              name: result[0].employee.name,
+              lastname: result[0].employee.lastname,
+            };
+            
+            navigation.replace('Verified', {payload: [payload], check});
+          } else {
+            console.error('Error fetching employee:', result.message);
+            navigation.replace('Unverified', { check });
           }
-        } else {
-          navigation.replace('Unverified', { check });
         }
       } catch (error) {
         console.log('API call error: ', error);
@@ -71,7 +100,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
     };
 
     processData();
-  }, [base64Data, check, navigation]);
+  }, [route.params, navigation]);
 
   return (
     <AnimatedScreenWrapper>
@@ -90,10 +119,10 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           {apiCallError && (
             <>
               <View style={{top:'-10%' , alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: '500', color: 'red', textAlign: 'center' }}>There seems to be a latency failure. {'\n'} Please retry or type your ID.</Text>
+                <Text style={{ fontSize: sp(35), fontWeight: '500', color: 'red', textAlign: 'center' }}>There seems to be a latency failure. {'\n'} Please retry or type your ID.</Text>
                 <View>
                   <TouchableOpacity style={{ marginTop: 20, padding: 10, backgroundColor: '#000', borderRadius: 5 }} onPress={() => navigation.navigate('InitialScreen')}>
-                    <Text style={{ fontSize: 16, fontWeight: '300', color: 'white', textAlign: 'center' }} >Retry</Text>
+                    <Text style={{ fontSize: sp(25), fontWeight: '400', color: 'white', textAlign: 'center' }}>Retry</Text>
                   </TouchableOpacity>
 
                   <View style={styles.inputContainer}>
@@ -121,7 +150,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
                       }}  
                       onPress={() => [ToastAndroid.show('Your ID is stored for today', ToastAndroid.SHORT), navigation.navigate('InitialScreen')]}
                     >
-                      <Text style={{ fontSize: 16, color: '#000', alignSelf: "center" }}>Continue</Text>
+                      <Text style={{ fontSize: sp(25), color: '#000', alignSelf: "center" }}>Continue</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
@@ -166,7 +195,8 @@ const styles = StyleSheet.create({
     borderColor: '#FFF',
     borderRadius: 35,
     shadowColor: '#000',
-    fontSize: sp(20),
+    fontWeight: '500',
+    fontSize: sp(30),
   },
 });
 

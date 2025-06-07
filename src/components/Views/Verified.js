@@ -78,7 +78,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 40000000);
+    }, 3000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
