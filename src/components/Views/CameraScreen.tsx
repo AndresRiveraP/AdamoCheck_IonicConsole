@@ -13,7 +13,6 @@ import oneFaceData from '../../assets/apiTesters/1face.json';
 import twoFacesData from '../../assets/apiTesters/2faces.json'; 
 import threeFacesData from '../../assets/apiTesters/3faces.json'; 
 
-
 interface CameraScreenProps {
   route: {
     params: {
@@ -35,28 +34,34 @@ interface CameraScreenProps {
 const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(false);
-  
+  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const hasNavigated = useRef(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isTestMode) {
+        if (!hasNavigated.current) {
+          hasNavigated.current = true;
           navigation.replace('LoadingScreen', { 
             check,
             base64Data: twoFacesData.image,
             source: 'camera'
           });
+        }
       } else {
         takePicture();
       }
     }, 1000);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTestMode, navigation, check]);
 
   const takePicture = async () => {
+    if (hasNavigated.current) return;
     if (cameraRef.current) {
-        const options = { 
-        quality: 0.9,
+      const options = { 
+        quality: 0.8,
         base64: true,
         fixOrientation: true,
         forceUpOrientation: true
@@ -65,16 +70,19 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
       try {
         const data: TakePictureResponse = await cameraRef.current.takePictureAsync(options);
         const base64String = data.base64 ?? '';
-
-       navigation.navigate('LoadingScreen', {
+        hasNavigated.current = true;
+        navigation.replace('LoadingScreen', {
           check,
           base64Data: base64String,
           source: 'camera'
         });
       } catch (error) {
-        console.log('Error taking picture: ', error);
-        navigation.navigate('Unverified', { check });
+        hasNavigated.current = true;
+        navigation.replace('Unverified', { check });
       }
+    } else {
+      hasNavigated.current = true;
+      navigation.replace('Unverified', { check });
     }
   };
 

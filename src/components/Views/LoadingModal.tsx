@@ -81,13 +81,27 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           
           if (response.ok) {
             console.log('Employee fetched successfully:', result);
-            const payload = {
-              id: result[0].employee.idNumber,
-              name: result[0].employee.name,
-              lastname: result[0].employee.lastname,
-            };
+
+            let payload;
             
-            navigation.replace('Verified', {payload: [payload], check});
+            if (Array.isArray(result) && result[0]?.employee) {
+              payload = {
+                id: result[0].employee.idNumber,
+                name: result[0].employee.name,
+                lastname: result[0].employee.lastname,
+              };
+            } else if (result.idNumber) {
+              payload = {
+                id: result.idNumber,
+                name: result.name,
+                lastname: result.lastname,
+              };
+            } else {
+              navigation.replace('Unverified', { check });
+              return;
+            }
+
+            navigation.replace('Verified', { payload: [payload], check });
           } else {
             console.error('Error fetching employee:', result.message);
             navigation.replace('Unverified', { check });
