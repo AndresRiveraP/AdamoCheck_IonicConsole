@@ -65,18 +65,6 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             source={require('../../assets/img/logoCheck.png')}
             style={styles.logoA}
           />
-          <Text style={{
-            fontFamily: 'Guitar-Acoustic',
-            textAlign: 'left',
-            alignSelf: 'flex-end',
-            left: '-25%',
-            color: 'white',
-            fontSize: sp(50),
-            fontWeight: '500',
-            transform: [{ rotate: '-30deg' }] 
-          }}>
-            2.4!
-          </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text
