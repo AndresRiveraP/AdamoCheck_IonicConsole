@@ -37,10 +37,7 @@ const SplashScreen = () => (
       }}>
       <Text
         style={[
-          styles.title,
-          {
-            color: '#fff',
-          },
+          styles.title,{color: '#fff'},
         ]}>
         adamo
       </Text>

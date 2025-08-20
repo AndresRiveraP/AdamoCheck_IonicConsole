@@ -11,6 +11,7 @@ import Verified from './Verified';
 import Verified2 from './Verified2';
 import Verified3 from './Verified3';
 import Unverified from './Unverified';
+import InternalLogin from './InternalLogin';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,11 @@ const Navigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="InternalLogin"
+            component={InternalLogin as React.FC}
+            options={{ headerShown: false, headerLeft: () => null} }
+        />
         <Stack.Screen 
             name="InitialScreen" 
             component={InitialScreen as React.FC} 
