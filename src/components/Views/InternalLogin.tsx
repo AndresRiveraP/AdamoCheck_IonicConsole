@@ -1,11 +1,15 @@
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView  } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform  } from 'react-native';
 
 
 const InternalLogin: React.FC = () => {
     const [user, setUser] = React.useState('');
     const [password, setPassword] = React.useState('');
+
+    const handleLogin = async () => {
+        
+    }
     
     return (
         <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
@@ -80,7 +84,7 @@ const InternalLogin: React.FC = () => {
                         </View>
                     
                         <Pressable
-                        onPress={() => console.log('Abrir perfil')}
+                        onPress={() => handleLogin()}
                         style={({ pressed }) => ([
                             {
                             width: '15%',            
