@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
-import {Image,View, Animated, StyleSheet, SafeAreaView, Dimensions, Text} from 'react-native';
+import {View,  StyleSheet,Dimensions,Platform, StatusBar} from 'react-native';
 import Navigator from './src/components/Views/Navigator';
 import Toast from 'react-native-toast-message';
 import toastConfig from './src/config/toastConfig'; 
@@ -21,65 +21,23 @@ const scaleFontSize = (size: number) => {
   const guidelineBaseWidth = 350;
   return (width / guidelineBaseWidth) * size;
 };
-
-const SplashScreen = () => (
-  <View style={styles.container}>
-    <Image
-      source={require('./src/assets/img/logoCheck.png')}
-      style={styles.image}
-    />
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        top: '-10%',
-      }}>
-      <Text
-        style={[
-          styles.title,{color: '#fff'},
-        ]}>
-        adamo
-      </Text>
-      <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
-    </View>
-  </View>
-);
-
-const App = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  const fadeAnim = new Animated.Value(1);
-
-  useEffect(() => {
-    const fadeOut = Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    });
-
-    setTimeout(() => {
-      fadeOut.start(() => {
-        setShowSplash(false);
-      });
-    }, 1500);
-
-    return () => {
-      fadeOut.stop();
-    };
-  }, []);
-
+const App = () => {  
   return (
-    <SafeAreaView style={styles.container}>
-      {showSplash ? (
-        <Animated.View style={[styles.container, {opacity: fadeAnim}]}>
-          <SplashScreen />
-        </Animated.View>
-      ) : (
-        <Navigator />
-      )}
-      <Toast config={toastConfig} />
-    </SafeAreaView>
-  );
+      <>
+        {Platform.OS === 'ios' && (
+          <StatusBar 
+            barStyle="light-content" 
+            backgroundColor="transparent" 
+            translucent={true}
+            hidden={false}
+          />
+        )}
+        <View style={styles.container}>
+          <Navigator initialRouteName='Splash' />
+          <Toast config={toastConfig} />
+        </View>
+      </>
+    );
 };
 
 const styles = StyleSheet.create({

@@ -72,63 +72,63 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
 
   return (
     <AnimatedScreenWrapper>
-            <SafeAreaView style={styles.container}>
-                <ImageBackground
-                source={require('../../assets/img/imgBG02.png')}
-                style={styles.background}
-                >
-                
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '15%' }}>
-                    <Text style={[ styles.title,{ color: '#fff'}]}>adamo</Text>
-                    <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
-                </View>
-
-                <View style={styles.warning}>
-                    <Image
-                        source={require('../../assets/img/face_check.png')}
-                        style={styles.cuteFace}
-                        />
-                    <Text style={styles.Atention}>FACE NOT DETECTED</Text>
-                    <Text style={styles.AtentionP}>Please enter your ID number or retry</Text>
-                </View>
-
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Your ID'
-                        placeholderTextColor='#FFF'
-                        keyboardType='numeric'
-                        maxLength={15}
-                        textAlign='center'
-                        value={documentId}
-                        onChangeText={setDocumentId}
-                    />
-                </View>           
-
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '5%', gap: 15 }}>
-                    <TouchableOpacity
-                    style={[styles.botonV]}
-                    onPress={() => {VerifyWithId(documentId)}}   >
-                        <Text style={styles.labelV}>Verify</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={[styles.botonW]}
-                        onPress={handleRetry}
-                    >
-                        <Text style={styles.labelB}>Retry</Text>
-                    </TouchableOpacity>
-                </View>
+        <SafeAreaView style={styles.container}>
+            <ImageBackground
+            source={require('../../assets/img/imgBG02.png')}
+            style={styles.background}
+            >
             
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '10%' }}>
+                <Text style={[ styles.title,{ color: '#fff'}]}>adamo</Text>
+                <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
+            </View>
+
+            <View style={styles.warning}>
+                <Image
+                    source={require('../../assets/img/face_check.png')}
+                    style={styles.cuteFace}
+                    />
+                <Text style={styles.Atention}>FACE NOT DETECTED</Text>
+                <Text style={styles.AtentionP}>Please enter your ID number or retry</Text>
+            </View>
+
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Your ID'
+                    placeholderTextColor='#FFF'
+                    keyboardType='numeric'
+                    maxLength={15}
+                    textAlign='center'
+                    value={documentId}
+                    onChangeText={setDocumentId}
+                />
+            </View>           
+
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',marginTop: '-2%' , gap: 15 }}>
+                <TouchableOpacity
+                style={[styles.botonV]}
+                onPress={() => {VerifyWithId(documentId)}}   >
+                    <Text style={styles.labelV}>Verify</Text>
+                </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={[styles.botonR]}
-                    onPress={() => {navigation.navigate('InitialScreen')}}
+                    style={[styles.botonW]}
+                    onPress={handleRetry}
                 >
-                    <Text style={styles.labelU}>Return</Text>
+                    <Text style={styles.labelB}>Retry</Text>
                 </TouchableOpacity>
-            </ImageBackground>
+            </View>
+        
+
+            <TouchableOpacity
+                style={[styles.botonR]}
+                onPress={() => {navigation.navigate('InitialScreen')}}
+            >
+                <Text style={styles.labelU}>Return</Text>
+            </TouchableOpacity>
+        </ImageBackground>
         </SafeAreaView>
     </AnimatedScreenWrapper>
   )
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: '-9%',
     },
     Atention:{
         color: '#FFF',
@@ -164,10 +165,10 @@ const styles = StyleSheet.create({
     },
     AtentionP:{
         color: '#FFF',
-        fontSize: sp(35),
+        fontSize: sp(35 ),
         textAlign: 'center',
         fontWeight: '500',
-        marginBottom: 20,
+        marginBottom: 15,
     },
     botonV:{
         position: 'relative',
@@ -191,19 +192,19 @@ const styles = StyleSheet.create({
         color: "#FFF",
         fontWeight: '600',
         fontFamily: 'Octarine',
-        fontSize: sp(45),
+        fontSize: sp(35),
     },
     labelB:{
         color: "#2bbfed",
         fontWeight: '600',
         fontFamily: 'Octarine',
-        fontSize: sp(45),
+        fontSize: sp(35),
     },
     labelU:{
         color : '#FFF',
         fontWeight: '600',
         fontFamily: 'Octarine',
-        fontSize: sp(45),
+        fontSize: sp(35),
     },
     botonR:{
         position: 'relative',
@@ -217,7 +218,8 @@ const styles = StyleSheet.create({
         width: '55%',
     },
     inputContainer: {
-        width: '50%'
+        width: '50%',
+        top: '-4%'
     },
     input: {
         display: 'flex',

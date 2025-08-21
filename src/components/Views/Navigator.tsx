@@ -12,13 +12,23 @@ import Verified2 from './Verified2';
 import Verified3 from './Verified3';
 import Unverified from './Unverified';
 import InternalLogin from './InternalLogin';
+import Splash from './Splash';
 
 const Stack = createStackNavigator();
 
-const Navigator = () => {
+interface NavigatorProps {
+  initialRouteName: string;
+}
+
+const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={initialRouteName}>
+        <Stack.Screen
+            name="Splash"
+            component={Splash as React.FC}
+            options={{ headerShown: false, headerLeft: () => null} }
+        />
         <Stack.Screen
             name="InternalLogin"
             component={InternalLogin as React.FC}
@@ -27,7 +37,24 @@ const Navigator = () => {
         <Stack.Screen 
             name="InitialScreen" 
             component={InitialScreen as React.FC} 
-            options={{ headerShown: false}}
+            options={{
+                headerShown: false,
+                cardStyleInterpolator: ({ current, layouts }) => {
+                    return {
+                        cardStyle: {
+                            opacity: current.progress,
+                            transform: [
+                                {
+                                    translateX: current.progress.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [layouts.screen.width, 0],
+                                    }),
+                                },
+                            ],
+                        },
+                    };
+                },
+            }}
         />
         <Stack.Screen
             name="CameraScreen"

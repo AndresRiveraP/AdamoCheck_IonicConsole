@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform  } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const [user, setUser] = React.useState('');
@@ -31,12 +32,25 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
             if(res.message === "Logged in successfully"){
                 await AsyncStorage.setItem('user', organization.user);
                 await AsyncStorage.setItem('key', organization.key);
-                const user = await AsyncStorage.getItem("user")
-                const key = await AsyncStorage.getItem("key")
-                console.log(user, key)
+                Toast.show({
+                    type: 'success',
+                    text1: 'Login successful',
+                    text2: 'Welcome!',
+                });
                 navigation.navigate('InitialScreen');
+            } else if (res.status !== 200) {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Login failed',
+                    text2: res.message || 'Invalid credentials',
+                });
             }
         } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: error instanceof Error ? error.message : 'Unknown error',
+            });
             if (error instanceof Error) {
                 console.error(error.message);
             } else {
@@ -44,7 +58,6 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
             }
         }
     }
-    
     
     return (
         <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
