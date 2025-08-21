@@ -1,15 +1,50 @@
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image, TextInput, Pressable, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform  } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const InternalLogin: React.FC = () => {
+const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const [user, setUser] = React.useState('');
     const [password, setPassword] = React.useState('');
 
     const handleLogin = async () => {
-        
+        try {
+            const response = await fetch(
+                'http://192.168.0.64:4000/api/organizations/loginOrganizations',
+                {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: user,
+                    password: password
+                }),
+                },
+            );
+            const data = await response.text();
+            const res = JSON.parse(data);
+            const organization = res.organization
+
+            if(res.message === "Logged in successfully"){
+                await AsyncStorage.setItem('user', organization.user);
+                await AsyncStorage.setItem('key', organization.key);
+                const user = await AsyncStorage.getItem("user")
+                const key = await AsyncStorage.getItem("key")
+                console.log(user, key)
+                navigation.navigate('InitialScreen');
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            } else {
+                console.error(error);
+            }
+        }
     }
+    
     
     return (
         <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
@@ -162,7 +197,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#FFFFFF',
         marginTop: '7%',
-        paddingVertical: '2%',
+        paddingVertical: '1%',
         paddingHorizontal: '4%',
     },
     fakePlaceholder: {
