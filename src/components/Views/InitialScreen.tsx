@@ -5,6 +5,7 @@ import { scaleFontSize} from '@/utils/scaleUtils';
 import styles from '@/styles/globStyles';
 
 import { NavigationProp } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sp = (size: number) => {
   return size * PixelRatio.getFontScale();
@@ -43,6 +44,13 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   useEffect(() => {
+  //   const loadData= async () => {
+  //   const user = await AsyncStorage.getItem("user");
+  //   const key = await AsyncStorage.getItem("key");
+  //   console.log(user)
+  //   console.log(key)
+  // }
+  // loadData()
     const checkPermission = async () => {
       const hasPermission = await requestCameraPermission();
       if (!hasPermission) {
