@@ -11,9 +11,12 @@ interface LoadingScreenProps {
       check: string;
       source?: string;
       documentId?: string;
+
+      // Optional overrides you can pass when navigating
       table?: string;
       pkName?: string;
       collectionId?: string;
+      userId?: string; // if you namespace configs per user
     };
   };
   navigation: any;
@@ -25,19 +28,24 @@ function sp(size: number) {
   return PixelRatio.getFontScale() * size;
 }
 
+/** ========= API config ========= */
 const API_BASE = 'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev';
-const DEFAULT_COLLECTION_ID = 'adamo-prod-collection';
-const DEFAULT_TABLE = AsyncStorage.getItem('user');
-const DEFAULT_PK_NAME = AsyncStorage.getItem('user');
+/** Default fallbacks if user storage is empty/corrupt */
+const FALLBACK_COLLECTION_ID = 'adamo-prod-collection';
+const FALLBACK_TABLE = 'cmgroupoko';
+const FALLBACK_PK_NAME = 'cmgroupoko';
+/** ============================= */
 
+/** remove "data:image/...;base64," prefix if present */
 function stripDataUrlPrefix(b64: string) {
   const idx = b64.indexOf('base64,');
   return idx >= 0 ? b64.slice(idx + 'base64,'.length) : b64;
 }
 
+/** Robust fetch that normalizes API Gateway/Lambda proxy response */
 async function postJSON(url: string, payload: any, timeoutMs = 15000) {
   const controller = new AbortController();
-  const t = setTimeout(() => controller.abort(), timeoutMs);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -48,20 +56,105 @@ async function postJSON(url: string, payload: any, timeoutMs = 15000) {
 
     const httpStatus = res.status;
 
+    // Try parse JSON; fall back to text->JSON
     const outer = await res.json().catch(async () => {
       const txt = await res.text();
       try { return JSON.parse(txt); } catch { return { raw: txt }; }
     });
 
-    // Normalize: body may be a JSON string or already an object
-    let normalizedBody: any = outer?.body;
-    if (typeof normalizedBody === 'string') {
-      try { normalizedBody = JSON.parse(normalizedBody); } catch { /* leave as string */ }
+    // Lambda proxy: outer = { statusCode, body }
+    let body = outer?.body;
+    if (typeof body === 'string') {
+      try { body = JSON.parse(body); } catch { /* leave as string */ }
     }
-    return { httpStatus, outer, body: normalizedBody };
+
+    return { httpStatus, outer, body };
   } finally {
-    clearTimeout(t);
+    clearTimeout(timeout);
   }
+}
+
+/** ===== Multi-tenant config loader =====
+ * We’ll try, in order:
+ * 1) route.params overrides
+ * 2) AsyncStorage 'user' JSON blob:
+ *    - direct keys: { table, pkName, collectionId }
+ *    - or nested:  { tenant: { table, pkName, collectionId } }
+ *    - or per-user namespace: AsyncStorage.getItem(`tenant:${userId}`)
+ * 3) fallbacks
+ */
+type TenantConfig = { table: string; pkName: string; collectionId: string };
+
+async function loadTenantConfig(params: LoadingScreenProps['route']['params']): Promise<TenantConfig> {
+  const { table: pTable, pkName: pPk, collectionId: pCol, userId } = params || {};
+
+  // 1) if explicit overrides provided via params, prefer them (when valid)
+  if (typeof pTable === 'string' && pTable && typeof pPk === 'string' && pPk) {
+    return {
+      table: pTable,
+      pkName: pPk,
+      collectionId: (typeof pCol === 'string' && pCol) ? pCol : FALLBACK_COLLECTION_ID,
+    };
+  }
+
+  // 2a) try namespaced tenant config first if userId provided
+  if (userId) {
+    try {
+      const raw = await AsyncStorage.getItem(`tenant:${userId}`);
+      if (raw) {
+        const obj = JSON.parse(raw);
+        const table = typeof obj?.table === 'string' && obj.table ? obj.table : undefined;
+        const pkName = typeof obj?.pkName === 'string' && obj.pkName ? obj.pkName : undefined;
+        const collectionId = typeof obj?.collectionId === 'string' && obj.collectionId ? obj.collectionId : undefined;
+        if (table && pkName) {
+          return {
+            table,
+            pkName,
+            collectionId: collectionId || FALLBACK_COLLECTION_ID,
+          };
+        }
+      }
+    } catch {/* continue */}
+  }
+
+  // 2b) fall back to generic 'user' blob
+  try {
+    const raw = await AsyncStorage.getItem('user'); // YOUR app decides what this contains
+    if (raw) {
+      const obj = JSON.parse(raw);
+
+      // Accept several shapes:
+      // A) flat
+      let table = typeof obj?.table === 'string' && obj.table ? obj.table : undefined;
+      let pkName = typeof obj?.pkName === 'string' && obj.pkName ? obj.pkName : undefined;
+      let collectionId = typeof obj?.collectionId === 'string' && obj.collectionId ? obj.collectionId : undefined;
+
+      // B) nested under tenant/org/customer, e.g. obj.tenant.{table,pkName,collectionId}
+      if (!table || !pkName) {
+        const t = obj?.tenant || obj?.org || obj?.customer || obj?.company;
+        if (t && typeof t === 'object') {
+          table = typeof t.table === 'string' && t.table ? t.table : table;
+          pkName = typeof t.pkName === 'string' && t.pkName ? t.pkName : pkName;
+          collectionId = typeof t.collectionId === 'string' && t.collectionId ? t.collectionId : collectionId;
+        }
+      }
+
+      if (table && pkName) {
+        return {
+          table,
+          pkName,
+          collectionId: collectionId || FALLBACK_COLLECTION_ID,
+        };
+      }
+    }
+  } catch {/* continue */}
+
+  // 3) final fallback
+  return {
+    table: FALLBACK_TABLE,
+    pkName: FALLBACK_PK_NAME,
+    collectionId: FALLBACK_COLLECTION_ID,
+  };
 }
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
@@ -70,29 +163,22 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
 
   useEffect(() => {
     const processData = async () => {
-      const {
-        source,
-        base64Data,
-        check,
-        documentId: docIdParam,
-        table,
-        pkName,
-        collectionId,
-      } = route.params;
+      const { source, base64Data, check, documentId: docIdParam } = route.params;
 
       try {
         if (!source || source === 'camera') {
+          // 🔑 Load tenant-specific config (strings only)
+          const cfg = await loadTenantConfig(route.params);
+
+          // Build payload expected by your Lambda
           const payload = {
             image: stripDataUrlPrefix(base64Data),
-            table: table || DEFAULT_TABLE,
-            pkName: pkName || DEFAULT_PK_NAME,
-            collectionId: collectionId || DEFAULT_COLLECTION_ID,
+            table: cfg.table,
+            pkName: cfg.pkName,
+            collectionId: cfg.collectionId,
           };
 
           const { httpStatus, body } = await postJSON(`${API_BASE}/compare-face`, payload);
-
-          // body should be something like:
-          // { message: 'Success', faces_count: n, matches: [...] }
           const matches = body?.matches;
 
           if (httpStatus !== 200 || !Array.isArray(matches)) {
@@ -100,7 +186,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
             return;
           }
 
-          // route based on number of matches (keeping your existing logic)
           switch (matches.length) {
             case 0:
               navigation.replace('Unverified', { check });
@@ -119,7 +204,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
               break;
           }
         } else if (source === 'unverified' && docIdParam) {
-          // (unchanged) fall-back path using your other API
+          // your existing unverified flow
           const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/unverified', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -230,41 +315,18 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    width: '100%',
-    height: '100%',
-  },
-  videoWrapper: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
-    width: '100%',
-    height: '100%',
-  },
-  videoContainer: {
-    width: width * 0.6,
-    height: height * 0.6,
-    alignSelf: 'center',
-  },
-  inputContainer: {
-    marginTop: 20,
-    width: '50%',
-  },
+  container: { flex: 1, backgroundColor: '#fff', width: '100%', height: '100%' },
+  videoWrapper: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFF', width: '100%', height: '100%' },
+  videoContainer: { width: width * 0.6, height: height * 0.6, alignSelf: 'center' },
+  inputContainer: { marginTop: 20, width: '50%' },
   input: {
     display: 'flex',
     alignContent: 'center',
     justifyContent: 'center',
     paddingHorizontal: '10%',
     paddingVertical: '3%',
-    borderWidth: 2,
-    borderColor: '#FFF',
-    borderRadius: 35,
-    shadowColor: '#000',
-    fontWeight: '500',
-    fontSize: sp(30),
+    borderWidth: 2, borderColor: '#FFF', borderRadius: 35,
+    shadowColor: '#000', fontWeight: '500', fontSize: sp(30),
   },
 });
 

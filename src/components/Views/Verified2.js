@@ -53,7 +53,7 @@ const Verified = ({ route, navigation }) => {
 
   useEffect(() => {
     const createLog = async () => {
-
+      const belongsTo = await AsyncStorage.getItem('key');
       if (apiCallMade.current) return;
       
       apiCallMade.current = true;
@@ -66,7 +66,7 @@ const Verified = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
-          belongsTo: await AsyncStorage.getItem('key')
+          belongsTo
         },
         {
           day: formattedDate,
@@ -75,7 +75,7 @@ const Verified = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
-          belongsTo: await AsyncStorage.getItem('key')
+          belongsTo
         }
       ];
 

@@ -39,6 +39,7 @@ const Verified = ({ route, navigation }) => {
 
   useEffect(() => {
     const createLog = async () => {
+      const belongsTo = await AsyncStorage.getItem('key');
       const logData = {
         day: formattedDate,
         identification: id,
@@ -46,7 +47,7 @@ const Verified = ({ route, navigation }) => {
         checkin: check === 'in' ? formattedTime : null,
         checkout: check === 'out' ? formattedTime : null,
         checkType: check,
-        belongsTo: await AsyncStorage.getItem('key')
+        belongsTo
       };
       try {
         const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
