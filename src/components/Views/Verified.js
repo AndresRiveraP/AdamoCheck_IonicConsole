@@ -4,6 +4,7 @@ import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRati
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
@@ -45,6 +46,7 @@ const Verified = ({ route, navigation }) => {
         checkin: check === 'in' ? formattedTime : null,
         checkout: check === 'out' ? formattedTime : null,
         checkType: check,
+        belongsTo: await AsyncStorage.getItem('key')
       };
       try {
         const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {

@@ -71,6 +71,7 @@ const Verified3 = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
+          belongsTo: await AsyncStorage.getItem('key')
         },
         {
           day: formattedDate,
@@ -79,6 +80,7 @@ const Verified3 = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
+          belongsTo: await AsyncStorage.getItem('key')
         },
         {
           day: formattedDate,
@@ -87,6 +89,7 @@ const Verified3 = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
+          belongsTo: await AsyncStorage.getItem('key')
         }
       ];
 

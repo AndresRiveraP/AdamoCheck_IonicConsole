@@ -12,7 +12,7 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const handleLogin = async () => {
         try {
             const response = await fetch(
-                'http://192.168.0.64:4000/api/organizations/loginOrganizations',
+                'https://adamocheckback-ult.up.railway.app/api/organizations/loginOrganizations',
                 {
                 method: 'POST',
                 headers: {
@@ -63,8 +63,8 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
         <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
-                <View style={styles.container}>
-                    <View style={[{flexDirection: 'column', alignItems:'center', paddingBottom:'10%'}]}>
+                <View style={[styles.container,  {paddingTop: '10%'}]}>
+                    <View style={[{flexDirection: 'column', alignItems:'center', paddingBottom:'5%'}]}>
                         <Image
                         source={require('../../assets/img/logoCheck.png')}
                         style={[styles.image, {resizeMode: 'contain'}]}
@@ -87,10 +87,10 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             <Text style={[{fontWeight: 'bold'}]}>Staff</Text> credentials required.
                         </Text>
                     </View>
-                    <Image 
-                    source={require('../../assets/img/staff.png')}
-                    style={[styles.image, {top: '-5%', width: scaleWidthSize(60), height: scaleHeightSize(55),}]}
-                    />
+                        <Image 
+                        source={require('../../assets/img/staff.png')}
+                        style={[styles.image, {top: '-5%', width: scaleWidthSize(60), height: scaleHeightSize(55),}]}
+                        />
                     
                         <View style={styles.inputContainer}>
                             <Image
@@ -132,26 +132,26 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         </View>
                     
                         <Pressable
-                        onPress={() => handleLogin()}
-                        style={({ pressed }) => ([
-                            {
-                            width: '15%',            
-                            aspectRatio: 1,          
-                            borderRadius: 999,       
-                            overflow: 'hidden',      
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: 'transparent',
-                            top: '10%',
-                            left: '30%'
-                            },
-                            pressed && { opacity: 0.7 } 
-                        ])}
-                        
-                        android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
-                        hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
-                        accessibilityRole="button"
-                        accessibilityLabel="Abrir perfil"
+                            onPress={() => handleLogin()}
+                            style={({ pressed }) => ([
+                                {
+                                width: '15%',            
+                                aspectRatio: 1,          
+                                borderRadius: 999,       
+                                overflow: 'hidden',      
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'transparent',
+                                top: '4%',
+                                left: '30%'
+                                },
+                                pressed && { opacity: 0.7 } 
+                            ])}
+                            
+                            android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
+                            hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                            accessibilityRole="button"
+                            accessibilityLabel="Abrir perfil"
                         >
                         <Image
                             source={require('../../assets/img/arroyLogin.png')}
@@ -178,15 +178,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     image: {
-        top: '-13%',
-        width: scaleWidthSize(82),
-        height: scaleHeightSize(80),
+        top: '-10%',
+        width: scaleWidthSize(80),
+        height: scaleHeightSize(70),
+        marginBottom: '5%',
     },
     title: {
         fontFamily: 'Guitar-Acoustic',
         fontSize: scaleFontSize(50),
-        top: '-20%',
-        
+        top: '-20%',  
     },
     wrapper: {
         width: scaleWidthSize(240),
@@ -200,16 +200,16 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: scaleWidthSize(250),
-        height: scaleHeightSize(50),
+        height: scaleHeightSize(45),
         alignSelf: 'center',
         position: 'relative',        
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#c1e7f4',
-        borderRadius: 999,
+        borderRadius: 50,
         borderWidth: 1,
         borderColor: '#FFFFFF',
-        marginTop: '7%',
+        marginTop: '5%',
         paddingVertical: '1%',
         paddingHorizontal: '4%',
     },
@@ -228,7 +228,6 @@ const styles = StyleSheet.create({
         fontSize: scaleFontSize(15),
         textAlign: 'left',
     },
-
 
 });
 

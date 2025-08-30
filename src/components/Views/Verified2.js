@@ -56,7 +56,6 @@ const Verified = ({ route, navigation }) => {
 
       if (apiCallMade.current) return;
       
-      // Mark that the API call is being made
       apiCallMade.current = true;
 
       const logs = [
@@ -67,6 +66,7 @@ const Verified = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
+          belongsTo: await AsyncStorage.getItem('key')
         },
         {
           day: formattedDate,
@@ -75,6 +75,7 @@ const Verified = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
+          belongsTo: await AsyncStorage.getItem('key')
         }
       ];
 

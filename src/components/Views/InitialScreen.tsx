@@ -44,13 +44,15 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   useEffect(() => {
-  //   const loadData= async () => {
-  //   const user = await AsyncStorage.getItem("user");
-  //   const key = await AsyncStorage.getItem("key");
-  //   console.log(user)
-  //   console.log(key)
-  // }
-  // loadData()
+    const loadData= async () => {
+      const user = await AsyncStorage.getItem("user");
+      const key = await AsyncStorage.getItem("key");
+      console.log(user)
+      console.log(key)
+    }
+
+    loadData();
+
     const checkPermission = async () => {
       const hasPermission = await requestCameraPermission();
       if (!hasPermission) {
