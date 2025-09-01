@@ -3,8 +3,9 @@ import moment from 'moment';
 import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions, BackHandler} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
-import AnimatedScreenWrapper from './AnimatedScreenWrapper';  
+import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -12,8 +13,7 @@ function sp(size) {
   return PixelRatio.getFontScale() * size;
 }
 
-
-const Verified = ({ route, navigation }) => {
+const Verified2 = ({ route, navigation }) => {
 
   useFocusEffect(
   React.useCallback(() => {
@@ -449,4 +449,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Verified;
+export default Verified2;

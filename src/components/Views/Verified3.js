@@ -5,8 +5,9 @@ import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import { useFocusEffect } from '@react-navigation/native';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 function sp(size) {
   return PixelRatio.getFontScale() * size;
