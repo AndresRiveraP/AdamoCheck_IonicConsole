@@ -40,6 +40,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
 
       try {
         if (!source || source === 'camera') {
+
+          console.log('User being sent:', user || 'cmgroupoko');
+
           const response = await fetch(
             'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',
             {
@@ -50,12 +53,15 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
               },
               body: JSON.stringify({
                 image: base64Data,
-                user: user,
+                user: user || 'FacesDataCMOko',
               }),
             },
           );
+          
           const data = await response.text();
           const res = JSON.parse(data);
+
+          console.log('API response:', res);
           
           if (res.statusCode !== 200) {
             navigation.replace('Unverified', { check });

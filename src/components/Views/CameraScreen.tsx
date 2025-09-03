@@ -12,7 +12,9 @@ import { RNCamera, TakePictureResponse } from 'react-native-camera';
 import oneFaceData from '../../assets/apiTesters/1face.json'; 
 import twoFacesData from '../../assets/apiTesters/2faces.json'; 
 import threeFacesData from '../../assets/apiTesters/3faces.json'; 
+
 import oneFaceCMData from '../../assets/apiTesters/1faceCM.json';
+import twoFacesCMData from '../../assets/apiTesters/2facesCM.json';
 
 interface CameraScreenProps {
   route: {
@@ -45,7 +47,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
           hasNavigated.current = true;
           navigation.replace('LoadingScreen', { 
             check,
-            base64Data: oneFaceCMData.image,
+            base64Data: twoFacesCMData.image,
             source: 'camera'
           });
         }
