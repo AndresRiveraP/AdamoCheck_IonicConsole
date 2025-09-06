@@ -14,15 +14,15 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
             const response = await fetch(
                 'https://adamocheckback-ult.up.railway.app/api/organizations/loginOrganizations',
                 {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: user,
-                    password: password
-                }),
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: user,
+                        password: password
+                    }),
                 },
             );
             const data = await response.text();
@@ -32,6 +32,7 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
             if(res.message === "Logged in successfully"){
                 await AsyncStorage.setItem('user', organization.user);
                 await AsyncStorage.setItem('key', organization.key);
+                await AsyncStorage.setItem('id', organization._id);
                 Toast.show({
                     type: 'success',
                     text1: 'Login successful',

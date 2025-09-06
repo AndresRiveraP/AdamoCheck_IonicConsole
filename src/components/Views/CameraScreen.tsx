@@ -47,7 +47,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
           hasNavigated.current = true;
           navigation.replace('LoadingScreen', { 
             check,
-            base64Data: twoFacesCMData.image,
+            base64Data: oneFaceCMData.image,
             source: 'camera'
           });
         }

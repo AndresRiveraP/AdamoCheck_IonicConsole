@@ -39,7 +39,7 @@ const Verified = ({ route, navigation }) => {
 
   useEffect(() => {
     const createLog = async () => {
-      const belongsTo = await AsyncStorage.getItem('key');
+      const belongsTo = await AsyncStorage.getItem('id');
       const logData = {
         day: formattedDate,
         identification: id,
@@ -50,7 +50,8 @@ const Verified = ({ route, navigation }) => {
         belongsTo
       };
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
+        //const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
+        const response = await fetch('http://192.168.0.139:4000/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -53,7 +53,10 @@ const Verified2 = ({ route, navigation }) => {
 
   useEffect(() => {
     const createLog = async () => {
-      const belongsTo = await AsyncStorage.getItem('key');
+      const belongsTo = await AsyncStorage.getItem('id');
+      console.log("Id1:", id1);
+      console.log("Id2:", id2);
+
       if (apiCallMade.current) return;
       
       apiCallMade.current = true;
@@ -80,7 +83,9 @@ const Verified2 = ({ route, navigation }) => {
       ];
 
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
+        console.log(logs);
+        //const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
+        const response = await fetch('http://192.168.0.139:4000/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
