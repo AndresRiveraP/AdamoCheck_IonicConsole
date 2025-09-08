@@ -6,9 +6,6 @@ import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function sp(size) {
-  return PixelRatio.getFontScale() * size;
-}
 
 const Verified = ({ route, navigation }) => {
   const { payload, check } = route.params;
@@ -81,7 +78,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3400); // 3000 milliseconds = 3 seconds
+    }, 3400000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -95,16 +92,15 @@ const Verified = ({ route, navigation }) => {
     <AnimatedScreenWrapper>
       <SafeAreaView style={styles.container}>
         <ImageBackground
-          source={require('@/assets/img/backGround.png')}
+          source={require('@/assets/img/backgroundStaff.png')}
           style={styles.background}>
-          <View style={styles.header}>
-            <Text style={styles.title}>adamo</Text>
-            <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
-          </View>
           {result.statusCode !== 200 ? (<></>) : (
           <View style={styles.textContainer}>
             <Text style={styles.welcome}>
               {check === 'in' ? 'Welcome!' : 'Farewell!'}
+            </Text>
+            <Text>
+              {}
             </Text>
             <Text style={styles.name}>
               {name}
@@ -145,12 +141,12 @@ const Verified = ({ route, navigation }) => {
                   source={require('@/assets/img/check.png')}
                   style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> 
               <View style={styles.whitened}>
                 <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
               </View>
             </View>
-          )  
+          )
           }
 
           {result.message === "Already checked out / Not checked in" && (
@@ -167,6 +163,11 @@ const Verified = ({ route, navigation }) => {
             </View>
           )}
 
+          <Image
+            source={require('../../assets/img/adamoByHBPO.png')}
+            style={styles.ico}
+          />
+          
         </ImageBackground>
       </SafeAreaView>
     </AnimatedScreenWrapper>
@@ -182,13 +183,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     resizeMode: 'contain',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    height: scaleHeightSize(80),
-    marginLeft: '10%',
-    marginTop: '10%',
   },
   title: {
     fontFamily: 'Guitar-Acoustic',
@@ -218,8 +212,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ico: {
-    width: scaleWidthSize(20),
-    height: scaleWidthSize(20),
+    width: scaleWidthSize(10),
+    height: scaleWidthSize(10),
     resizeMode: 'contain',
   },
   idS: {

@@ -1,8 +1,8 @@
 import Toast from 'react-native-toast-message';
 import React, {useState} from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, TouchableOpacity,BackHandler} from 'react-native'
-import { scaleFontSize } from '@/utils/scaleUtils';
+import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, TouchableOpacity,BackHandler, Pressable, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native'
+import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -27,7 +27,7 @@ interface UnverifiedProps {
 
 const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
     const {check} = route.params;
-    const [documentId, setDocumentId] = useState('');
+    const [user, setUser] = React.useState('');
 
     const VerifyWithId = async (documentId: string) => {
     if (documentId.length < 6) {
@@ -60,186 +60,189 @@ const Unverified : React.FC<UnverifiedProps> = ({ route, navigation }) => {
     }, [navigation])
   );
 
-    const handleRetry = () => {
-    console.log('Retry pressed, check value:', check);
-    navigation.reset({
-        index: 0,
-        routes: [
-            { name: 'CameraScreen', params: { check } }
-        ],
-    });
-};
-
   return (
     <AnimatedScreenWrapper>
-        <SafeAreaView style={styles.container}>
-            <ImageBackground
-            source={require('../../assets/img/imgBG02.png')}
-            style={styles.background}
-            >
-            
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: '10%' }}>
-                <Text style={[ styles.title,{ color: '#fff'}]}>adamo</Text>
-                <Text style={[styles.title, {color: '#2bbfed'}]}>check</Text>
-            </View>
+        <SafeAreaView style={{flex: 1}}>
+            <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+                
+                        <View style={[styles.container]}>
+                            <View style={[styles.containerTitle]}>
+                                <Image
+                                source={require('../../assets/img/logo.png')}
+                                style={[styles.image, {resizeMode: 'contain'}]}
+                                />
+                                <View
+                                    style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingTop:'10%'
+                                    }}>
+                                    <Text 
+                                        style={[styles.title,{color: '#fff'} ]}>
+                                        adamo
+                                    </Text>
+                                    <Text 
+                                        style={[styles.title, {color: '#bcc988'}]}>
+                                        check
+                                        </Text>
+                                </View>
+                            </View>
 
-            <View style={styles.warning}>
-                <Image
-                    source={require('../../assets/img/face_check.png')}
-                    style={styles.cuteFace}
-                    />
-                <Text style={styles.Atention}>FACE NOT DETECTED</Text>
-                <Text style={styles.AtentionP}>Please enter your ID number or retry</Text>
-            </View>
+                            <View style={[styles.containerContent, {backgroundColor: '#EBF3CB'}]}>
+                                <View style={{alignItems: 'center', marginTop: '10%'}}>
+                                    <Text style={[{color: '#78910F', fontSize: scaleFontSize(55), fontFamily:'Sora-ExtraBold'}]}>
+                                        Hello!
+                                    </Text>
+                                    <Text style={styles.subtitileHello}>
+                                        Ready to start?
+                                    </Text>
+                                </View>
 
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Your ID'
-                    placeholderTextColor='#FFF'
-                    keyboardType='numeric'
-                    maxLength={15}
-                    textAlign='center'
-                    value={documentId}
-                    onChangeText={setDocumentId}
-                />
-            </View>           
+                                <View style={styles.containerForm}>
+                                    <Text style={[{color: '#4C4C4C', fontSize: scaleFontSize(15), fontWeight: '200'}]}>
+                                        Enter your ID bellow:
+                                    </Text>
+                                    <View style={styles.inputContainer}>
+                                        <Image
+                                        source={require('../../assets/img/user.png')} 
+                                        style={[styles.icon, {resizeMode: "contain"}]}
+                                        />
 
+                                            {user.length === 0 && (
+                                                <Text style={styles.fakePlaceholder}>    -  -  -  -  -  -  -  -  -   </Text>
+                                            )}
+                                            <TextInput
+                                                value={user}
+                                                onChangeText={setUser}
+                                                style={styles.input}
+                                                placeholder=""  
+                                                textAlign="left"
+                                            />
+                                    </View>          
+                                </View>               
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',marginTop: '-2%' , gap: 15 }}>
-                <TouchableOpacity
-                style={[styles.botonV]}
-                onPress={() => {VerifyWithId(documentId)}}   >
-                    <Text style={styles.labelV}>Verify</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={[styles.botonW]}
-                    onPress={handleRetry}
-                >
-                    <Text style={styles.labelB}>Retry</Text>
-                </TouchableOpacity>
-            </View>
-        
-
-            <TouchableOpacity
-                style={[styles.botonR]}
-                onPress={() => {navigation.navigate('InitialScreen')}}
-            >
-                <Text style={styles.labelU}>Return</Text>
-            </TouchableOpacity>
-        </ImageBackground>
+                                <View style={{ flexDirection: 'row'}}>
+                                    <Pressable
+                                        style={({ pressed }) => ([
+                                                {
+                                                width: scaleWidthSize(150),
+                                                height: scaleHeightSize(45),
+                                                borderRadius: 40,
+                                                overflow: 'hidden',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: '#9EBE1A',
+                                                top: '10%'
+                                                },
+                                                pressed && { opacity: 0.7 } 
+                                            ])}
+                                            
+                                            android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
+                                            hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                                            accessibilityRole="button"
+                                            accessibilityLabel="Login"
+                                            onPress={() => {VerifyWithId(user)}}   >
+                                        <Text style={[{color: '#fff', fontSize: scaleFontSize(15), fontFamily:'Sora-ExtraBold'}]}>CHECK IN</Text>
+                                    </Pressable>
+                                </View>
+                                <Image
+                                    source={require('../../assets/img/adamoByHBPO.png')} 
+                                    style={[{resizeMode: "contain", width: scaleWidthSize(120), marginTop: '15%'}]}
+                                />
+                                
+                            </View>
+                        </View>
+                    </KeyboardAvoidingView>
+                </TouchableWithoutFeedback>
+            </ImageBackground>
         </SafeAreaView>
     </AnimatedScreenWrapper>
   )
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-    },
     background:{
         flex:1,
         resizeMode: 'contain',
         alignItems : 'center',
     },
-    cuteFace:{
-        width: '30%',
-        height: '30%',
-        resizeMode: 'contain',
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        display: 'flex',
         marginTop: '10%',
-        alignSelf: 'center',
-    },
-    warning:{
-        width: '80%',
+      },
+    containerTitle: {
+        display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '-9%',
+        top: '12%',
     },
-    Atention:{
-        color: '#FFF',
-        fontSize: sp(40),
-        fontWeight: '700',
-        fontFamily: 'Octarine',
-        marginBottom: '5%',
-    },
-    AtentionP:{
-        color: '#FFF',
-        fontSize: sp(35 ),
-        textAlign: 'center',
-        fontWeight: '500',
-        marginBottom: 15,
-    },
-    botonV:{
-        position: 'relative',
-        alignSelf:'center',
-        backgroundColor: '#029941',
+    containerContent: {
+        position: 'absolute',
+        marginTop: '15%',
+        bottom: 0,
+        backgroundColor: '#EBF3CB',
         borderRadius: 40,
-        paddingVertical: '1%',
-        paddingHorizontal: '7%',
-        marginTop: '5%',
+        display: 'flex',
+        alignItems: 'center'
     },
-    botonW:{
-        position: 'relative',
-        alignSelf:'center',
-        backgroundColor: '#FFF',
-        borderRadius: 40,
-        paddingVertical: '1%',
-        paddingHorizontal: '7%',
-        marginTop: '5%',
+    subtitileHello: {
+      
+      color: '#78910F',
+      fontSize: scaleFontSize(14),
+      fontWeight:'normal',
+      letterSpacing: 5,
+      marginTop: '-3%',
     },
-    labelV:{
-        color: "#FFF",
-        fontWeight: '600',
-        fontFamily: 'Octarine',
-        fontSize: sp(35),
+    containerForm: {
+        marginTop: '10%',
+        display: 'flex',
+        alignItems: 'center'
     },
-    labelB:{
-        color: "#2bbfed",
-        fontWeight: '600',
-        fontFamily: 'Octarine',
-        fontSize: sp(35),
-    },
-    labelU:{
-        color : '#FFF',
-        fontWeight: '600',
-        fontFamily: 'Octarine',
-        fontSize: sp(35),
-    },
-    botonR:{
-        position: 'relative',
-        alignSelf:'center',
-        alignItems: 'center',
-        backgroundColor: '#000',
-        borderRadius: 40,
-        paddingVertical: '1%',
-        paddingHorizontal: '5%',
-        marginTop: '5%',
-        width: '55%',
+    icon: {
+        width: scaleWidthSize(24),
+        height: scaleHeightSize(22),
+        marginRight: "5%",
+        marginLeft: '2%',
     },
     inputContainer: {
-        width: '50%',
-        top: '-4%'
+        width: scaleWidthSize(200),
+        height: scaleHeightSize(45),
+        alignSelf: 'center',
+        position: 'relative',        
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#EBF3CB',
+        borderRadius: 50,
+        borderWidth: 0.5,
+        borderColor: '#4A5714',
+        marginTop: '5%',
+        paddingHorizontal: '4%',
+        marginHorizontal: '10%',
+    },
+    fakePlaceholder: {
+        position: 'absolute',        
+        left: 0,
+        right: 0,
+        textAlign: 'center',         
+        color: '#4C4C4C',           
+        fontSize: scaleFontSize(15),                
+        opacity: 0.8,                
     },
     input: {
-        display: 'flex',
-        alignContent: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: '10%',
-        paddingVertical: '3%',
-        borderWidth: 2,
-        borderColor: '#FFF',
-        borderRadius: 35,
-        shadowColor: '#000',
-        fontSize: sp(20),
-    },
-    modalLoading: {
         flex: 1,
-        justifyContent: 'center',
-      },
+        color: '#4C4C4C',
+        fontSize: scaleFontSize(15),
+        textAlign: 'left',
+    },
     title: {
         fontFamily: 'Guitar-Acoustic',
-        fontSize: scaleFontSize(35),
+        fontSize: scaleFontSize(40),
+        top: '-22%',
+    },
+    image: {
+        width: scaleWidthSize(80),
+        height: scaleHeightSize(70),
+        marginBottom: '10%',
     },
 })
 export default Unverified

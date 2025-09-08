@@ -30,7 +30,7 @@ const Splash = ({ navigation }: { navigation: NavigationProp<any> }) => {
 			const fetchData = async () => {
 			const user = await AsyncStorage.getItem("user");
 			const key = await AsyncStorage.getItem("key");
-			initialRoute = (user && key) ? 'InitialScreen' : 'InternalLogin'
+			initialRoute = (user && key) ? 'VerifiedNew' : 'InternalLogin'
 			};
 			fetchData()
 			
