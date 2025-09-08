@@ -60,7 +60,7 @@ const Verified3 = ({ route, navigation }) => {
 
   useEffect(() => {
     const createLog = async () => {
-      const belongsTo = await AsyncStorage.getItem('id');
+      const belongsTo = await AsyncStorage.getItem('key');
       console.log("Belongs to: ", belongsTo);
       if (apiCallMade.current) return;
 
@@ -97,8 +97,7 @@ const Verified3 = ({ route, navigation }) => {
       ];
 
       try {
-        //const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
-        const response = await fetch('http://192.168.0.139:4000/api/logs/create2Logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
