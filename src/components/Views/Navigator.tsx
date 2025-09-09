@@ -13,6 +13,7 @@ import Verified3 from './Verified3';
 import Unverified from './Unverified';
 import InternalLogin from './InternalLogin';
 import VerifiedNew from './VerifiedNew';
+import Verified2New from './Verified2New';
 import Splash from './Splash';
 
 const Stack = createStackNavigator();
@@ -91,6 +92,11 @@ const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
         <Stack.Screen
            name="VerifiedNew"
            component={VerifiedNew as React.FC}
+           options={{ headerShown: false, headerLeft: () => null} }
+        />
+        <Stack.Screen
+           name="Verified2New"
+           component={Verified2New as React.FC}
            options={{ headerShown: false, headerLeft: () => null} }
         />
       </Stack.Navigator>

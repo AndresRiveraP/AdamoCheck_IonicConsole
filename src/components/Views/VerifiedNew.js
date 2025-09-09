@@ -151,7 +151,7 @@ const VerifiedNew = ({ route, navigation }) => {
 
                     <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
 
-                    <View style={styles.identi}>
+                    <View>
                       <Text style={{textAlign:'center', fontSize: scaleFontSize(19), fontWeight:'400', color:'#323232'}}>{result?.role}</Text>
                     </View>
 
