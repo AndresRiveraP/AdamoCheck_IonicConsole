@@ -69,7 +69,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
             const payload = res.body.matches;
             switch (payload.length) {
               case 1:
-                navigation.replace('VerifiedNew');
+                navigation.replace('VerifiedNew', {payload, check});
                 break;
               case 2:
                 navigation.replace('Verified2', { payload, check });
@@ -117,7 +117,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
               return;
             }
 
-            navigation.replace('Verified', { payload: [payload], check });
+            navigation.replace('VerifiedNew', { payload: [payload], check });
           } else {
             console.error('Error fetching employee:', result.message);
             navigation.replace('Unverified', { check });
