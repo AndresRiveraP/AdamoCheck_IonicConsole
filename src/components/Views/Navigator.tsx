@@ -16,6 +16,7 @@ import VerifiedNew from './VerifiedNew';
 import Verified2New from './Verified2New';
 import Splash from './Splash';
 import Verified3New from './Verified3New';
+import VerifiedBirthday from './VerifiedBirthday';
 
 const Stack = createStackNavigator();
 
@@ -103,6 +104,11 @@ const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
         <Stack.Screen
            name="Verified3New"
            component={Verified3New as React.FC}
+           options={{ headerShown: false, headerLeft: () => null} }
+        />
+        <Stack.Screen
+           name="VerifiedBirthday"
+           component={VerifiedBirthday as React.FC}
            options={{ headerShown: false, headerLeft: () => null} }
         />
       </Stack.Navigator>
