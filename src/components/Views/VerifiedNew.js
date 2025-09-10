@@ -145,14 +145,14 @@ const VerifiedNew = ({ route, navigation }) => {
 
                   <View style={{ marginVertical: '10%' }}>
                     <View style={styles.name}>
-                      <Text style={{textAlign:'center', fontSize: scaleFontSize(30), fontWeight:'600', color:'#323232'}}>{name}</Text>
-                      <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'300', color:'#323232'}}>{lastName}</Text>
+                      <Text style={styles.textName}>{name}</Text>
+                      <Text style={styles.textLastName}>{lastName}</Text>
                     </View>
 
                     <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
 
                     <View>
-                      <Text style={{textAlign:'center', fontSize: scaleFontSize(19), fontWeight:'400', color:'#323232'}}>{result?.role}</Text>
+                      <Text style={styles.textRole}>{result?.role}</Text>
                     </View>
 
                     <View style={styles.identication}>
@@ -239,14 +239,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignSelf: 'center',
     backgroundColor: '#EBF3CB',
-    borderRadius: 30,
+    borderRadius: 40,
     marginTop: '15%',
     padding: '3%', 
   },
   card: {
     borderWidth: 4,
     borderColor: '#78910F',
-    borderRadius: 30,
+    borderRadius: 40,
     padding: '3%',
   },
   containerTime: {
@@ -285,6 +285,30 @@ const styles = StyleSheet.create({
     color: '#EBF3CB',
     marginTop: '-8%',
     alignSelf: 'center',
+  },
+  textName: {
+    textAlign:'center',
+    fontSize: scaleFontSize(30),
+    fontWeight:'600',
+    color:'#323232',
+  },
+  textLastName: {
+    textAlign:'center',
+    fontSize: scaleFontSize(23),
+    fontWeight:'300',
+    color:'#323232'
+  },
+  textRole: {
+    textAlign:'center',
+    fontSize: scaleFontSize(19),
+    fontWeight:'400',
+    color:'#323232'
+  },
+  textID: {
+    textAlign:'center',
+    fontSize: scaleFontSize(23),
+    fontWeight:'400',
+    color:'#323232'
   },
   identication: {
     display: 'flex',

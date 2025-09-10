@@ -198,22 +198,19 @@ return(
               <Animated.View 
                 style={[styles.card,
                   { 
-                    opacity: secondFadeAnim,
-                    transform: [{ translateX: secondFadeAnim }] 
+                    opacity: firstFadeAnim,
+                    transform: [{ translateX: firstSlideAnim }] 
                   }
                 ]}
-              >
-              
-                
-
+                >
                 <View>
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(20), fontWeight:'600', color:'#323232'}}>{name1}</Text>
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(15), fontWeight:'300', color:'#323232'}}>{lastName1}</Text>
+                  <Text style={styles.textName}>{name1}</Text>
+                  <Text style={styles.textLastName}>{lastName1}</Text>
                 </View>
                 <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
                 {result[0].statusCode === 200 && ( <>
                 <View>
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(19), fontWeight:'400', color:'#323232'}}>{result[0]?.role}</Text>
+                  <Text style={styles.textRole}>{result[0]?.role}</Text>
                 </View>
 
                 <View style={styles.identication}>
@@ -221,7 +218,7 @@ return(
                     source={require('../../assets/img/idCard.png')} 
                     style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
                   />
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#323232'}}>{id1}</Text>
+                  <Text style={styles.textID}>{id1}</Text>
                 </View>
                 </>)}
 
@@ -251,20 +248,18 @@ return(
                   { 
                     marginTop: '1%',
                     opacity: secondFadeAnim,
-                    transform: [{ translateX: secondFadeAnim }] 
+                    transform: [{ translateX: secondSlideAnim }] 
                   }
                 ]}
               >
-              
-
                 <View>
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(20), fontWeight:'600', color:'#323232'}}>{name2}</Text>
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(15), fontWeight:'300', color:'#323232'}}>{lastName2}</Text>
+                  <Text style={styles.textName}>{name2}</Text>
+                  <Text style={styles.textLastName}>{lastName2}</Text>
                 </View>
                 <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
                 {result[1].statusCode === 200 && ( <>
                 <View>
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(19), fontWeight:'400', color:'#323232'}}>{result[1]?.role}</Text>
+                  <Text style={styles.textRole}>{result[1]?.role}</Text>
                 </View>
 
                 <View style={styles.identication}>
@@ -272,7 +267,7 @@ return(
                     source={require('../../assets/img/idCard.png')} 
                     style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
                   />
-                  <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#323232'}}>{id2}</Text>
+                  <Text style={styles.textID}>{id2}</Text>
                 </View>
                   </>
                 )}
@@ -285,7 +280,7 @@ return(
                   </View>
                 )  
                 }
-        
+
                 {result[1].message === "Already checked out / Not checked in" && (
                   <View style={styles.alreadyChecked}>
                     <View style={styles.whitened}>
@@ -348,7 +343,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignSelf: 'center',
     backgroundColor: '#EBF3CB',
-    borderRadius: 30,
+    borderRadius: 50,
     marginTop: '15%',
     padding: '3%', 
   },
@@ -390,8 +385,32 @@ const styles = StyleSheet.create({
   card: {
     borderWidth: 4,
     borderColor: '#78910F',
-    borderRadius: 30,
+    borderRadius: 50,
     padding: '3%',
+  },
+  textName: {
+    textAlign:'center',
+    fontSize: scaleFontSize(20),
+    fontWeight:'600',
+    color:'#323232'
+  },
+  textLastName: {
+    textAlign:'center',
+    fontSize: scaleFontSize(15),
+    fontWeight:'300',
+    color:'#323232'
+  },
+  textRole: {
+    textAlign:'center',
+    fontSize: scaleFontSize(19),
+    fontWeight:'400',
+    color:'#323232'
+  },
+  textID: {
+    textAlign:'center',
+    fontSize: scaleFontSize(23),
+    fontWeight:'400',
+    color:'#323232'
   },
   identication: {
     display: 'flex',
