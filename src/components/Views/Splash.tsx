@@ -42,7 +42,7 @@ const Splash = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
 			setTimeout(() => {
 			fadeOut.start(() => {
-					navigation.navigate('Verified2New' as never);
+					navigation.navigate(initialRoute as never);
 			});
 			}, 1500);
 			

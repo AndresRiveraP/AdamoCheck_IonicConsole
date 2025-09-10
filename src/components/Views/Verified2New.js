@@ -10,34 +10,37 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width } = Dimensions.get('window');
 
 
-const Verified2 = ({ route, navigation }) => {
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        navigation.navigate('InitialScreen');
-        return true; // Prevents default back behavior
-      };
+const Verified2New = ({ route, navigation }) => {
   
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [navigation])
-  );
 
-  var name1 = 'Andres Felipe';
-  var lastName1 = 'Rivera Piedrahita';
-  var id1 = '1089933857';
+  useFocusEffect(
+  React.useCallback(() => {
+    const onBackPress = () => {
+      navigation.navigate('InitialScreen');
+      return true; // Prevents default back behavior
+    };
 
-  var name2 = 'Juan Felipe';
-  var lastName2 = 'Quintero';
-  var id2 = '1088264756';
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  }, [navigation])
+);
+
+  const { payload, check } = route.params;
+  
+  var name1 = payload[0].name;
+  var lastName1 = payload[0].lastname;
+  var id1 = payload[0].id;
+
+  var name2 = payload[1].name;
+  var lastName2 = payload[1].lastname;
+  var id2 = payload[1].id;
 
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
   var formattedTime = moment(currentDate).format('h:mm A');
 
-  const [shouldRender, setShouldRender] = useState(true);
-  //const [result, setResult] = useState(null);
- 
+  const [shouldRender, setShouldRender] = useState(false);
+  const [result, setResult] = useState(null);
 
   const apiCallMade = useRef(false);
 
@@ -47,70 +50,110 @@ const Verified2 = ({ route, navigation }) => {
   const secondFadeAnim = useRef(new Animated.Value(0)).current;
 
 
-  var check = 'in';
-  var result = [
-    {
-    statusCode: 210,
-    message: 'Log created successfully',
-    role: 'Developer',
-    name: name1,
-    lastName: lastName1,
-    identification: id1,
-    checkin: formattedTime,
-    checkout: null,
-    checkType: check,
-    },
-    {
-    statusCode: 200,
-    message: 'Log created successfully',
-    role: 'Software Developer',
-    name: name2,
-    lastName: lastName2,
-    identification: id2,
-    checkin: formattedTime,
-    checkout: null,
-    checkType: check,
-    }
-  ];
-  
-  console.log(result[0])
-  console.log(result[1])
+    useEffect(() => {
+    const createLog = async () => {
+      const belongsTo = await AsyncStorage.getItem('key');
+      if (apiCallMade.current) return;
+      
+      apiCallMade.current = true;
 
+      const logs = [
+        {
+          day: formattedDate,
+          identification: id1,
+          name: `${name1} ${lastName1}`,
+          checkin: check === 'in' ? formattedTime : null,
+          checkout: check === 'out' ? formattedTime : null,
+          checkType: check,
+          belongsTo
+        },
+        {
+          day: formattedDate,
+          identification: id2,
+          name: `${name2} ${lastName2}`,
+          checkin: check === 'in' ? formattedTime : null,
+          checkout: check === 'out' ? formattedTime : null,
+          checkType: check,
+          belongsTo
+        }
+      ];
 
-  if (shouldRender) {
-        // First container animation
+      try {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({logs}),
+        });
+
+        const result = await response.json();
+        setResult(result);
+
+        if (response.ok) {
+          console.log('Log created successfully: \n\n\n', result);
+          setShouldRender(true);
+        } else if (response.status === 400) {
+          console.log('Error creating log:', result.message);
+          Toast.show({
+            type: 'warning',
+            text1: 'Warning',
+            text2: result.message,
+            position: 'top',
+            visibilityTime: 3000,
+          });
+          navigation.navigate('InitialScreen');
+        } else {
+          console.error('Error creating log:', result.message);
+        }
+      } catch (error) {
+        console.error('Error creating log:', error);
+      }
+    };
+
+    createLog();
+
+    if (shouldRender) {
+      // First container animation
+      Animated.parallel([
+        Animated.timing(firstSlideAnim, {
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(firstFadeAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start();
+
+      setTimeout(() => {
         Animated.parallel([
-          Animated.timing(firstSlideAnim, {
+          Animated.timing(secondSlideAnim, {
             toValue: 0,
             duration: 400,
             useNativeDriver: true,
           }),
-          Animated.timing(firstFadeAnim, {
+          Animated.timing(secondFadeAnim, {
             toValue: 1,
             duration: 400,
             useNativeDriver: true,
           }),
         ]).start();
-  
-        setTimeout(() => {
-          Animated.parallel([
-            Animated.timing(secondSlideAnim, {
-              toValue: 0,
-              duration: 400,
-              useNativeDriver: true,
-            }),
-            Animated.timing(secondFadeAnim, {
-              toValue: 1,
-              duration: 400,
-              useNativeDriver: true,
-            }),
-          ]).start();
-        }, 400); // 300ms delay between animations
-      }
+      }, 400); // 300ms delay between animations
+    }
 
-      if (!shouldRender) {
-        return null;
-      }
+    const timer = setTimeout(() => {
+      navigation.navigate('InitialScreen');
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [shouldRender]);
+
+  if (!shouldRender) {
+    return null;
+  }
 
 return(
       <AnimatedScreenWrapper style={styles.container}>
@@ -130,11 +173,10 @@ return(
             </View>
          
             <View style={[styles.containerContent]}>
-              <View style={styles.card}> 
-                <View style={styles.containerTime}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('InitialScreen')}
-                    >
+              <View style={styles.containerTime}>
+                <TouchableOpacity
+                    style={{left: '-70%'}}
+                    onPress={() => navigation.navigate('InitialScreen')}>
                     <Image
                       source={require('@/assets/img/check.png')}
                       style={styles.check}
@@ -144,15 +186,25 @@ return(
                   {check === 'in' ? (
                     <View style={styles.timeBlock}>
                       <Text style={styles.timeLabel}>Checked in at</Text>
-                      <Text style={styles.timeValue}>{result[0]?.checkin ?? 'N/A'}</Text>
+                      <Text style={styles.timeValue}>{formattedTime ?? 'N/A'}</Text>
                     </View>
                   ) : (
                     <View style={styles.timeBlock}>
                       <Text style={styles.timeLabel}>Check out at</Text>
-                      <Text style={styles.timeValue}>{result[0].checkin ?? 'N/A'}</Text>
+                      <Text style={styles.timeValue}>{formattedTime ?? 'N/A'}</Text>
                     </View>
                   )}
                 </View>
+              <Animated.View 
+                style={[styles.card,
+                  { 
+                    opacity: secondFadeAnim,
+                    transform: [{ translateX: secondFadeAnim }] 
+                  }
+                ]}
+              >
+              
+                
 
                 <View>
                   <Text style={{textAlign:'center', fontSize: scaleFontSize(20), fontWeight:'600', color:'#323232'}}>{name1}</Text>
@@ -191,10 +243,19 @@ return(
                 )}
 
 
-              </View>
-
+              
+              </Animated.View>
             
-              <View style={[styles.card, {marginTop: '1%'}]}>
+              <Animated.View 
+                style={[styles.card,
+                  { 
+                    marginTop: '1%',
+                    opacity: secondFadeAnim,
+                    transform: [{ translateX: secondFadeAnim }] 
+                  }
+                ]}
+              >
+              
 
                 <View>
                   <Text style={{textAlign:'center', fontSize: scaleFontSize(20), fontWeight:'600', color:'#323232'}}>{name2}</Text>
@@ -232,11 +293,22 @@ return(
                     </View>
                   </View>
                 )}
-              </View>
-              <Image
+              
+              </Animated.View>
+
+              <Image 
                 source={require('../../assets/img/adamoByHBPO.png')} 
-                style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center'}]}
-                />
+                style={[
+                  {
+                    resizeMode: 'contain',
+                    width: scaleWidthSize(120),
+                    alignSelf: 'center',
+                  },
+                  (result[0]?.statusCode !== 200 && result[1]?.statusCode !== 200) && {
+                    marginTop: scaleHeightSize(40),
+                  },
+                ]}
+              />
             </View>
         </ImageBackground>
     </AnimatedScreenWrapper>
@@ -288,20 +360,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#4A5714',
     borderRadius: 999,
+    overflow: 'visible',
+    left: '30%',
     paddingVertical: '0.5%'
   },
   check: {
     position: 'absolute',
-    left: -85,
     width: scaleHeightSize(80),
     height: scaleHeightSize(80),
     resizeMode: 'contain',
-
   },
   timeBlock: {
     marginHorizontal: scaleWidthSize(20),
     marginLeft: scaleWidthSize(25),
-
   },
   timeLabel: {
     fontSize: scaleFontSize(15),
@@ -322,73 +393,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: '3%',
   },
-  content: {
-    marginLeft: '10%',
-  },
-  welcome: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    marginTop: '10%',
-    fontSize: scaleFontSize(40),
-    lineHeight: scaleFontSize(40)
-  },
-  name: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    fontSize: scaleFontSize(20),
-    textAlign: 'center',
-  },
-  salut:{
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '10%',
-  },
-  franx:{
-    height: 1.5,
-    backgroundColor: '#FFF',
-  },
-  ico1:{
-    alignSelf: 'center',
-    width: scaleWidthSize(40),
-    height: scaleHeightSize(40),
-    resizeMode: 'contain',
-    marginLeft: '5%',
-    marginTop: '4%',
-  },
-
   identication: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  ico: {
-    width: scaleWidthSize(20),
-    height: scaleWidthSize(20),
-    resizeMode: 'contain',
-  },
-  idS: {
-    fontFamily: 'Octarine-Bold',
-    color: '#FFF',
-    fontSize: scaleFontSize(15),
-    marginLeft: 10,
-  },
- footer: {
-    display: 'flex',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: scaleWidthSize(57),
-    height: scaleHeightSize(57),
-    marginTop: 10,
-  },
-  check: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
-    zIndex: 3,
   },
   alreadyChecked:{
     position: 'relative',
@@ -408,9 +417,10 @@ const styles = StyleSheet.create({
     fontSize: scaleFontSize(18),
     alignSelf: 'center',
     textAlign: 'center',
+    marginTop: '2%'
   },
 });
 
 
 
-export default Verified2;
+export default Verified2New;

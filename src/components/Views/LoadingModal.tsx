@@ -72,7 +72,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
                 navigation.replace('VerifiedNew', {payload, check});
                 break;
               case 2:
-                navigation.replace('Verified2', { payload, check });
+                navigation.replace('Verified2New', { payload, check });
                 break;
               case 3:
                 navigation.replace('Verified3', { payload, check });
