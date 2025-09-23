@@ -41,7 +41,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
       try {
         if (!source || source === 'camera') {
 
-          console.log('User being sent:', user || 'FacesDataCMOko');
+          console.log('User being sent:', user);
 
           const response = await fetch(
             'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',

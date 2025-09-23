@@ -50,7 +50,7 @@ const Verified = ({ route, navigation }) => {
         belongsTo
       };
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
+        const response = await fetch('https://unchidden-mica-pockily.ngrok-free.dev/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const Verified = ({ route, navigation }) => {
 
         setResult(result);
 
-        console.log('Result', response);
+        console.log('Result:', response);
         if (response.status === 200) {
           console.log('Log created successfully:', result);
           setShouldRender(true);
@@ -81,7 +81,7 @@ const Verified = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3400); // 3000 milliseconds = 3 seconds
+    }, 3400000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -101,41 +101,76 @@ const Verified = ({ route, navigation }) => {
             <Text style={styles.title}>adamo</Text>
             <Text style={[styles.title, { opacity: 0.4 }]}>check</Text>
           </View>
-          {result.statusCode !== 200 ? (<></>) : (
-          <View style={styles.textContainer}>
-            <Text style={styles.welcome}>
-              {check === 'in' ? 'Welcome!' : 'Farewell!'}
-            </Text>
-            <Text style={styles.name}>
-              {name}
-              {'\n'}
-              {lastName}
-            </Text>
-            <View style={styles.identi}>
-              <Image
-                source={require('@/assets/img/logoCheck.png')}
-                style={styles.ico}
-              />
-              <Text style={styles.idS}>{id}</Text>
-            </View>
-            <View style={styles.identi}>
-              <Image
-                source={require('@/assets/img/user-role.png')}
-                style={styles.ico}
-              />
-              <Text style={styles.idS}>{result?.role}</Text>
-            </View>
-            <View style={styles.identi}>
-              <Image
-                source={require('@/assets/img/working-time.png')}
-                style={styles.ico}
-              />
-              {check === 'in' ?
-                <Text style={styles.idS}> Check In: {result?.log.checkin ?? "N/A"} </Text> : 
-                <Text style={styles.idS}> Check Out: {result?.log.checkout ?? "N/A"}</Text>
-              }
-            </View>
-          </View>)}
+          {result.statusCode !== 200 ? (
+              <></>
+            ) : result.lastLog === null ? (
+              <View style={styles.textContainer}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                </Text>
+                <Text style={styles.name}>
+                  {name}
+                  {'\n'}
+                  {lastName}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id}</Text>
+                </View>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/user-role.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{result?.role}</Text>
+                </View>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/working-time.png')}
+                    style={styles.ico}
+                  />
+                  {check === 'in' ? (
+                    <Text style={styles.idS}>
+                      Check In: {result?.log.checkin ?? 'N/A'}
+                    </Text>
+                  ) : (
+                    <Text style={styles.idS}>
+                      Check Out: {result?.log.checkout ?? 'N/A'}
+                    </Text>
+                  )}
+                </View>
+              </View>
+            ) : (
+              <View style={styles.textContainer}>
+                <Text style={[styles.welcome, {fontSize: scaleFontSize(35)}]}>Welcome again!</Text>
+                <Text style={[styles.name, {marginTop: '5%'}]}>
+                  {name}
+                  {'\n'}
+                  {lastName}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id}</Text>
+                </View>
+                <View>
+                  <Text style={styles.textLastCheck}>Last check:</Text>
+                </View>
+                <View>
+                  <Text style={styles.textChecks}>
+                    Check in: {result?.lastLog?.checkin ?? ''}
+                  </Text>
+                  <Text style={styles.textChecks}>
+                    Check out: {result?.lastLog?.checkout ?? ''}
+                  </Text>
+                </View>
+              </View>
+            )}
 
 
           {result.message === "You are already checked in" && (
@@ -260,6 +295,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
   },
+  textLastCheck: {
+    fontFamily: 'Octarine-Bold',
+    color: '#FFF',
+    fontSize: scaleFontSize(20),
+    marginTop: scaleHeightSize(15)
+  },
+  textChecks: {
+    fontFamily: 'Octarine-Bold',
+    color: '#FFF',
+    fontSize: scaleFontSize(15),
+  }
 });
 
 export default Verified;

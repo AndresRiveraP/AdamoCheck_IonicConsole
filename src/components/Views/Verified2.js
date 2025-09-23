@@ -151,7 +151,7 @@ const Verified2 = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4000);
+    }, 4000000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);

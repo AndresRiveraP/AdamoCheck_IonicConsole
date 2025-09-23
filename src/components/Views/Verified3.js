@@ -97,7 +97,7 @@ const Verified3 = ({ route, navigation }) => {
       ];
 
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
+        const response = await fetch('https://unchidden-mica-pockily.ngrok-free.dev/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -108,6 +108,7 @@ const Verified3 = ({ route, navigation }) => {
         const result = await response.json();
         setResult(result);
 
+        console.log('Result:::::::::::::::::::::::::', result);
         if (response.ok) {
           console.log('Log created successfully: \n\n\n', result);
           setShouldRender(true);
@@ -181,7 +182,7 @@ const Verified3 = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4200);
+    }, 400000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -218,32 +219,44 @@ const Verified3 = ({ route, navigation }) => {
             }
         ]}>
           <View style={styles.salut}>
-            {result[0].statusCode !== 200 ? (<></>) : (
-              <Text style={styles.welcome}>
-                  {check === 'in' ? 'Hi!' : 'Farewell!'}
-              </Text>
-            )}
-              <Image
-                source={require('@/assets/img/logoCheck.png')}
-                style={styles.ico1}
-              />
-          </View>
-          
-          <Text style={styles.name}>
-            {name1}
-            {'\n'}
-            {lastName1}
-          </Text>
-           {result[0].statusCode === 200 && ( <>
-              <View style={styles.identi}>
-                <Image
-                  source={require('@/assets/img/logoCheck.png')}
-                  style={styles.ico}
-                />
-                <Text style={styles.idS}>{id1}</Text>
+            {result[0]?.statusCode !== 200 ? (
+              <></>
+            ) : result[0]?.lastLog === null ? (
+              <View style={styles.dataContainer}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                </Text>
+                <Text style={styles.name}>
+                  {name1}
+                  {'\n'}
+                  {lastName1}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id1}</Text>
+                </View>
               </View>
-              </>)}
-
+            ) : (
+              <View>
+                <Text style={styles.welcome}>Welcome again!</Text>
+                <Text style={[styles.name, {}]}>
+                  {name1}
+                  {'\n'}
+                  {lastName1}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id1}</Text>
+                </View>
+              </View>
+            )}
+            </View>
           {result[0].message === "You are already checked in" && (
             <View style={styles.alreadyChecked}>
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
@@ -286,32 +299,45 @@ const Verified3 = ({ route, navigation }) => {
             }
           ]}>
           <View style={styles.salut}>
-            {result[1].statusCode !== 200 ? (<></>) : (
-              <Text style={styles.welcome}>
-                  {check === 'in' ? 'Hi!' : 'Farewell!'}
-              </Text>
-            )}
-              <Image
-                source={require('@/assets/img/logoCheck.png')}
-                style={styles.ico1}
-              />
-          </View>
-          
-          <Text style={styles.name}>
-            {name2}
-            {'\n'}
-            {lastName2}
-          </Text>
-           {result[1].statusCode === 200 && ( <>
-              <View style={styles.identi}>
-                <Image
-                  source={require('@/assets/img/logoCheck.png')}
-                  style={styles.ico}
-                />
-                <Text style={styles.idS}>{id2}</Text>
+            {result[1]?.statusCode !== 200 ? (
+              <></>
+            ) : result[1]?.lastLog === null ? (
+              <View style={styles.dataContainer}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                </Text>
+                <Text style={styles.name}>
+                  {name2}
+                  {'\n'}
+                  {lastName2}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id2}</Text>
+                </View>
               </View>
-              </>)}
-
+            ) : (
+              <View style={{alignContent: 'center'}}>
+                <Text style={styles.welcome}>Welcome again!</Text>
+                <Text style={[styles.name, {}]}>
+                  {name2}
+                  {'\n'}
+                  {lastName2}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id2}</Text>
+                </View>
+              </View>
+            )}
+            
+            </View>
           {result[1].message === "You are already checked in" && (
             <View style={styles.alreadyChecked}>
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
@@ -355,32 +381,44 @@ const Verified3 = ({ route, navigation }) => {
             }
         ]}>
           <View style={styles.salut}>
-            {result[2].statusCode !== 200 ? (<></>) : (
-              <Text style={styles.welcome}>
-                  {check === 'in' ? 'Hi!' : 'Farewell!'}
-              </Text>
-            )}
-              <Image
-                source={require('@/assets/img/logoCheck.png')}
-                style={styles.ico1}
-              />
-          </View>
-          
-          <Text style={styles.name}>
-            {name3}
-            {'\n'}
-            {lastName3}
-          </Text>
-           {result[2].statusCode === 200 && ( <>
-              <View style={styles.identi}>
-                <Image
-                  source={require('@/assets/img/logoCheck.png')}
-                  style={styles.ico}
-                />
-                <Text style={styles.idS}>{id3}</Text>
+            {result[2]?.statusCode !== 200 ? (
+              <></>
+            ) : result[2]?.lastLog === null ? (
+              <View style={styles.dataContainer}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                </Text>
+                <Text style={styles.name}>
+                  {name3}
+                  {'\n'}
+                  {lastName3}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id3}</Text>
+                </View>
               </View>
-              </>)}
-
+            ) : (
+              <View>
+                <Text style={styles.welcome}>Welcome again!</Text>
+                <Text style={[styles.name, {}]}>
+                  {name3}
+                  {'\n'}
+                  {lastName3}
+                </Text>
+                <View style={styles.identi}>
+                  <Image
+                    source={require('@/assets/img/logoCheck.png')}
+                    style={styles.ico}
+                  />
+                  <Text style={styles.idS}>{id3}</Text>
+                </View>
+              </View>
+            )}
+            </View>
           {result[2].message === "You are already checked in" && (
             <View style={styles.alreadyChecked}>
               <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
@@ -445,6 +483,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     alignItems: 'center',   // Add this to center child elements
+    justifyContent: 'center'
+  },
+  dataContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    alignItems: 'center',   // Add this to center child elements
     paddingHorizontal: '10%',
     gap: 2
   },
@@ -454,8 +498,7 @@ const styles = StyleSheet.create({
   welcome: {
     color: '#FFF',
     fontWeight: 'bold',
-    marginTop: '3%',
-    fontSize: scaleFontSize(35),
+    fontSize: scaleFontSize(30),
     lineHeight: scaleFontSize(35)
   },
   name: {
@@ -469,7 +512,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '10%',
   },
   franx:{
     height: 2,
@@ -512,7 +554,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: scaleWidthSize(57),
     height: scaleHeightSize(57),
-    marginTop: 10,
   },
   check: {
     width: '100%',
