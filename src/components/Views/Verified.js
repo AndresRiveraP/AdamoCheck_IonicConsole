@@ -59,14 +59,14 @@ const Verified = ({ route, navigation }) => {
         });
 
         const result = await response.json();
-
+        console.log('lastLog::::::', result.lastLog)
         setResult(result);
 
         console.log('Result:', response);
         if (response.status === 200) {
           console.log('Log created successfully:', result);
           setShouldRender(true);
-        } else if (response.status === 201 || response.status === 202) {
+        } else if (response.status === 201 || response.status === 202 || response.status === 203) {
           console.log("Already something: ",  result);
           setShouldRender(true);
         } else {
@@ -103,7 +103,7 @@ const Verified = ({ route, navigation }) => {
           </View>
           {result.statusCode !== 200 ? (
               <></>
-            ) : result.lastLog === null ? (
+            ) : !result.lastLog ? (
               <View style={styles.textContainer}>
                 <Text style={styles.welcome}>
                   {check === 'in' ? 'Welcome!' : 'Farewell!'}
@@ -145,7 +145,9 @@ const Verified = ({ route, navigation }) => {
               </View>
             ) : (
               <View style={styles.textContainer}>
-                <Text style={[styles.welcome, {fontSize: scaleFontSize(35)}]}>Welcome again!</Text>
+                <Text style={[styles.welcome, {fontSize:scaleFontSize(35)}]}>
+                  {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                </Text>
                 <Text style={[styles.name, {marginTop: '5%'}]}>
                   {name}
                   {'\n'}
@@ -175,29 +177,24 @@ const Verified = ({ route, navigation }) => {
 
           {result.message === "You are already checked in" && (
             <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
-                />
-              </TouchableOpacity>
               <View style={styles.whitened}>
                 <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
               </View>
             </View>
-          )  
-          }
+          )}
 
-          {result.message === "Already checked out / Not checked in" && (
+          {result.statusCode === 203 && (
             <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
-                />
-              </TouchableOpacity>
               <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+              </View>
+            </View>
+          )}
+
+          {result.statusCode === 202 && (
+            <View style={styles.alreadyChecked}>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
               </View>
             </View>
           )}

@@ -240,8 +240,10 @@ const Verified3 = ({ route, navigation }) => {
                 </View>
               </View>
             ) : (
-              <View>
-                <Text style={styles.welcome}>Welcome again!</Text>
+              <View style={{alignContent: 'center', gap: 15}}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome again!' : 'Farewell!'}
+                </Text>
                 <Text style={[styles.name, {}]}>
                   {name1}
                   {'\n'}
@@ -257,34 +259,53 @@ const Verified3 = ({ route, navigation }) => {
               </View>
             )}
             </View>
-          {result[0].message === "You are already checked in" && (
-            <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
-                />
-              </TouchableOpacity>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
-              </View>
-            </View>
-          )  
-        }
+
+
+            {result[0].message === "You are already checked in" && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name1}
+                  {'\n'}
+                  {lastName1}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View></>
+            )  
+            }
+    
+            {result[0].statusCode === 203 && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name1}
+                  {'\n'}
+                  {lastName1}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                </View>
+              </View></>
+            )}
   
-          {result[0].message === "Already checked out / Not checked in" && (
-            <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
-                />
-              </TouchableOpacity>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
-              </View>
-            </View>
-          )}
+            {result[0].statusCode === 202 && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name1}
+                  {'\n'}
+                  {lastName1}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View></>
+            )}
         
         </Animated.View>
 
@@ -320,8 +341,10 @@ const Verified3 = ({ route, navigation }) => {
                 </View>
               </View>
             ) : (
-              <View style={{alignContent: 'center'}}>
-                <Text style={styles.welcome}>Welcome again!</Text>
+              <View style={{alignContent: 'center', gap: 15}}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome again!' : 'Farewell!'}
+                </Text>
                 <Text style={[styles.name, {}]}>
                   {name2}
                   {'\n'}
@@ -338,34 +361,53 @@ const Verified3 = ({ route, navigation }) => {
             )}
             
             </View>
-          {result[1].message === "You are already checked in" && (
-            <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
-                />
-              </TouchableOpacity>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+
+            {result[1].message === "You are already checked in" && (
+              <>
+              <View>
+                <Text style={[styles.name, {}]}>
+                  {name2}
+                  {'\n'}
+                  {lastName2}
+                </Text>
               </View>
-            </View>
-          )  
-        }
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View></>
+            )  
+            }
+    
+            {result[1].statusCode === 203 && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name2}
+                  {'\n'}
+                  {lastName2}
+                </Text>
+                </View>
+                <View style={styles.alreadyChecked}>
+                  <View style={styles.whitened}>
+                    <Text style={styles.textChecked}>You already {'\n'} <Text style={{ fontWeight: '700' }}>checked out!</Text> </Text>
+                  </View>
+                </View></>
+            )}
   
-          {result[1].message === "Already checked out / Not checked in" && (
-            <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
-                />
-              </TouchableOpacity>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
-              </View>
-            </View>
-          )}
+            {result[1].statusCode === 202 && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name2}
+                  {'\n'}
+                  {lastName2}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View></>
+            )}
         
         </Animated.View>
 
@@ -402,8 +444,10 @@ const Verified3 = ({ route, navigation }) => {
                 </View>
               </View>
             ) : (
-              <View>
-                <Text style={styles.welcome}>Welcome again!</Text>
+              <View style={{alignContent: 'center', gap: 15}}>
+                <Text style={styles.welcome}>
+                  {check === 'in' ? 'Welcome again!' : 'Farewell!'}
+                </Text>
                 <Text style={[styles.name, {}]}>
                   {name3}
                   {'\n'}
@@ -419,34 +463,51 @@ const Verified3 = ({ route, navigation }) => {
               </View>
             )}
             </View>
-          {result[2].message === "You are already checked in" && (
-            <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
-                />
-              </TouchableOpacity>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
-              </View>
-            </View>
-          )  
-        }
+            {result[2].message === "You are already checked in" && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name3}
+                  {'\n'}
+                  {lastName3}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View></>
+            )  
+            }
+    
+            {result[2].statusCode === 203 && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name3}
+                  {'\n'}
+                  {lastName3}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                </View>
+              </View></>
+            )}
   
-          {result[2].message === "Already checked out / Not checked in" && (
-            <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(20), height: scaleWidthSize(20) }}
-                />
-              </TouchableOpacity>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
-              </View>
-            </View>
-          )}
+            {result[2].statusCode === 202 && (
+              <><View>
+                <Text style={[styles.name, {}]}>
+                  {name3}
+                  {'\n'}
+                  {lastName3}
+                </Text>
+                </View>
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View></>
+            )}
         
         </Animated.View>
 
@@ -483,7 +544,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     alignItems: 'center',   // Add this to center child elements
-    justifyContent: 'center'
+    justifyContent: 'center',
+    gap: 30
   },
   dataContainer: {
     flex: 1,
@@ -512,6 +574,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 90
   },
   franx:{
     height: 2,
