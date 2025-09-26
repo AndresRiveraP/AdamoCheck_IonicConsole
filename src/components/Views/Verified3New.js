@@ -96,7 +96,7 @@ const Verified3New = ({ route, navigation }) => {
       ];
 
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
+        const response = await fetch('http://192.168.0.64:4000/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ const Verified3New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4200);
+    }, 420000000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -242,19 +242,28 @@ const Verified3New = ({ route, navigation }) => {
                 <Text style={styles.textLastName}>{lastName1}</Text>
               </View>
               <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-              {result[0].statusCode === 200 && ( <>
-              <View>
-                <Text style={styles.textRole}>{result[0]?.role}</Text>
-              </View>
+              {result[0].statusCode === 200 && ( <>            
+                {result[0].lastLog ? (
+                  <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center',flexGrow: 1}}>
+                    <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                  </View>
 
-              <View style={styles.identication}>
-                <Image
-                  source={require('../../assets/img/idCard.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(13), height: scaleHeightSize(13)}]}
-                />
-                <Text style={styles.textID}>{id1}</Text>
-              </View>
-              </>)}
+                ) : (
+                <>
+                <View>
+                  <Text style={styles.textRole}>{result[0]?.role}</Text>
+                </View>
+                  <View style={styles.identication}>
+                    <Image
+                      source={require('../../assets/img/idCard.png')} 
+                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                    />
+                    <Text style={styles.textID}>{id1}</Text>
+                  </View>
+                  </>
+                )}
+                
+                </>)}
 
               {result[0].message === "You are already checked in" && (
                 <View style={styles.alreadyChecked}>
@@ -262,13 +271,20 @@ const Verified3New = ({ route, navigation }) => {
                     <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                   </View>
                 </View>
-              )  
-              }
+              )}
       
-              {result[0].message === "Already checked out / Not checked in" && (
+              {result[0].statusCode === 203 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
-                    <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                    <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                  </View>
+                </View>
+              )}
+    
+              {result[0].statusCode === 202 && (
+                <View style={styles.alreadyChecked}>
+                  <View style={styles.whitened}>
+                    <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                   </View>
                 </View>
               )}
@@ -288,34 +304,49 @@ const Verified3New = ({ route, navigation }) => {
                 <Text style={styles.textLastName}>{lastName2}</Text>
               </View>
               <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-              {result[1].statusCode === 200 && ( <>
-              <View>
-                <Text style={styles.textRole}>{result[1]?.role}</Text>
-              </View>
+              {result[1].statusCode === 200 && ( <>            
+                {result[1].lastLog ? (
+                  <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center',flexGrow: 1}}>
+                    <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                  </View>
 
-              <View style={styles.identication}>
-                <Image
-                  source={require('../../assets/img/idCard.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(13), height: scaleHeightSize(13)}]}
-                />
-                <Text style={styles.textID}>{id2}</Text>
-              </View>
-                </>
-              )}
-            
+                ) : (
+                <>
+                <View>
+                  <Text style={styles.textRole}>{result[1]?.role}</Text>
+                </View>
+                  <View style={styles.identication}>
+                    <Image
+                      source={require('../../assets/img/idCard.png')} 
+                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                    />
+                    <Text style={styles.textID}>{id2}</Text>
+                  </View>
+                  </>
+                )}
+                
+                </>)}
+                
               {result[1].message === "You are already checked in" && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                   </View>
                 </View>
-              )  
-              }
+              )}
       
-              {result[1].message === "Already checked out / Not checked in" && (
+              {result[1].statusCode === 203 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
-                    <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                    <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                  </View>
+                </View>
+              )}
+    
+              {result[1].statusCode === 202 && (
+                <View style={styles.alreadyChecked}>
+                  <View style={styles.whitened}>
+                    <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                   </View>
                 </View>
               )}
@@ -337,34 +368,49 @@ const Verified3New = ({ route, navigation }) => {
                 <Text style={styles.textLastName}>{lastName3}</Text>
               </View>
               <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-              {result[2].statusCode === 200 && ( <>
-              <View>
-                <Text style={styles.textRole}>{result[2]?.role}</Text>
-              </View>
+              {result[2].statusCode === 200 && ( <>            
+                {result[2].lastLog ? (
+                  <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center',flexGrow: 1}}>
+                    <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                  </View>
 
-              <View style={styles.identication}>
-                <Image
-                  source={require('../../assets/img/idCard.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(13), height: scaleHeightSize(13)}]}
-                />
-                <Text style={styles.textID}>{id3}</Text>
-              </View>
-                </>
-              )}
-            
+                ) : (
+                <>
+                <View>
+                  <Text style={styles.textRole}>{result[2]?.role}</Text>
+                </View>
+                  <View style={styles.identication}>
+                    <Image
+                      source={require('../../assets/img/idCard.png')} 
+                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                    />
+                    <Text style={styles.textID}>{id3}</Text>
+                  </View>
+                  </>
+                )}
+                
+                </>)}
+
               {result[2].message === "You are already checked in" && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                   </View>
                 </View>
-              )  
-              }
+              )}
       
-              {result[2].message === "Already checked out / Not checked in" && (
+              {result[2].statusCode === 203 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
-                    <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                    <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                  </View>
+                </View>
+              )}
+    
+              {result[2].statusCode === 202 && (
+                <View style={styles.alreadyChecked}>
+                  <View style={styles.whitened}>
+                    <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                   </View>
                 </View>
               )}
@@ -379,9 +425,9 @@ const Verified3New = ({ route, navigation }) => {
                   width: scaleWidthSize(120),
                   alignSelf: 'center',
                 },
-                (result[0]?.statusCode !== 200 && result[1]?.statusCode !== 200) && {
+                (result[0]?.statusCode !== 200 && result[1]?.statusCode !== 200 && result[2]?.statusCode !== 200) ? {
                   marginTop: scaleHeightSize(40),
-                },
+                } : {marginTop: scaleHeightSize(-10)},
               ]}
             />
           </View>
@@ -462,26 +508,35 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   card: {
+    display: "flex",
+    flexDirection: 'column',
     borderWidth: 2,
     borderColor: '#78910F',
     borderRadius: 60,
     minHeight: '15%',
   },
+  textkWelcomeAgain: {
+
+    alignSelf: 'center',
+    fontSize: scaleFontSize(19),
+    fontWeight:'500',
+    color:'#323232',
+  },
   textName: {
     textAlign:'center',
-    fontSize: scaleFontSize(16),
+    fontSize: scaleFontSize(15),
     fontWeight:'600',
     color:'#323232'
   },
   textLastName: {
     textAlign:'center',
-    fontSize: scaleFontSize(12),
+    fontSize: scaleFontSize(11),
     fontWeight:'300',
     color:'#323232'
   },
   textRole: {
     textAlign:'center',
-    fontSize: scaleFontSize(14),
+    fontSize: scaleFontSize(12),
     fontWeight:'400',
     color:'#323232'
   },
@@ -493,7 +548,7 @@ const styles = StyleSheet.create({
   },
   textID: {
     textAlign:'center',
-    fontSize: scaleFontSize(12),
+    fontSize: scaleFontSize(10),
     fontWeight:'400',
     color:'#323232',
     alignSelf: 'center',

@@ -146,7 +146,7 @@ const Verified2New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4000);
+    }, 40000000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -175,7 +175,7 @@ return(
             <View style={[styles.containerContent]}>
               <View style={styles.containerTime}>
                 <TouchableOpacity
-                    style={{left: '-70%'}}
+                    style={{position: 'absolute', left: '-25%',zIndex: 10, borderWidth: 1, borderColor: 'red', backgroundColor: 'red'}}
                     onPress={() => navigation.navigate('InitialScreen')}>
                     <Image
                       source={require('@/assets/img/check.png')}
@@ -209,18 +209,31 @@ return(
                 </View>
                 <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
                 {result[0].statusCode === 200 && ( <>
-                <View>
-                  <Text style={styles.textRole}>{result[0]?.role}</Text>
-                </View>
+                  {result[0].lastLog ? (
+                    <View style={{alignItems: 'center'}}>
+                      <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                      <Image
+                        source={require('@/assets/img/check.png')}
+                        style={styles.checkWelcomeAgain}
+                      />
+                    </View>
 
-                <View style={styles.identication}>
-                  <Image
-                    source={require('../../assets/img/idCard.png')} 
-                    style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
-                  />
-                  <Text style={styles.textID}>{id1}</Text>
-                </View>
-                </>)}
+                  ) : (
+                  <>
+                  <View>
+                    <Text style={styles.textRole}>{result[0]?.role}</Text>
+                  </View>
+                    <View style={styles.identication}>
+                      <Image
+                        source={require('../../assets/img/idCard.png')} 
+                        style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                      />
+                      <Text style={styles.textID}>{id1}</Text>
+                    </View>
+                    </>
+                  )}
+                  
+                  </>)}
 
                 {result[0].message === "You are already checked in" && (
                   <View style={styles.alreadyChecked}>
@@ -228,13 +241,20 @@ return(
                       <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                     </View>
                   </View>
-                )  
-                }
+                )}
         
-                {result[0].message === "Already checked out / Not checked in" && (
+                {result[0].statusCode === 203 && (
                   <View style={styles.alreadyChecked}>
                     <View style={styles.whitened}>
-                      <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                      <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                    </View>
+                  </View>
+                )}
+      
+                {result[0].statusCode === 202 && (
+                  <View style={styles.alreadyChecked}>
+                    <View style={styles.whitened}>
+                      <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                     </View>
                   </View>
                 )}
@@ -258,33 +278,52 @@ return(
                 </View>
                 <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
                 {result[1].statusCode === 200 && ( <>
+                {result[1].lastLog ? (
+                  <View style={{alignItems: 'center'}}>
+                    <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                    <Image
+                      source={require('@/assets/img/check.png')}
+                      style={styles.checkWelcomeAgain}
+                    />
+                  </View>
+
+                ) : (
+                <>
                 <View>
                   <Text style={styles.textRole}>{result[1]?.role}</Text>
                 </View>
-
-                <View style={styles.identication}>
-                  <Image
-                    source={require('../../assets/img/idCard.png')} 
-                    style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
-                  />
-                  <Text style={styles.textID}>{id2}</Text>
-                </View>
+                  <View style={styles.identication}>
+                    <Image
+                      source={require('../../assets/img/idCard.png')} 
+                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                    />
+                    <Text style={styles.textID}>{id2}</Text>
+                  </View>
                   </>
                 )}
-              
+                
+                </>)}
+
                 {result[1].message === "You are already checked in" && (
                   <View style={styles.alreadyChecked}>
                     <View style={styles.whitened}>
                       <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                     </View>
                   </View>
-                )  
-                }
-
-                {result[1].message === "Already checked out / Not checked in" && (
+                )}
+        
+                {result[1].statusCode === 203 && (
                   <View style={styles.alreadyChecked}>
                     <View style={styles.whitened}>
-                      <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                      <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                    </View>
+                  </View>
+                )}
+      
+                {result[1 ].statusCode === 202 && (
+                  <View style={styles.alreadyChecked}>
+                    <View style={styles.whitened}>
+                      <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                     </View>
                   </View>
                 )}
@@ -293,16 +332,7 @@ return(
 
               <Image 
                 source={require('../../assets/img/adamoByHBPO.png')} 
-                style={[
-                  {
-                    resizeMode: 'contain',
-                    width: scaleWidthSize(120),
-                    alignSelf: 'center',
-                  },
-                  (result[0]?.statusCode !== 200 && result[1]?.statusCode !== 200) && {
-                    marginTop: scaleHeightSize(40),
-                  },
-                ]}
+                style={[{ resizeMode: 'contain', width: scaleWidthSize(100),height: scaleHeightSize(50), alignSelf: 'center' }]}
               />
             </View>
         </ImageBackground>
@@ -365,6 +395,18 @@ const styles = StyleSheet.create({
     height: scaleHeightSize(80),
     resizeMode: 'contain',
   },
+  textkWelcomeAgain: {
+    textAlign:'center',
+    fontSize: scaleFontSize(19),
+    fontWeight:'300',
+    color:'#323232',
+    marginTop: '5%'
+  },
+  checkWelcomeAgain: {
+    width: scaleHeightSize(35),
+    height: scaleHeightSize(35),
+    resizeMode: 'contain',
+  },
   timeBlock: {
     marginHorizontal: scaleWidthSize(20),
     marginLeft: scaleWidthSize(25),
@@ -402,13 +444,13 @@ const styles = StyleSheet.create({
   },
   textRole: {
     textAlign:'center',
-    fontSize: scaleFontSize(19),
+    fontSize: scaleFontSize(17),
     fontWeight:'400',
     color:'#323232'
   },
   textID: {
     textAlign:'center',
-    fontSize: scaleFontSize(23),
+    fontSize: scaleFontSize(20),
     fontWeight:'400',
     color:'#323232'
   },

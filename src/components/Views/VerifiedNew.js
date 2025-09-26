@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {cloneElement, useEffect, useState} from 'react';
 import moment from 'moment';
 import {
   ImageBackground,
@@ -74,14 +74,14 @@ const VerifiedNew = ({ route, navigation }) => {
         if (response.status === 200) {
           console.log('Log created successfully:', result);
           setShouldRender(true);
-        } else if (response.status === 201 || response.status === 202) {
+        } else if (response.status === 201 || response.status === 202 || response.status === 203) {
           console.log("Already something: ",  result);
           setShouldRender(true);
         } else {
-          console.error('Error creating log:', result.message);
+          console.error('Error creating log 1:', result.message);
         }
       } catch (error) {
-        console.error('Error creating log:', error);
+        console.error('Error creating log 2:', error);
       }
     };
 
@@ -89,7 +89,7 @@ const VerifiedNew = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3400); // 3000 milliseconds = 3 seconds
+    }, 3400000000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -107,7 +107,7 @@ const VerifiedNew = ({ route, navigation }) => {
         <View style={[styles.container]}>
           {result.statusCode !== 200 ? (
             <></>
-          ) : (
+          ) : !result.lastLog ? (
             <View>
               <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
                 <Text style={styles.title}>
@@ -115,7 +115,7 @@ const VerifiedNew = ({ route, navigation }) => {
                 </Text>
                 <Text style={styles.subTitle}>
                   {check === 'in'
-                    ? `You're securely signed in`
+                    ? `You're securely signed in` 
                     : `You're securely signed out`}
                 </Text>
               </View>
@@ -170,44 +170,89 @@ const VerifiedNew = ({ route, navigation }) => {
                   />
               </View>
             </View>
+          ) : (
+            <View>
+              <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
+                <Text style={styles.title}>
+                  {check === 'in' ? 'Welcome Again!' : 'Farewell!'}
+                </Text>
+              </View>
+              <View style={[styles.containerContent]}>
+                <View style={styles.card}>
+                    <View style={styles.containerTime}>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('InitialScreen')}>
+                        <Image
+                          source={require('@/assets/img/check.png')}
+                          style={styles.check}
+                        />
+                      </TouchableOpacity>
+
+                      {check === 'in' ? (
+                        <View style={styles.timeBlock}>
+                          <Text style={styles.timeLabel}>Checked in at</Text>
+                          <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                        </View>
+                      ) : (
+                        <View style={styles.timeBlock}>
+                          <Text style={styles.timeLabel}>Check out at</Text>
+                          <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                        </View>
+                      )}
+                    </View>
+
+                  <View style={{ marginVertical: '10%' }}>
+                    <View style={styles.name}>
+                      <Text style={styles.textName}>{name}</Text>
+                      <Text style={styles.textLastName}>{lastName}</Text>
+                    </View>
+
+                    <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
+                  </View>
+                  <View>
+                    <Text style={styles.textLastCheck}>Last check:</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.textChecks}>
+                      Check in: {result?.lastLog?.checkin ?? ''}
+                    </Text>
+                    <Text style={styles.textChecks}>
+                      Check out: {result?.lastLog?.checkout ?? ''}
+                    </Text>
+                  </View>
+                </View>
+                <Image
+                  source={require('../../assets/img/adamoByHBPO.png')} 
+                  style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '20%'}]}
+                  />
+              </View>
+            </View>
           )}
 
-        {result.message === "You are already checked in" && (
-          <View style={styles.alreadyChecked}>
-            <TouchableOpacity onPress={() => navigation.navigate('InitialScreen')}>
-              <Image
-                source={require('@/assets/img/check.png')}
-                style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
-              />
-            </TouchableOpacity> 
-            <View style={styles.whitened}>
-              <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+         {result.message === "You are already checked in" && (
+            <View style={styles.alreadyChecked}>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+              </View>
             </View>
-            <Image
-                  source={require('../../assets/img/adamoByHBPO.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '45%'}]}
-                  />
-          </View>
-          
-        )}
+          )}
 
-        {result.message === "Already checked out / Not checked in" && (
-          <View style={styles.alreadyChecked}>
-            <TouchableOpacity onPress={() => navigation.navigate('InitialScreen')}>
-              <Image
-                source={require('@/assets/img/check.png')}
-                style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
-              />
-            </TouchableOpacity>
-            <View style={styles.whitened}>
-              <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+          {result.statusCode === 203 && (
+            <View style={styles.alreadyChecked}>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+              </View>
             </View>
-            <Image
-                  source={require('../../assets/img/adamoByHBPO.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '45%'}]}
-                  />
-          </View>
-        )}
+          )}
+          
+          {result.statusCode === 202 && (
+            <View style={styles.alreadyChecked}>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+              </View>
+            </View>
+          )}
+
         </View>
       </ImageBackground>
     </AnimatedScreenWrapper>
@@ -226,7 +271,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Sora-ExtraBold',
     fontSize: scaleFontSize(50),
     color: '#EBF3CB',
-    
+    alignSelf: 'center', 
+    textAlign: 'center'
   },
   subTitle: {
     fontSize: scaleFontSize(15),
@@ -337,6 +383,18 @@ const styles = StyleSheet.create({
     fontSize: scaleFontSize(25),
     alignSelf: 'center',
     textAlign: 'center',
+  },
+    textLastCheck: {
+    fontFamily: 'Octarine-Bold',
+    color: '#323232',
+    fontSize: scaleFontSize(20),
+    alignSelf: 'center'
+  },
+  textChecks: {
+    alignSelf: 'center',
+    fontFamily: 'Octarine-Bold',
+    color: '#323232',
+    fontSize: scaleFontSize(15),
   },
 });
 
