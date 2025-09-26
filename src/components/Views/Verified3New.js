@@ -96,7 +96,7 @@ const Verified3New = ({ route, navigation }) => {
       ];
 
       try {
-        const response = await fetch('http://192.168.0.64:4000/api/logs/create2Logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
