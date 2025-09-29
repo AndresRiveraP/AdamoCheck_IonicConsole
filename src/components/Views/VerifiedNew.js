@@ -1,4 +1,4 @@
-import React, {cloneElement, useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import moment from 'moment';
 import {
   ImageBackground,
@@ -8,6 +8,8 @@ import {
   Text,
   TouchableOpacity,
   BackHandler,
+  Animated,
+  Dimensions,
 } from 'react-native';
 import {
   scaleFontSize,
@@ -17,15 +19,21 @@ import {
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SoundPlayer from 'react-native-sound-player';
+
 
 const VerifiedNew = ({ route, navigation }) => {
   const { payload, check } = route.params;
-  
+  const { width } = Dimensions.get('window');
+
   console.log({payload, check});
   var name = payload[0].name;
   var lastName = payload[0].lastname;
   var id = payload[0].id;
 
+  const firstSlideAnim = useRef(new Animated.Value(-width)).current;
+  const firstFadeAnim = useRef(new Animated.Value(0)).current;
+  
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
   var formattedTime = moment(currentDate).format('h:mm A');
@@ -58,7 +66,7 @@ const VerifiedNew = ({ route, navigation }) => {
         belongsTo
       };
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
+        const response = await fetch('http://192.168.0.64:4000/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -95,167 +103,233 @@ const VerifiedNew = ({ route, navigation }) => {
 
   }, []);
 
+  const soundRelease = () => {
+      try {
+          // El primer parámetro es el nombre del archivo (sin extensión)
+          // El segundo parámetro es la extensión del archivo
+          SoundPlayer.playSoundFile('confetti2', 'mp3');
+      } catch (e) {
+          console.log(`No se pudo reproducir el sonido: ${e}`);
+      }
+  };
+
+  if (shouldRender) {
+    Animated.parallel([
+      Animated.timing(firstSlideAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(firstFadeAnim, {
+        toValue: 1,
+        duration: 700,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }
+  
   if (!shouldRender) {
     return null;
   }
 
   return (
-    <AnimatedScreenWrapper style={{flex: 1}}>
-      <ImageBackground
-        source={require('../../assets/img/backgroundStaff.png')}
+    <ImageBackground source={require('../../assets/img/backgroundStaff.png')}
         style={styles.background}>
-        <View style={[styles.container]}>
-          {result.statusCode !== 200 ? (
-            <></>
-          ) : !result.lastLog ? (
-            <View>
-              <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-                <Text style={styles.title}>
-                  {check === 'in' ? 'Welcome!' : 'Farewell!'}
-                </Text>
-                <Text style={styles.subTitle}>
-                  {check === 'in'
-                    ? `You're securely signed in` 
-                    : `You're securely signed out`}
-                </Text>
+    <AnimatedScreenWrapper style={{flex: 1}}>
+        
+        <Animated.View
+            style={[
+              styles.container,
+              { 
+                opacity: firstFadeAnim,
+                transform: [{ translateX: firstSlideAnim }] 
+              }
+            ]}
+        >
+          <View>
+            {false ? (
+              <></>
+            ) : true ? (
+              <>
+              {soundRelease()}
+              <View>
+                <View style={[{display: 'flex', flexDirection: 'row', justifyContent: 'center', aling: 'center', marginTop: '18%'}]}>
+                  <Image 
+                    source={require('../../assets/img/confetti.png')}
+                    style={[{resizeMode: "contain", width: scaleWidthSize(70), alignSelf: 'center'}]}
+                  />
+                  <Text style={[styles.title, {textAlign: 'left'}]}>
+                    Happy Birthday!
+                  </Text>
+                </View>
+                <View style={[styles.containerContent, {width: '70%', marginTop: '5%',}]}>
+                  <View style={[styles.card, {marginTop: '20%', borderColor: 'transparent'}]}>
+                    
+                      <View style={styles.name}>
+                        <Text style={styles.textName}>{name}</Text>
+                        <Text style={styles.textLastName}>{lastName}</Text>
+                      </View>
+
+                      <View style={{ height: 2, width: '95%', backgroundColor: '#78910F', alignSelf: 'center' }} />
+                    
+                  </View>
+                  <Image
+                    source={require('../../assets/img/adamoByHBPO.png')} 
+                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '50%'}]}
+                    />
+                </View>
               </View>
-              <View style={[styles.containerContent]}>
-                <View style={styles.card}>
-                    <View style={styles.containerTime}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate('InitialScreen')}>
+              </>
+            ) : !result.lastLog ? (
+              <View>
+                <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
+                  <Text style={styles.title}>
+                    {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                  </Text>
+                  <Text style={styles.subTitle}>
+                    {check === 'in'
+                      ? `You're securely signed in`
+                      : `You're securely signed out`}
+                  </Text>
+                </View>
+                <View style={[styles.containerContent]}>
+                  <View style={styles.card}>
+                      <View style={styles.containerTime}>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('InitialScreen')}>
+                          <Image
+                            source={require('@/assets/img/check.png')}
+                            style={styles.check}
+                          />
+                        </TouchableOpacity>
+  
+                        {check === 'in' ? (
+                          <View style={styles.timeBlock}>
+                            <Text style={styles.timeLabel}>Checked in at</Text>
+                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                          </View>
+                        ) : (
+                          <View style={styles.timeBlock}>
+                            <Text style={styles.timeLabel}>Check out at</Text>
+                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                          </View>
+                        )}
+                      </View>
+  
+                    <View style={{ marginVertical: '10%' }}>
+                      <View style={styles.name}>
+                        <Text style={styles.textName}>{name}</Text>
+                        <Text style={styles.textLastName}>{lastName}</Text>
+                      </View>
+  
+                      <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
+  
+                      <View>
+                        <Text style={styles.textRole}>{result?.role}</Text>
+                      </View>
+  
+                      <View style={styles.identication}>
                         <Image
-                          source={require('@/assets/img/check.png')}
-                          style={styles.check}
+                          source={require('../../assets/img/idCard.png')}
+                          style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
                         />
-                      </TouchableOpacity>
-
-                      {check === 'in' ? (
-                        <View style={styles.timeBlock}>
-                          <Text style={styles.timeLabel}>Checked in at</Text>
-                          <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.timeBlock}>
-                          <Text style={styles.timeLabel}>Check out at</Text>
-                          <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
-                        </View>
-                      )}
+                        <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#323232'}}>{id}</Text>
+                      </View>
                     </View>
+                  </View>
+                  <Image
+                    source={require('../../assets/img/adamoByHBPO.png')}
+                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '20%'}]}
+                    />
+                </View>
+              </View>
+            ) : (
+              <View>
+                <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
+                  <Text style={styles.title}>
+                    {check === 'in' ? 'Welcome Again!' : 'Farewell!'}
+                  </Text>
+                </View>
+                <View style={[styles.containerContent]}>
+                  <View style={styles.card}>
+                      <View style={styles.containerTime}>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('InitialScreen')}>
+                          <Image
+                            source={require('@/assets/img/check.png')}
+                            style={styles.check}
+                          />
+                        </TouchableOpacity>
 
-                  <View style={{ marginVertical: '10%' }}>
-                    <View style={styles.name}>
-                      <Text style={styles.textName}>{name}</Text>
-                      <Text style={styles.textLastName}>{lastName}</Text>
+                        {check === 'in' ? (
+                          <View style={styles.timeBlock}>
+                            <Text style={styles.timeLabel}>Checked in at</Text>
+                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                          </View>
+                        ) : (
+                          <View style={styles.timeBlock}>
+                            <Text style={styles.timeLabel}>Check out at</Text>
+                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                          </View>
+                        )}
+                      </View>
+
+                    <View style={{ marginVertical: '10%' }}>
+                      <View style={styles.name}>
+                        <Text style={styles.textName}>{name}</Text>
+                        <Text style={styles.textLastName}>{lastName}</Text>
+                      </View>
+
+                      <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
                     </View>
-
-                    <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
-
                     <View>
-                      <Text style={styles.textRole}>{result?.role}</Text>
+                      <Text style={styles.textLastCheck}>Last check:</Text>
                     </View>
-
-                    <View style={styles.identication}>
-                      <Image
-                        source={require('../../assets/img/idCard.png')} 
-                        style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
-                      />
-                      <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#323232'}}>{id}</Text>
+                    <View>
+                      <Text style={styles.textChecks}>
+                        Check in: {result?.lastLog?.checkin ?? ''}
+                      </Text>
+                      <Text style={styles.textChecks}>
+                        Check out: {result?.lastLog?.checkout ?? ''}
+                      </Text>
                     </View>
                   </View>
+                  <Image
+                    source={require('../../assets/img/adamoByHBPO.png')} 
+                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '20%'}]}
+                    />
                 </View>
-                <Image
-                  source={require('../../assets/img/adamoByHBPO.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '20%'}]}
-                  />
               </View>
-            </View>
-          ) : (
-            <View>
-              <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-                <Text style={styles.title}>
-                  {check === 'in' ? 'Welcome Again!' : 'Farewell!'}
-                </Text>
-              </View>
-              <View style={[styles.containerContent]}>
-                <View style={styles.card}>
-                    <View style={styles.containerTime}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate('InitialScreen')}>
-                        <Image
-                          source={require('@/assets/img/check.png')}
-                          style={styles.check}
-                        />
-                      </TouchableOpacity>
+            )}
 
-                      {check === 'in' ? (
-                        <View style={styles.timeBlock}>
-                          <Text style={styles.timeLabel}>Checked in at</Text>
-                          <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.timeBlock}>
-                          <Text style={styles.timeLabel}>Check out at</Text>
-                          <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
-                        </View>
-                      )}
-                    </View>
-
-                  <View style={{ marginVertical: '10%' }}>
-                    <View style={styles.name}>
-                      <Text style={styles.textName}>{name}</Text>
-                      <Text style={styles.textLastName}>{lastName}</Text>
-                    </View>
-
-                    <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
-                  </View>
-                  <View>
-                    <Text style={styles.textLastCheck}>Last check:</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.textChecks}>
-                      Check in: {result?.lastLog?.checkin ?? ''}
-                    </Text>
-                    <Text style={styles.textChecks}>
-                      Check out: {result?.lastLog?.checkout ?? ''}
-                    </Text>
-                  </View>
+          {result.message === "You are already checked in" && (
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
                 </View>
-                <Image
-                  source={require('../../assets/img/adamoByHBPO.png')} 
-                  style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '20%'}]}
-                  />
               </View>
-            </View>
-          )}
+            )}
 
-         {result.message === "You are already checked in" && (
-            <View style={styles.alreadyChecked}>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+            {result.statusCode === 203 && (
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                </View>
               </View>
-            </View>
-          )}
+            )}
+            
+            {result.statusCode === 202 && (
+              <View style={styles.alreadyChecked}>
+                <View style={styles.whitened}>
+                  <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                </View>
+              </View>
+            )}
 
-          {result.statusCode === 203 && (
-            <View style={styles.alreadyChecked}>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
-              </View>
-            </View>
-          )}
-          
-          {result.statusCode === 202 && (
-            <View style={styles.alreadyChecked}>
-              <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
-              </View>
-            </View>
-          )}
-
-        </View>
-      </ImageBackground>
+          </View>
+        </Animated.View>
     </AnimatedScreenWrapper>
+      </ImageBackground>
   );
 };
 

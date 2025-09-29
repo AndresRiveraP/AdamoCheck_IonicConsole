@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, BackHandler} from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, TouchableOpacity, BackHandler, } from 'react-native';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import { useFocusEffect } from '@react-navigation/native';
