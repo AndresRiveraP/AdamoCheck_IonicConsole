@@ -50,7 +50,7 @@ const Verified = ({ route, navigation }) => {
         belongsTo
       };
       try {
-        const response = await fetch('https://unchidden-mica-pockily.ngrok-free.dev/api/logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

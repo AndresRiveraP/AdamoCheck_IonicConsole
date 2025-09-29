@@ -97,7 +97,7 @@ const Verified3 = ({ route, navigation }) => {
       ];
 
       try {
-        const response = await fetch('https://unchidden-mica-pockily.ngrok-free.dev/api/logs/create2Logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
