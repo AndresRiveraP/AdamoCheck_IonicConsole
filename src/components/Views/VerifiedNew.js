@@ -147,9 +147,9 @@ const VerifiedNew = ({ route, navigation }) => {
             ]}
         >
           <View>
-            {false ? (
+            {result.statusCode !== 200 ? (
               <></>
-            ) : true ? (
+            ) : result.birthday ? (
               <>
               {soundRelease()}
               <View>
