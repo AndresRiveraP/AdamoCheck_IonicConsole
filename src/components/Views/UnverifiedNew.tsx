@@ -117,8 +117,7 @@ const UnverifiedNew : React.FC<UnverifiedNewProps> = ({ route, navigation }) => 
                    
                 </View>
 
-                <View style={{position: 'absolute', height: 2, width: '60%', backgroundColor: '#617316', zIndex: 100}}/>
-
+                <View style={{ height: 20, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
 
                 <View style={styles.containerForm}>
                    
@@ -178,6 +177,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     display: 'flex',
+    flexDirection: 'column',
     marginTop: '10%',
     width: '100%'
   },
