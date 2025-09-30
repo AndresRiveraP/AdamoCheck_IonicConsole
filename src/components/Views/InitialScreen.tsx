@@ -65,14 +65,14 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   return (
     <ImageBackground
-      source={require('../../assets/img/backGround.png')}
+      source={require('../../assets/img/backgorundNew.png')}
       style={styles.background}>
 
 
       <View style={styles.container}>
         <View style={{display:'flex', flexDirection: 'row', alignSelf: 'center'}}>
-            <Image
-            source={require('../../assets/img/logoCheck.png')}
+          <Image
+            source={require('../../assets/img/logo.png')}
             style={styles.logoA}
           />
         </View>
@@ -80,7 +80,7 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
           <Text
             style={{
               fontFamily: 'Guitar-Acoustic',
-              fontSize: scaleFontSize(50),
+              fontSize: scaleFontSize(45),
               color: '#fff',
             }}>
             adamo
@@ -88,7 +88,7 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
           <Text
             style={{
               fontFamily: 'Guitar-Acoustic',
-              fontSize: scaleFontSize(50),
+              fontSize: scaleFontSize(45),
               color: '#fff',
               opacity: 0.4,
             }}>
@@ -103,10 +103,10 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             handleCamera();
           }}>
           <Image
-            source={require('../../assets/img/profi.png')}
+            source={require('../../assets/img/checkin.png')}
             style={styles.profi}
           />
-          <Text style={styles.label}>Check In</Text>
+          <Text style={styles.label}>CHECK IN</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -116,11 +116,15 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             handleCamera();
           }}>
           <Image
-            source={require('../../assets/img/profi.png')}
-            style={styles.profi}
+            source={require('../../assets/img/checkout.png')}
+            style={styles.profi2}
           />
-          <Text style={styles.label}>Check Out</Text>
+          <Text style={styles.label2}>CHECK OUT</Text>
         </TouchableOpacity>
+        <Image
+          source={require('../../assets/img/adamoByHBPO.png')}
+          style={styles.logoFooter}
+        />
       </View>
     </ImageBackground>
   );

@@ -37,7 +37,7 @@ interface CameraScreenProps {
 const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   const hasNavigated = useRef(false);
 
   useEffect(() => {
