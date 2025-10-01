@@ -33,7 +33,7 @@ const App = () => {
           />
         )}
         <View style={styles.container}>
-          <Navigator initialRouteName='UnverifiedNew' />
+          <Navigator initialRouteName='SplashScreen' />
           <Toast config={toastConfig} />
         </View>
       </>

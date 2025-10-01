@@ -64,7 +64,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           console.log('API response:', res);
           
           if (res.statusCode !== 200) {
-            navigation.replace('Unverified', { check });
+            navigation.replace('UnverifiedNew', { check });
           } else if (res.statusCode === 200 && res.body.matches.length > 0) {
             const payload = res.body.matches;
             switch (payload.length) {
@@ -84,7 +84,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           } else {
             navigation.replace('Unverified', { check });
           }
-        } else if (source === 'unverified' && documentId) {
+        } else if (source === 'UnverifiedNew' && documentId) {
           const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/unverified', {
             method: 'POST',
             headers: {
@@ -99,7 +99,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
             console.log('Employee fetched successfully:', result);
 
             let payload;
-            
+            console.log('resul_------------------', result)  
             if (Array.isArray(result) && result[0]?.employee) {
               payload = {
                 id: result[0].employee.idNumber,
@@ -113,14 +113,14 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
                 lastname: result.lastname,
               };
             } else {
-              navigation.replace('Unverified', { check });
+              navigation.replace('NoData', { check });
               return;
             }
 
             navigation.replace('VerifiedNew', { payload: [payload], check });
           } else {
-            console.error('Error fetching employee:', result.message);
-            navigation.replace('Unverified', { check });
+            
+            navigation.replace('NoData');
           }
         }
       } catch (error) {

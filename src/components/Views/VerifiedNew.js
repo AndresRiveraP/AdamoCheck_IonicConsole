@@ -66,7 +66,7 @@ const VerifiedNew = ({ route, navigation }) => {
         belongsTo
       };
       try {
-        const response = await fetch('http://192.168.0.64:4000/api/logs', {
+        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const VerifiedNew = ({ route, navigation }) => {
           <View>
             {result.statusCode !== 200 ? (
               <></>
-            ) : result.birthday ? (
+            ) : result.birthday && check === 'in' ? (
               <>
               {soundRelease()}
               <View>
@@ -163,19 +163,19 @@ const VerifiedNew = ({ route, navigation }) => {
                   </Text>
                 </View>
                 <View style={[styles.containerContent, {width: '70%', marginTop: '5%',}]}>
-                  <View style={[styles.card, {marginTop: '20%', borderColor: 'transparent'}]}>
+                  <View style={[styles.card, {padding: 0, marginTop: '20%', borderColor: 'transparent'}]}>
                     
                       <View style={styles.name}>
                         <Text style={styles.textName}>{name}</Text>
                         <Text style={styles.textLastName}>{lastName}</Text>
                       </View>
 
-                      <View style={{ height: 2, width: '95%', backgroundColor: '#78910F', alignSelf: 'center' }} />
-                    
+                      <View style={{ height: 2, width: '100%', backgroundColor: '#78910F', alignSelf: 'center' }} />
+                      <Text style={styles.textCheers}>Cheers to another year of success & happiness!</Text>
                   </View>
                   <Image
                     source={require('../../assets/img/adamoByHBPO.png')} 
-                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '50%'}]}
+                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '10%'}]}
                     />
                 </View>
               </View>
@@ -211,7 +211,7 @@ const VerifiedNew = ({ route, navigation }) => {
                         ) : (
                           <View style={styles.timeBlock}>
                             <Text style={styles.timeLabel}>Check out at</Text>
-                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                            <Text style={styles.timeValue}>{result?.log.checkout ?? 'N/A'}</Text>
                           </View>
                         )}
                       </View>
@@ -269,7 +269,7 @@ const VerifiedNew = ({ route, navigation }) => {
                         ) : (
                           <View style={styles.timeBlock}>
                             <Text style={styles.timeLabel}>Check out at</Text>
-                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                            <Text style={styles.timeValue}>{result?.log.checkout ?? 'N/A'}</Text>
                           </View>
                         )}
                       </View>
@@ -436,13 +436,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textCheers: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: scaleFontSize(15),
+    color: '#4A5714',
+    textAlign: 'center'
+  },
   alreadyChecked: {
     position: 'relative',
     flexDirection: 'column',
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    top: '25%',
+    marginTop: '50%'
   },
   whitened: {
     backgroundColor: 'rgba(255, 255, 255, 0.3)',

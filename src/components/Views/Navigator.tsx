@@ -18,6 +18,7 @@ import Splash from './Splash';
 import Verified3New from './Verified3New';
 import VerifiedBirthday from './VerifiedBirthday';
 import UnverifiedNew from './UnverifiedNew';
+import NoData from './NoData';
 
 const Stack = createStackNavigator();
 
@@ -115,6 +116,11 @@ const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
         <Stack.Screen
            name="UnverifiedNew"
            component={UnverifiedNew as React.FC}
+           options={{ headerShown: false, headerLeft: () => null} }
+        />
+        <Stack.Screen
+           name="NoData"
+           component={NoData as React.FC}
            options={{ headerShown: false, headerLeft: () => null} }
         />
       </Stack.Navigator>

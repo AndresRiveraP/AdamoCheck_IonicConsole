@@ -1,9 +1,9 @@
 import Toast from 'react-native-toast-message';
-import React, {useState} from 'react'
+import React from 'react'
 
-import {ImageBackground,StyleSheet,View, Image,Text,SafeAreaView, PixelRatio, TextInput, TouchableOpacity,BackHandler, Pressable, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native'
+import {ImageBackground,StyleSheet,View, Image,Text, PixelRatio, TextInput, TouchableOpacity,BackHandler, Pressable,TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native'
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
-import AnimatedScreenWrapper from './AnimatedScreenWrapper';
+
 import { useFocusEffect } from '@react-navigation/native';
 
 function sp(size: number) {
@@ -26,11 +26,11 @@ interface UnverifiedNewProps {
   }
 
 const UnverifiedNew : React.FC<UnverifiedNewProps> = ({ route, navigation }) => {
-  let check: string | null = null;
+  let {check} = route.params;
   const [user, setUser] = React.useState('');
 
   const handleCamera = () => {
-    // navigation.navigate('CameraScreen',  check );
+    navigation.navigate('CameraScreen', { check } );
   };
   
   const VerifyWithId = async (documentId: string) => {
@@ -44,7 +44,7 @@ const UnverifiedNew : React.FC<UnverifiedNewProps> = ({ route, navigation }) => 
       });
     } else {
       navigation.navigate('LoadingScreen', {
-        // check,
+        check,
         documentId,
         source: 'UnverifiedNew',
         base64Data: '' // Empty string as it's not needed for this flow
@@ -65,101 +65,119 @@ const UnverifiedNew : React.FC<UnverifiedNewProps> = ({ route, navigation }) => 
   );
 
   return (
+    <ScrollView 
+      contentContainerStyle={{ flexGrow: 1 }} 
+      keyboardShouldPersistTaps="handled"
+    >  
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={[styles.container]}>
-              <View style={[styles.containerTitle]}>
-                <Image
-                  source={require('../../assets/img/unverified.png')}
-                  style={[styles.image, {resizeMode: 'contain'}]}
-                />
-                <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <Text 
-                    style={[styles.title,{color: '#fff'} ]}>
-                    Oops!
-                  </Text>
-                  <Text style={[{fontSize: scaleFontSize(17), color: '#fff', marginBottom: '5%'}]}>
-                    Your face(s) couldn't be detected
-                  </Text>
-                  <Text style={[{fontSize: scaleFontSize(15), color: '#fff'}]}>
-                    Please, try again
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.containerButtons}>
+
+            <View style={[styles.container]}>
+              <View style={styles.containerBack}>
                 <TouchableOpacity
-                  style={[styles.boton]}
-                  onPress={() => {
-                    check = 'in';
-                    handleCamera();
-                  }}>
-                  <Image
-                    source={require('../../assets/img/checkin.png')}
-                    style={styles.iconBoton}
-                  />
-                  <Text style={styles.label}>CHECK IN</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[styles.boton, {backgroundColor: '#735616'}]}
-                  onPress={() => {
-                    check = 'out';
-                    handleCamera();
-                  }}>
-                  <Image
-                    source={require('../../assets/img/checkout.png')}
-                    style={styles.iconBoton}
-                  />
-                  <Text style={[styles.label, {color:'#FFBB4D'}]}>CHECK OUT</Text>
-                </TouchableOpacity>
-
-                  
-              </View>
-
-              <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center', marginTop: '5%' }}/>
-
-              <View style={styles.containerForm}>
-                  <View style={styles.inputContainer}>
+                    style={[styles.botonBack]}
+                    onPress={() => { navigation.navigate('InitialScreen')
+                    }}>
                     <Image
-                    source={require('../../assets/img/idCardNew.png')} 
-                    style={[styles.icon, {resizeMode: "contain"}]}
+                      source={require('../../assets/img/arrowBack.png')}
+                      style={styles.iconBack}
                     />
-                      {user.length === 0 && (
-                          <Text style={styles.fakePlaceholder}>or enter your ID number here</Text>
-                      )}
-                      <TextInput
-                          value={user}
-                          onChangeText={setUser}
-                          style={styles.input}
-                          placeholder=""  
-                          textAlign="left"
-                      />
-                  </View>
-              
-                  <View>
-                    <Pressable
-                      style={({ pressed }) => ([
-                          {
-                          width: scaleWidthSize(75),
-                          height: scaleHeightSize(40),
-                          borderRadius: 50,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: '#78910F'
-                          },
-                          pressed && { opacity: 0.7 } 
-                        ])}
-                        
-                        android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
-                        
-                        onPress={() => {VerifyWithId(user)}}   >
-                      <Text style={[{color: '#DCF576', fontSize: scaleFontSize(15)}]}>Verify</Text>
-                    </Pressable>
-                  </View>
+                  </TouchableOpacity>
               </View>
-          </View>
+                <View style={[styles.containerTitle]}>
+                  <Image
+                    source={require('../../assets/img/unverified.png')}
+                    style={[styles.image, {resizeMode: 'contain'}]}
+                  />
+                  <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text 
+                      style={[styles.title,{color: '#EBF3CB'} ]}>
+                      Oops!
+                    </Text>
+                    <Text style={[{fontSize: scaleFontSize(15), color: '#EBF3CB', fontFamily: 'Poppins-SemiBold'}]}>
+                      Your face(s) couldn't be detected
+                    </Text>
+                    <Text style={[{fontSize: scaleFontSize(13), color: '#EBF3CB', marginTop: '4%', fontFamily: 'Poppins-Regular'}]}>
+                      Please, try again
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.containerButtons}>
+                  <TouchableOpacity
+                    style={[styles.boton]}
+                    onPress={() => {
+                      check = 'in';
+                      handleCamera();
+                    }}>
+                    <Image
+                      source={require('../../assets/img/checkin.png')}
+                      style={styles.iconBoton}
+                    />
+                    <Text style={styles.label}>CHECK IN</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[styles.boton, {backgroundColor: '#735616'}]}
+                    onPress={() => {
+                      check = 'out';
+                      handleCamera();
+                    }}>
+                    <Image
+                      source={require('../../assets/img/checkout.png')}
+                      style={styles.iconBoton}
+                    />
+                    <Text style={[styles.label, {color:'#FFBB4D'}]}>CHECK OUT</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ height: 2, width: '50%', backgroundColor: '#78910F', alignSelf: 'center', marginVertical: '5%' }}/>
+
+                <View style={styles.containerForm}>
+                    <View style={styles.inputContainer}>
+                      <Image
+                      source={require('../../assets/img/idCardNew.png')} 
+                      style={[styles.icon, {resizeMode: "contain"}]}
+                      />
+                        {user.length === 0 && (
+                            <Text style={styles.fakePlaceholder}>or enter your ID number here</Text>
+                        )}
+                        <TextInput
+                            value={user}
+                            onChangeText={setUser}
+                            style={styles.input}
+                            placeholder=""  
+                            textAlign="left"
+                        />
+                    </View>
+                    <View>
+                      <Pressable
+                        style={({ pressed }) => ([
+                            {
+                            width: scaleWidthSize(75),
+                            height: scaleHeightSize(40),
+                            borderRadius: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#78910F'
+                            },
+                            pressed && { opacity: 0.7 } 
+                          ])}
+                          
+                          android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
+                          
+                          onPress={() => {VerifyWithId(user)}}   >
+                        <Text style={[{color: '#DCF576',fontFamily: 'Poppins-Bold', fontSize: scaleFontSize(13)}]}>Verify</Text>
+                      </Pressable>
+                    </View>
+                </View>
+                <Image 
+                  source={require('../../assets/img/adamoByHBPO.png')} 
+                  style={{ resizeMode: 'contain', width: scaleWidthSize(120), alignSelf: 'center', marginTop: '15%'}}/>
+            </View>
+      
+          </ImageBackground>
       </TouchableWithoutFeedback>
-    </ImageBackground>
+    </ScrollView>
   )
 }
 
@@ -169,17 +187,36 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     alignItems : 'center',
     width: '100%',
-    height: '100%',
-    position: 'absolute',
-    zIndex: -1,
+    height: '100%', 
+    position: 'relative'
   },
   container: {
     flex: 1,
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '10%',
+    marginTop: '25%',
     width: '100%'
+  },
+  containerBack: {
+    position: 'absolute',
+    left: 0,
+    top: '-10%',
+    width: scaleWidthSize(45),
+  },
+  botonBack: {
+    alignItems: 'center',
+    backgroundColor: '#4A5714',
+    borderTopRightRadius: 40,
+    borderBottomEndRadius: 40
+  },
+  iconBack:{
+    width: scaleWidthSize(30),
+    height: scaleWidthSize(20),
+    resizeMode: 'contain',
+    margin: '15%',
+    marginBottom: '20%',
+    marginLeft: 0
   },
   containerTitle: {
     display: 'flex',
@@ -216,7 +253,6 @@ const styles = StyleSheet.create({
   containerForm: {
     flexDirection: 'row',
     gap: 10,
-    marginTop: '10%'
   },
   inputContainer: {
     width: scaleWidthSize(180),
@@ -238,27 +274,27 @@ const styles = StyleSheet.create({
   },
   fakePlaceholder: {
     position: 'absolute',        
-    left: 0,
+    left: '12%',
     right: 0,
     textAlign: 'center',
     alignSelf: 'center',    
     color: 'rgba(74, 87, 20, 0.50)',           
-    fontSize: scaleFontSize(8),                
-    // opacity: 0.8,                
+    fontSize: scaleFontSize(9),                
+    fontFamily: 'Poppins-Regular'
   },
   input: {
     flex: 1,
     textAlign: 'left',
     color: '#4C4C4C',
-    fontSize: scaleFontSize(8),
+    fontSize: scaleFontSize(9),
   },
   title: {
     fontFamily: 'Sora-ExtraBold',
     fontSize: scaleFontSize(40),
   },
   image: {
-    width: scaleWidthSize(80),
-    height: scaleWidthSize(80),
+    width: scaleWidthSize(70),
+    height: scaleWidthSize(70),
   },
 })
 export default UnverifiedNew
