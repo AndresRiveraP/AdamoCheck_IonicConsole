@@ -53,7 +53,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
               },
               body: JSON.stringify({
                 image: base64Data,
-                user: user,
+                user: user
               }),
             },
           );

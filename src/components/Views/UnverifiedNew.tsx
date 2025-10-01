@@ -67,101 +67,97 @@ const UnverifiedNew : React.FC<UnverifiedNewProps> = ({ route, navigation }) => 
   return (
     <ImageBackground source={require('../../assets/img/backgroundStaff.png')} style={styles.background}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
-            <View style={[styles.container]}>
-                <View style={[styles.containerTitle]}>
+          <View style={[styles.container]}>
+              <View style={[styles.containerTitle]}>
+                <Image
+                  source={require('../../assets/img/unverified.png')}
+                  style={[styles.image, {resizeMode: 'contain'}]}
+                />
+                <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <Text 
+                    style={[styles.title,{color: '#fff'} ]}>
+                    Oops!
+                  </Text>
+                  <Text style={[{fontSize: scaleFontSize(17), color: '#fff', marginBottom: '5%'}]}>
+                    Your face(s) couldn't be detected
+                  </Text>
+                  <Text style={[{fontSize: scaleFontSize(15), color: '#fff'}]}>
+                    Please, try again
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.containerButtons}>
+                <TouchableOpacity
+                  style={[styles.boton]}
+                  onPress={() => {
+                    check = 'in';
+                    handleCamera();
+                  }}>
                   <Image
-                    source={require('../../assets/img/unverified.png')}
-                    style={[styles.image, {resizeMode: 'contain'}]}
+                    source={require('../../assets/img/checkin.png')}
+                    style={styles.iconBoton}
                   />
-                  <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text 
-                      style={[styles.title,{color: '#fff'} ]}>
-                      Oops!
-                    </Text>
-                    <Text style={[{fontSize: scaleFontSize(17), color: '#fff', marginBottom: '5%'}]}>
-                      Your face(s) couldn't be detected
-                    </Text>
-                    <Text style={[{fontSize: scaleFontSize(15), color: '#fff'}]}>
-                      Please, try again
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.containerButtons}>
-                  <TouchableOpacity
-                    style={[styles.boton]}
-                    onPress={() => {
-                      check = 'in';
-                      handleCamera();
-                    }}>
+                  <Text style={styles.label}>CHECK IN</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.boton, {backgroundColor: '#735616'}]}
+                  onPress={() => {
+                    check = 'out';
+                    handleCamera();
+                  }}>
+                  <Image
+                    source={require('../../assets/img/checkout.png')}
+                    style={styles.iconBoton}
+                  />
+                  <Text style={[styles.label, {color:'#FFBB4D'}]}>CHECK OUT</Text>
+                </TouchableOpacity>
+
+                  
+              </View>
+
+              <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center', marginTop: '5%' }}/>
+
+              <View style={styles.containerForm}>
+                  <View style={styles.inputContainer}>
                     <Image
-                      source={require('../../assets/img/checkin.png')}
-                      style={styles.iconBoton}
+                    source={require('../../assets/img/idCardNew.png')} 
+                    style={[styles.icon, {resizeMode: "contain"}]}
                     />
-                    <Text style={styles.label}>CHECK IN</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.boton, {backgroundColor: '#735616'}]}
-                    onPress={() => {
-                      check = 'out';
-                      handleCamera();
-                    }}>
-                    <Image
-                      source={require('../../assets/img/checkout.png')}
-                      style={styles.iconBoton}
-                    />
-                    <Text style={[styles.label, {color:'#FFBB4D'}]}>CHECK OUT</Text>
-                  </TouchableOpacity>
-
-                   
-                </View>
-
-                <View style={{ height: 20, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-
-                <View style={styles.containerForm}>
-                   
-                    
-                    <View style={styles.inputContainer}>
-                      <Image
-                      source={require('../../assets/img/idCardNew.png')} 
-                      style={[styles.icon, {resizeMode: "contain"}]}
+                      {user.length === 0 && (
+                          <Text style={styles.fakePlaceholder}>or enter your ID number here</Text>
+                      )}
+                      <TextInput
+                          value={user}
+                          onChangeText={setUser}
+                          style={styles.input}
+                          placeholder=""  
+                          textAlign="left"
                       />
-                        {user.length === 0 && (
-                            <Text style={styles.fakePlaceholder}>or enter your ID number here</Text>
-                        )}
-                        <TextInput
-                            value={user}
-                            onChangeText={setUser}
-                            style={styles.input}
-                            placeholder=""  
-                            textAlign="left"
-                        />
-                    </View>
-                
-                    <View>
-                      <Pressable
-                        style={({ pressed }) => ([
-                            {
-                            width: scaleWidthSize(75),
-                            height: scaleHeightSize(40),
-                            borderRadius: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#78910F'
-                            },
-                            pressed && { opacity: 0.7 } 
-                          ])}
-                          
-                          android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
-                          
-                          onPress={() => {VerifyWithId(user)}}   >
-                        <Text style={[{color: '#DCF576', fontSize: scaleFontSize(15)}]}>Verify</Text>
-                      </Pressable>
-                    </View>
-                </View>
-            </View>
-        </KeyboardAvoidingView>
+                  </View>
+              
+                  <View>
+                    <Pressable
+                      style={({ pressed }) => ([
+                          {
+                          width: scaleWidthSize(75),
+                          height: scaleHeightSize(40),
+                          borderRadius: 50,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#78910F'
+                          },
+                          pressed && { opacity: 0.7 } 
+                        ])}
+                        
+                        android_ripple={{ color: 'rgba(255, 255, 255, 0.1)', borderless: false }}
+                        
+                        onPress={() => {VerifyWithId(user)}}   >
+                      <Text style={[{color: '#DCF576', fontSize: scaleFontSize(15)}]}>Verify</Text>
+                    </Pressable>
+                  </View>
+              </View>
+          </View>
       </TouchableWithoutFeedback>
     </ImageBackground>
   )
@@ -170,8 +166,12 @@ const UnverifiedNew : React.FC<UnverifiedNewProps> = ({ route, navigation }) => 
 const styles = StyleSheet.create({
   background:{
     flex:1,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     alignItems : 'center',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: -1,
   },
   container: {
     flex: 1,

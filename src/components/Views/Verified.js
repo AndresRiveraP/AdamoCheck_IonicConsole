@@ -56,14 +56,14 @@ const Verified = ({ route, navigation }) => {
         });
 
         const result = await response.json();
-
+        console.log('lastLog::::::', result.lastLog)
         setResult(result);
 
-        console.log('Result', response);
+        console.log('Result:', response);
         if (response.status === 200) {
           console.log('Log created successfully:', result);
           setShouldRender(true);
-        } else if (response.status === 201 || response.status === 202) {
+        } else if (response.status === 201 || response.status === 202 || response.status === 203) {
           console.log("Already something: ",  result);
           setShouldRender(true);
         } else {
@@ -149,16 +149,18 @@ const Verified = ({ route, navigation }) => {
           )
           }
 
-          {result.message === "Already checked out / Not checked in" && (
+          {result.statusCode === 203 && (
             <View style={styles.alreadyChecked}>
-              <TouchableOpacity style={styles.footer} onPress={() => navigation.navigate('InitialScreen')}>
-                <Image
-                  source={require('@/assets/img/check.png')}
-                  style={{ width: scaleWidthSize(50), height: scaleWidthSize(50) }}
-                />
-              </TouchableOpacity>
               <View style={styles.whitened}>
-                <Text style={styles.textChecked}>You already  {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+              </View>
+            </View>
+          )}
+
+          {result.statusCode === 202 && (
+            <View style={styles.alreadyChecked}>
+              <View style={styles.whitened}>
+                <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
               </View>
             </View>
           )}
@@ -254,6 +256,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
   },
+  textLastCheck: {
+    fontFamily: 'Octarine-Bold',
+    color: '#FFF',
+    fontSize: scaleFontSize(20),
+    marginTop: scaleHeightSize(15)
+  },
+  textChecks: {
+    fontFamily: 'Octarine-Bold',
+    color: '#FFF',
+    fontSize: scaleFontSize(15),
+  }
 });
 
 export default Verified;
