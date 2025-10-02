@@ -146,7 +146,7 @@ const Verified2New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 40000000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontSize: scaleFontSize(17),
     fontWeight:'400',
-    color:'#323232'
+    color:'#819842'
   },
   textID: {
     textAlign:'center',

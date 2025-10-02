@@ -97,7 +97,7 @@ const VerifiedNew = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3400000000); // 3000 milliseconds = 3 seconds
+    }, 3000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -163,15 +163,21 @@ const VerifiedNew = ({ route, navigation }) => {
                   </Text>
                 </View>
                 <View style={[styles.containerContent, {width: '70%', marginTop: '5%',}]}>
-                  <View style={[styles.card, {padding: 0, marginTop: '20%', borderColor: 'transparent'}]}>
+                  <View>
+                      <Image
+                        source={require('../../assets/img/birthday.png')} 
+                        style={[{position: 'absolute', top: scaleHeightSize(-25), resizeMode: "contain", width: scaleWidthSize(100), height: scaleWidthSize(100), alignSelf: 'center'}]}
+                      />
+                    </View>
+                  <View style={[styles.card, {padding: 0, borderColor: 'transparent', marginTop: '30%'}]}>
                     
-                      <View style={styles.name}>
-                        <Text style={styles.textName}>{name}</Text>
-                        <Text style={styles.textLastName}>{lastName}</Text>
-                      </View>
+                    <View style={styles.name}>
+                      <Text style={styles.textName}>{name}</Text>
+                      <Text style={styles.textLastName}>{lastName}</Text>
+                    </View>
 
-                      <View style={{ height: 2, width: '100%', backgroundColor: '#78910F', alignSelf: 'center' }} />
-                      <Text style={styles.textCheers}>Cheers to another year of success & happiness!</Text>
+                    <View style={{ height: 2, width: '95%', backgroundColor: '#78910F', alignSelf: 'center', marginVertical: '3%' }} />
+                    <Text style={styles.textCheers}>Cheers to another year of success & happiness!</Text>
                   </View>
                   <Image
                     source={require('../../assets/img/adamoByHBPO.png')} 
@@ -233,7 +239,7 @@ const VerifiedNew = ({ route, navigation }) => {
                           source={require('../../assets/img/idCard.png')}
                           style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
                         />
-                        <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#323232'}}>{id}</Text>
+                        <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#78910F'}}> ID: <Text style={{color: '#323232'}}>{id}</Text></Text>
                       </View>
                     </View>
                   </View>
@@ -421,8 +427,8 @@ const styles = StyleSheet.create({
   textRole: {
     textAlign:'center',
     fontSize: scaleFontSize(19),
-    fontWeight:'400',
-    color:'#323232'
+    fontWeight:'600',
+    color:'#819843'
   },
   textID: {
     textAlign:'center',
@@ -440,7 +446,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: scaleFontSize(15),
     color: '#4A5714',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontStyle: 'italic'
   },
   alreadyChecked: {
     position: 'relative',

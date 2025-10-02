@@ -180,7 +180,7 @@ const Verified3New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 420000000);
+    }, 4200);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);

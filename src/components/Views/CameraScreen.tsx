@@ -108,7 +108,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
           >
           <View style={styles.top}>
             <Image
-              source={require('../../assets/img/backgroudnTop.png')}
+              source={require('../../assets/img/backgroundTop.png')}
               style={styles.topC}
             />
           </View>
