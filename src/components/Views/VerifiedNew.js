@@ -97,7 +97,7 @@ const VerifiedNew = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3000); // 3000 milliseconds = 3 seconds
+    }, 3000000000000000000000000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -147,9 +147,9 @@ const VerifiedNew = ({ route, navigation }) => {
             ]}
         >
           <View>
-            {result.statusCode !== 200 ? (
+            {false ? (
               <></>
-            ) : result.birthday && check === 'in' ? (
+            ) : false && check === 'in' ? (
               <>
               {soundRelease()}
               <View>
@@ -186,38 +186,48 @@ const VerifiedNew = ({ route, navigation }) => {
                 </View>
               </View>
               </>
-            ) : !result.lastLog ? (
+            ) : false ? (
               <View>
                 <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-                  <Text style={styles.title}>
-                    {check === 'in' ? 'Welcome!' : 'Farewell!'}
+                  <Text style={check === "in" ? (styles.title) : ([styles.title, {fontSize: scaleFontSize(35)}])}>
+                    {check === 'in' ? 'Welcome!' : 'That’s a Wrap!!'}
                   </Text>
                   <Text style={styles.subTitle}>
                     {check === 'in'
-                      ? `You're securely signed in`
-                      : `You're securely signed out`}
+                      ? `You're securely signed in.`
+                      : `Enjoy your time off.`}
                   </Text>
                 </View>
                 <View style={[styles.containerContent]}>
-                  <View style={styles.card}>
-                      <View style={styles.containerTime}>
+                  <View
+                    style={[
+                      styles.card,
+                      check === "out" &&
+                         { borderColor: '#D48F21' }
+                      ]}
+                  >
+                      <View style={[styles.containerTime , check === "out" && {backgroundColor: '#503B0F'}]}>
                         <TouchableOpacity
                           onPress={() => navigation.navigate('InitialScreen')}>
-                          <Image
-                            source={require('@/assets/img/check.png')}
+                          <Image 
+                              source={
+                                check === "in"
+                                  ? require('@/assets/img/check.png')
+                                  : require('@/assets/img/checkOutChecked.png')
+                              }
                             style={styles.check}
                           />
                         </TouchableOpacity>
   
                         {check === 'in' ? (
-                          <View style={styles.timeBlock}>
+                          <View style={[styles.timeBlock]}>
                             <Text style={styles.timeLabel}>Checked in at</Text>
-                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                            <Text style={styles.timeValue}>{result?.log?.checkin ?? 'N/A'}</Text>
                           </View>
                         ) : (
-                          <View style={styles.timeBlock}>
-                            <Text style={styles.timeLabel}>Check out at</Text>
-                            <Text style={styles.timeValue}>{result?.log.checkout ?? 'N/A'}</Text>
+                          <View style={[styles.timeBlockOut]}>
+                            <Text style={styles.timeLabel}>Checked out at</Text>
+                            <Text style={styles.timeValueOut}>{result?.log?.checkout ?? 'N/A'}</Text>
                           </View>
                         )}
                       </View>
@@ -252,12 +262,17 @@ const VerifiedNew = ({ route, navigation }) => {
             ) : (
               <View>
                 <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-                  <Text style={styles.title}>
-                    {check === 'in' ? 'Welcome Again!' : 'Farewell!'}
+                  <Text style={check === "in" ? (styles.title) : ([styles.title, {fontSize: scaleFontSize(40)}])}>
+                    {check === 'in' ? 'Welcome back!' : 'That’s a Wrap!!'}
+                  </Text>
+                  <Text style={styles.subTitle}>
+                    {check === 'in'
+                      ? `You’ve started a new shift here.`
+                      : `Enjoy your time off.`}
                   </Text>
                 </View>
                 <View style={[styles.containerContent]}>
-                  <View style={styles.card}>
+                  <View style={[styles.card, {padding: 0, }]}>
                       <View style={styles.containerTime}>
                         <TouchableOpacity
                           onPress={() => navigation.navigate('InitialScreen')}>
@@ -270,12 +285,12 @@ const VerifiedNew = ({ route, navigation }) => {
                         {check === 'in' ? (
                           <View style={styles.timeBlock}>
                             <Text style={styles.timeLabel}>Checked in at</Text>
-                            <Text style={styles.timeValue}>{result?.log.checkin ?? 'N/A'}</Text>
+                            <Text style={styles.timeValue}>{result?.log?.checkin ?? 'N/A'}</Text>
                           </View>
                         ) : (
                           <View style={styles.timeBlock}>
                             <Text style={styles.timeLabel}>Check out at</Text>
-                            <Text style={styles.timeValue}>{result?.log.checkout ?? 'N/A'}</Text>
+                            <Text style={styles.timeValue}>{result?.log?.checkout ?? 'N/A'}</Text>
                           </View>
                         )}
                       </View>
@@ -289,20 +304,42 @@ const VerifiedNew = ({ route, navigation }) => {
                       <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
                     </View>
                     <View>
-                      <Text style={styles.textLastCheck}>Last check:</Text>
+                      <Text style={styles.textRole}>{result?.role}</Text>
                     </View>
-                    <View>
-                      <Text style={styles.textChecks}>
-                        Check in: {result?.lastLog?.checkin ?? ''}
-                      </Text>
-                      <Text style={styles.textChecks}>
-                        Check out: {result?.lastLog?.checkout ?? ''}
-                      </Text>
+
+                    <View style={styles.identication}>
+                      <Image
+                        source={require('../../assets/img/idCard.png')}
+                        style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                      />
+                      <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#78910F'}}> ID: <Text style={{color: '#323232'}}>{id}</Text></Text>
+                    </View>
+                    <View style={styles.containerLastCheck}>
+                      <View style={styles.containerLastCheckIn}>
+                        <Image
+                          source={require('../../assets/img/checkin.png')}
+                          style={styles.iconCheckLastLog}
+                        />
+                        <View>
+                          <Text style={styles.textLastCheck}>Last check-in</Text>
+                          <Text style={styles.timelastCheckIn}>{result?.lastLog?.checkin ?? ''}</Text>
+                        </View>
+                      </View>
+                      <View style={styles.containerLastCheckOut}>
+                        <Image
+                          source={require('../../assets/img/checkout.png')}
+                          style={styles.iconCheckLastLog}
+                        />
+                        <View>
+                          <Text style={styles.textLastCheck}>Last check-out</Text>
+                          <Text style={styles.timelastCheckOut}>5000</Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
                   <Image
                     source={require('../../assets/img/adamoByHBPO.png')} 
-                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '20%'}]}
+                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '10%'}]}
                     />
                 </View>
               </View>
@@ -357,7 +394,7 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: scaleFontSize(15),
     color: '#EBF3CB',
-    marginTop: '-5%',
+    marginTop: '2%',
   },
   containerContent: {
     width: '80%',
@@ -370,6 +407,12 @@ const styles = StyleSheet.create({
     padding: '3%', 
   },
   card: {
+    borderWidth: 2,
+    borderColor: '#78910F',
+    borderRadius: 40,
+    padding: '3%',
+  },
+  cardOut: {
     borderWidth: 4,
     borderColor: '#78910F',
     borderRadius: 40,
@@ -399,6 +442,10 @@ const styles = StyleSheet.create({
     marginHorizontal: scaleWidthSize(20),
     marginLeft: scaleWidthSize(25),
   },
+  timeBlockOut: {
+    marginHorizontal: scaleWidthSize(20),
+    marginLeft: scaleWidthSize(25),
+  },
   timeLabel: {
     fontSize: scaleFontSize(15),
     fontWeight: '300',
@@ -409,6 +456,13 @@ const styles = StyleSheet.create({
     fontSize: scaleFontSize(27),
     fontWeight: '700',
     color: '#EBF3CB',
+    marginTop: '-8%',
+    alignSelf: 'center',
+  },
+  timeValueOut: {
+    fontSize: scaleFontSize(27),
+    fontWeight: '700',
+    color: '#FFBB4D',
     marginTop: '-8%',
     alignSelf: 'center',
   },
@@ -471,11 +525,53 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
   },
-    textLastCheck: {
+  containerLastCheck: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    height: 100
+  },
+  containerLastCheckIn: {
+    width: "50%",
+    height: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#617316',
+    borderBottomLeftRadius: 38,
+    paddingLeft: '3%'
+  },
+  containerLastCheckOut: {
+    width: "50%",
+    height: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#735616',
+    borderBottomRightRadius: 38,
+    paddingLeft: '3%',
+    gap: 10
+  },
+  iconCheckLastLog: {
+    resizeMode: 'contain',
+    width: scaleWidthSize(30),
+    height: scaleHeightSize(25)
+  },
+  textLastCheck: {
     fontFamily: 'Octarine-Bold',
-    color: '#323232',
-    fontSize: scaleFontSize(20),
+    color: '#EBF3CB',
+    fontSize: scaleFontSize(5),
     alignSelf: 'center'
+  },
+  timelastCheckIn: {
+    color: '#DCF576',
+    fontSize: scaleFontSize(15),
+    fontWeight: '900',
+  },
+  timelastCheckOut : {
+    color: '#FFBB4D',
+    fontSize: scaleFontSize(15),
+    fontWeight: '900'
   },
   textChecks: {
     alignSelf: 'center',

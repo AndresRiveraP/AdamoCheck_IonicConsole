@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
 } from 'react-native';
 import { RNCamera, TakePictureResponse } from 'react-native-camera';
 
@@ -14,6 +15,7 @@ import threeFacesData from '../../assets/apiTesters/3faces.json';
 import oneFaceCMData from '../../assets/apiTesters/1faceCM.json';
 import twoFacesCMData from '../../assets/apiTesters/2facesCM.json';
 import threeFacesCMData from '../../assets/apiTesters/3facesCM.json';
+import { scaleFontSize, scaleWidthSize } from '@/utils/scaleUtils';
 
 interface CameraScreenProps {
   route: {
@@ -36,7 +38,7 @@ interface CameraScreenProps {
 const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(false);
+  const [isTestMode, setIsTestMode] = useState<boolean>(true);
   const hasNavigated = useRef(false);
 
   useEffect(() => {
@@ -112,7 +114,24 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
               style={styles.topC}
             />
           </View>
-
+            {check === "in" ? (
+              <View style={styles.containerCheck}>
+                <Image
+                  source={require('../../assets/img/checkin.png')}
+                  style={styles.iconCheck}
+                />
+                <Text style={styles.textCheck}>CHECKING IN...</Text>
+              </View>
+            ) : (
+              <View style={[styles.containerCheck, {backgroundColor: "#735616"}]}>
+                <Image
+                  source={require('../../assets/img/checkout.png')}
+                  style={styles.iconCheck}
+                />
+                <Text style={[styles.textCheck, {color: "#FFBB4D"}]}>CHECKING OUT...</Text>
+              </View>
+            )}
+              
           <View style={styles.bottom}>
             <Image
               source={require('../../assets/img/backgroundBottom.png')}
@@ -151,6 +170,32 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+  },
+  containerCheck: {
+    position: 'absolute',
+    left: 0,
+    top: "5%",
+    width: scaleWidthSize(120),
+    backgroundColor: '#617316',
+    borderTopRightRadius: 40,
+    borderBottomEndRadius: 40,
+    display: "flex",
+    flexDirection : "row",
+    alignContent: "center",
+    alignItems: "center",
+    paddingVertical: "5%",
+    marginRight: "3%"
+  },
+  iconCheck:{
+    width: scaleWidthSize(25),
+    height: scaleWidthSize(15),
+    resizeMode: 'contain',
+  },
+  textCheck : {
+    fontFamily: 'Sora-ExtraBold',
+    fontSize : scaleFontSize(10),
+    color: '#DCF576',
+    marginBottom: "1%"
   },
   bottom: {
     position: 'absolute',
