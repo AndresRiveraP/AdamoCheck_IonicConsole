@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
-import { ImageBackground, View, Image, Text, TouchableOpacity, Platform, PermissionsAndroid, Alert, PixelRatio} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import { ImageBackground, View, Image, Text, TouchableOpacity, Platform, PermissionsAndroid, Alert, PixelRatio, BackHandler} from 'react-native';
 
 import { scaleFontSize} from '@/utils/scaleUtils';
 import styles from '@/styles/globStyles';
 
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sp = (size: number) => {
@@ -14,6 +14,19 @@ const sp = (size: number) => {
 const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   let check: string | null = null;
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate('InitialScreen');
+        return true;
+      };
+ 
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [navigation]),
+  );
+  
   const handleCamera = () => {
     navigation.navigate('CameraScreen', { check });
   };

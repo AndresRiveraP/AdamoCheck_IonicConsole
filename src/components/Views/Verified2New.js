@@ -146,7 +146,7 @@ const Verified2New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4000);
+    }, 400000000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -162,23 +162,27 @@ return(
           style={styles.background}>
             
             <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-              <Text style={styles.title}>
-                {check === 'in' ? 'Welcome!' : 'Farewell!'}
+              <Text style={check === "in" ? (styles.title) : ([styles.title, {fontSize: scaleFontSize(35)}])}>
+                {check === 'in' ? 'Welcome!' : 'That’s a Wrap!!'}
               </Text>
               <Text style={styles.subTitle}>
                 {check === 'in'
                   ? `You're securely signed in`
-                  : `You're securely signed out`}
+                  : `Enjoy your time off.`}
               </Text>
             </View>
          
             <View style={[styles.containerContent]}>
-              <View style={styles.containerTime}>
+              <View style={[styles.containerTime , check === "out" && {backgroundColor: '#503B0F'}]}>
                 <TouchableOpacity
-                    style={{position: 'absolute', left: '-25%',zIndex: 10, borderWidth: 1, borderColor: 'red', backgroundColor: 'red'}}
+                    style={{position: 'absolute', left: '-25%',zIndex: 10}}
                     onPress={() => navigation.navigate('InitialScreen')}>
-                    <Image
-                      source={require('@/assets/img/check.png')}
+                    <Image 
+                      source={
+                        check === "in"
+                          ? require('@/assets/img/check.png')
+                          : require('@/assets/img/checkOutChecked.png')
+                      }
                       style={styles.check}
                     />
                   </TouchableOpacity>
@@ -191,16 +195,18 @@ return(
                   ) : (
                     <View style={styles.timeBlock}>
                       <Text style={styles.timeLabel}>Check out at</Text>
-                      <Text style={styles.timeValue}>{formattedTime ?? 'N/A'}</Text>
+                      <Text style={styles.timeValueOut}>{formattedTime ?? 'N/A'}</Text>
                     </View>
                   )}
                 </View>
-              <Animated.View 
-                style={[styles.card,
-                  { 
+              <Animated.View
+                style={[
+                  styles.card,
+                  check === "out" && { borderColor: '#D48F21' },
+                  {
                     opacity: firstFadeAnim,
-                    transform: [{ translateX: firstSlideAnim }] 
-                  }
+                    transform: [{ translateX: firstSlideAnim }]
+                  },
                 ]}
                 >
                 <View>
@@ -225,10 +231,10 @@ return(
                   </View>
                     <View style={styles.identication}>
                       <Image
-                        source={require('../../assets/img/idCard.png')} 
+                        source={require('../../assets/img/idCard.png')}
                         style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
                       />
-                      <Text style={styles.textID}>{id1}</Text>
+                      <Text style={{textAlign:'center', fontSize: scaleFontSize(15), fontWeight:'400', color:'#78910F'}}> ID: <Text style={{color: '#323232'}}>{id1}</Text></Text>
                     </View>
                     </>
                   )}
@@ -263,9 +269,10 @@ return(
               
               </Animated.View>
             
-              <Animated.View 
+              <Animated.View
                 style={[styles.card,
-                  { 
+                  check === "out" && { borderColor: '#D48F21' },
+                  {
                     marginTop: '1%',
                     opacity: secondFadeAnim,
                     transform: [{ translateX: secondSlideAnim }] 
@@ -297,7 +304,7 @@ return(
                       source={require('../../assets/img/idCard.png')} 
                       style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
                     />
-                    <Text style={styles.textID}>{id2}</Text>
+                    <Text style={{textAlign:'center', fontSize: scaleFontSize(15), fontWeight:'400', color:'#78910F'}}> ID: <Text style={{color: '#323232'}}>{id2}</Text></Text>
                   </View>
                   </>
                 )}
@@ -320,7 +327,7 @@ return(
                   </View>
                 )}
       
-                {result[1 ].statusCode === 202 && (
+                {result[1].statusCode === 202 && (
                   <View style={styles.alreadyChecked}>
                     <View style={styles.whitened}>
                       <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -365,7 +372,7 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: scaleFontSize(15),
     color: '#EBF3CB',
-    marginTop: '-5%',
+    marginTop: '-1%',
   },
   containerContent: {
     width: '80%',
@@ -424,8 +431,15 @@ const styles = StyleSheet.create({
     marginTop: '-8%',
     alignSelf: 'center',
   },
+    timeValueOut: {
+    fontSize: scaleFontSize(27),
+    fontWeight: '700',
+    color: '#FFBB4D',
+    marginTop: '-8%',
+    alignSelf: 'center',
+  },
   card: {
-    borderWidth: 4,
+    borderWidth: 1,
     borderColor: '#78910F',
     borderRadius: 50,
     padding: '3%',
@@ -444,9 +458,9 @@ const styles = StyleSheet.create({
   },
   textRole: {
     textAlign:'center',
-    fontSize: scaleFontSize(17),
-    fontWeight:'400',
-    color:'#819842'
+    fontSize: scaleFontSize(15),
+    color:'#819842',
+    fontFamily: 'Poppins-SemiBold'
   },
   textID: {
     textAlign:'center',
@@ -459,6 +473,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    maxHeight: 70
   },
   alreadyChecked:{
     position: 'relative',

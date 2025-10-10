@@ -180,7 +180,7 @@ const Verified3New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 4200);
+    }, 420000000000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -196,23 +196,27 @@ const Verified3New = ({ route, navigation }) => {
         style={styles.background}>
           
           <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-            <Text style={styles.title}>
-              {check === 'in' ? 'Welcome!' : 'Farewell!'}
+            <Text style={check === "in" ? (styles.title) : ([styles.title, {fontSize: scaleFontSize(35)}])}>
+              {check === 'in' ? 'Welcome!' : 'That’s a Wrap!'}
             </Text>
             <Text style={styles.subTitle}>
               {check === 'in'
                 ? `You're securely signed in`
-                : `You're securely signed out`}
+                : `Enjoy your time off.`}
             </Text>
           </View>
         
           <View style={[styles.containerContent]}>
-            <View style={styles.containerTime}>
+            <View style={[styles.containerTime , check === "out" && {backgroundColor: '#503B0F'}]}>
               <TouchableOpacity
                   style={{left: '-70%'}}
                   onPress={() => navigation.navigate('InitialScreen')}>
-                  <Image
-                    source={require('@/assets/img/check.png')}
+                  <Image 
+                    source={
+                      check === "in"
+                        ? require('@/assets/img/check.png')
+                        : require('@/assets/img/checkOutChecked.png')
+                    }
                     style={styles.check}
                   />
                 </TouchableOpacity>
@@ -224,13 +228,14 @@ const Verified3New = ({ route, navigation }) => {
                   </View>
                 ) : (
                   <View style={styles.timeBlock}>
-                    <Text style={styles.timeLabel}>Check out at</Text>
-                    <Text style={styles.timeValue}>{formattedTime ?? 'N/A'}</Text>
+                    <Text style={styles.timeLabel}>Checked out at</Text>
+                    <Text style={styles.timeValueOut}>{formattedTime ?? 'N/A'}</Text>
                   </View>
                 )}
               </View>
-            <Animated.View 
+            <Animated.View
               style={[styles.card,
+                check === "out" && { borderColor: '#D48F21' },
                 { 
                   opacity: firstFadeAnim,
                   transform: [{ translateX: firstSlideAnim }] 
@@ -256,9 +261,9 @@ const Verified3New = ({ route, navigation }) => {
                   <View style={styles.identication}>
                     <Image
                       source={require('../../assets/img/idCard.png')} 
-                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                      style={styles.iconID}
                     />
-                    <Text style={styles.textID}>{id1}</Text>
+                    <Text style={styles.textID}> ID: <Text style={{color: '#323232'}}>{id1}</Text></Text>
                   </View>
                   </>
                 )}
@@ -292,6 +297,7 @@ const Verified3New = ({ route, navigation }) => {
           
             <Animated.View 
               style={[styles.card,
+                check === "out" && { borderColor: '#D48F21' },
                 { 
                   marginTop: '1%',
                   opacity: secondFadeAnim,
@@ -318,9 +324,9 @@ const Verified3New = ({ route, navigation }) => {
                   <View style={styles.identication}>
                     <Image
                       source={require('../../assets/img/idCard.png')} 
-                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                      style={styles.iconID}
                     />
-                    <Text style={styles.textID}>{id2}</Text>
+                    <Text style={styles.textID}> ID: <Text style={{color: '#323232'}}>{id2}</Text></Text>
                   </View>
                   </>
                 )}
@@ -356,6 +362,7 @@ const Verified3New = ({ route, navigation }) => {
 
             <Animated.View 
               style={[styles.card,
+                check === "out" && { borderColor: '#D48F21' },
                 { 
                   marginTop: '1%',
                   opacity: thirdFadeAnim,
@@ -382,9 +389,9 @@ const Verified3New = ({ route, navigation }) => {
                   <View style={styles.identication}>
                     <Image
                       source={require('../../assets/img/idCard.png')} 
-                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                      style={styles.iconID}
                     />
-                    <Text style={styles.textID}>{id3}</Text>
+                    <Text style={styles.textID}> ID: <Text style={{color: '#323232'}}>{id3}</Text></Text>
                   </View>
                   </>
                 )}
@@ -460,7 +467,7 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: scaleFontSize(15),
     color: '#EBF3CB',
-    marginTop: '-5%',
+    marginTop: '-1%',
   },
   containerContent: {
     width: '80%',
@@ -507,6 +514,13 @@ const styles = StyleSheet.create({
     marginTop: '-8%',
     alignSelf: 'center',
   },
+  timeValueOut: {
+    fontSize: scaleFontSize(27),
+    fontWeight: '700',
+    color: '#FFBB4D',
+    marginTop: '-8%',
+    alignSelf: 'center',
+  },
   card: {
     display: "flex",
     flexDirection: 'column',
@@ -516,7 +530,6 @@ const styles = StyleSheet.create({
     minHeight: '15%',
   },
   textkWelcomeAgain: {
-
     alignSelf: 'center',
     fontSize: scaleFontSize(19),
     fontWeight:'500',
@@ -524,35 +537,41 @@ const styles = StyleSheet.create({
   },
   textName: {
     textAlign:'center',
-    fontSize: scaleFontSize(15),
-    fontWeight:'600',
-    color:'#323232'
+    fontSize: scaleFontSize(20),
+    fontWeight:'700',
+    color:'#323232',
   },
   textLastName: {
     textAlign:'center',
     fontSize: scaleFontSize(11),
-    fontWeight:'300',
+    fontWeight:'400',
     color:'#323232'
   },
   textRole: {
     textAlign:'center',
-    fontSize: scaleFontSize(12),
-    fontWeight:'400',
-    color:'#323232'
+    fontSize: scaleFontSize(10),
+    fontWeight:'600',
+    color:'#819842',
+    fontFamily: 'Poppins-SemiBold'
   },
   identication: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    maxHeight: 55
+  },
+  iconID: {
+    resizeMode: "contain",
+    width: scaleWidthSize(18),
+    alignSelf: 'center'
   },
   textID: {
     textAlign:'center',
     fontSize: scaleFontSize(10),
     fontWeight:'400',
-    color:'#323232',
+    color:'#78910F',
     alignSelf: 'center',
-    letterSpacing: 2,
   },
   alreadyChecked:{
     position: 'relative',

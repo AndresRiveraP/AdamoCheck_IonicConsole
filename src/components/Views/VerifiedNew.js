@@ -147,9 +147,9 @@ const VerifiedNew = ({ route, navigation }) => {
             ]}
         >
           <View>
-            {false ? (
+            {result.statusCode !== 200  ? (
               <></>
-            ) : false && check === 'in' ? (
+            ) : result?.birthday && check === 'in' ? (
               <>
               {soundRelease()}
               <View>
@@ -186,7 +186,7 @@ const VerifiedNew = ({ route, navigation }) => {
                 </View>
               </View>
               </>
-            ) : false ? (
+            ) : !result?.lastLog ? (
               <View>
                 <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
                   <Text style={check === "in" ? (styles.title) : ([styles.title, {fontSize: scaleFontSize(35)}])}>
@@ -210,11 +210,11 @@ const VerifiedNew = ({ route, navigation }) => {
                         <TouchableOpacity
                           onPress={() => navigation.navigate('InitialScreen')}>
                           <Image 
-                              source={
-                                check === "in"
-                                  ? require('@/assets/img/check.png')
-                                  : require('@/assets/img/checkOutChecked.png')
-                              }
+                            source={
+                              check === "in"
+                                ? require('@/assets/img/check.png')
+                                : require('@/assets/img/checkOutChecked.png')
+                            }
                             style={styles.check}
                           />
                         </TouchableOpacity>
@@ -225,7 +225,7 @@ const VerifiedNew = ({ route, navigation }) => {
                             <Text style={styles.timeValue}>{result?.log?.checkin ?? 'N/A'}</Text>
                           </View>
                         ) : (
-                          <View style={[styles.timeBlockOut]}>
+                          <View style={[styles.timeBlock]}>
                             <Text style={styles.timeLabel}>Checked out at</Text>
                             <Text style={styles.timeValueOut}>{result?.log?.checkout ?? 'N/A'}</Text>
                           </View>
@@ -262,7 +262,7 @@ const VerifiedNew = ({ route, navigation }) => {
             ) : (
               <View>
                 <View style={[{display: 'flex', alignItems: 'center', marginTop: '18%'}]}>
-                  <Text style={check === "in" ? (styles.title) : ([styles.title, {fontSize: scaleFontSize(40)}])}>
+                  <Text style={[styles.title, {fontSize: scaleFontSize(40)}]}>
                     {check === 'in' ? 'Welcome back!' : 'That’s a Wrap!!'}
                   </Text>
                   <Text style={styles.subTitle}>
@@ -272,12 +272,22 @@ const VerifiedNew = ({ route, navigation }) => {
                   </Text>
                 </View>
                 <View style={[styles.containerContent]}>
-                  <View style={[styles.card, {padding: 0, }]}>
-                      <View style={styles.containerTime}>
+                  <View
+                    style={[
+                      styles.card,
+                      check === "out" ?(
+                         { borderColor: '#D48F21', padding: 0 }) : ( { borderColor: '#D48F21', padding: 0})
+                      ]}
+                  >
+                      <View style={[styles.containerTime, check === "out" && {backgroundColor: '#503B0F'}]}>
                         <TouchableOpacity
                           onPress={() => navigation.navigate('InitialScreen')}>
-                          <Image
-                            source={require('@/assets/img/check.png')}
+                          <Image 
+                              source={
+                                check === "in"
+                                  ? require('@/assets/img/check.png')
+                                  : require('@/assets/img/checkOutChecked.png')
+                              }
                             style={styles.check}
                           />
                         </TouchableOpacity>
@@ -304,7 +314,7 @@ const VerifiedNew = ({ route, navigation }) => {
                       <View style={{ height: 2, width: '80%', backgroundColor: '#78910F', alignSelf: 'center' }} />
                     </View>
                     <View>
-                      <Text style={styles.textRole}>{result?.role}</Text>
+                      <Text style={[styles.textRole, {marginTop: "-5%"}]}>{result?.role}</Text>
                     </View>
 
                     <View style={styles.identication}>
@@ -332,14 +342,14 @@ const VerifiedNew = ({ route, navigation }) => {
                         />
                         <View>
                           <Text style={styles.textLastCheck}>Last check-out</Text>
-                          <Text style={styles.timelastCheckOut}>5000</Text>
+                          <Text style={styles.timelastCheckOut}>{result?.lastLog?.checkout ?? ''}</Text>
                         </View>
                       </View>
                     </View>
                   </View>
                   <Image
                     source={require('../../assets/img/adamoByHBPO.png')} 
-                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '10%'}]}
+                    style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center', marginTop: '5%'}]}
                     />
                 </View>
               </View>
@@ -442,10 +452,6 @@ const styles = StyleSheet.create({
     marginHorizontal: scaleWidthSize(20),
     marginLeft: scaleWidthSize(25),
   },
-  timeBlockOut: {
-    marginHorizontal: scaleWidthSize(20),
-    marginLeft: scaleWidthSize(25),
-  },
   timeLabel: {
     fontSize: scaleFontSize(15),
     fontWeight: '300',
@@ -539,7 +545,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#617316',
     borderBottomLeftRadius: 38,
-    paddingLeft: '3%'
+    paddingLeft: '3%',
+    gap: 10
   },
   containerLastCheckOut: {
     width: "50%",
@@ -560,7 +567,7 @@ const styles = StyleSheet.create({
   textLastCheck: {
     fontFamily: 'Octarine-Bold',
     color: '#EBF3CB',
-    fontSize: scaleFontSize(5),
+    fontSize: scaleFontSize(7),
     alignSelf: 'center'
   },
   timelastCheckIn: {
