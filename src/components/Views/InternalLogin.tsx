@@ -12,7 +12,7 @@ const InternalLogin = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const handleLogin = async () => {
         try {
             const response = await fetch(
-                'https://adamocheckback-ult.up.railway.app/api/organizations/loginOrganizations',
+                'https://adamocheckback.up.railway.app/api/organizations/loginOrganizations',
                 {
                     method: 'POST',
                     headers: {

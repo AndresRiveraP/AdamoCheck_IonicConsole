@@ -53,6 +53,7 @@ const Verified2New = ({ route, navigation }) => {
     useEffect(() => {
     const createLog = async () => {
       const belongsTo = await AsyncStorage.getItem('key');
+      const organizationId = await AsyncStorage.getItem('id');
       if (apiCallMade.current) return;
       
       apiCallMade.current = true;
@@ -65,7 +66,8 @@ const Verified2New = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
-          belongsTo
+          belongsTo,
+          organizationId
         },
         {
           day: formattedDate,
@@ -74,12 +76,13 @@ const Verified2New = ({ route, navigation }) => {
           checkin: check === 'in' ? formattedTime : null,
           checkout: check === 'out' ? formattedTime : null,
           checkType: check,
-          belongsTo
+          belongsTo,
+          organizationId
         }
       ];
 
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/create2Logs', {
+        const response = await fetch('https://adamocheckback.up.railway.app/api/logs/create2Logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -217,7 +220,7 @@ return(
                 {result[0].statusCode === 200 && ( <>
                   {result[0].lastLog ? (
                     <View style={{alignItems: 'center'}}>
-                      <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                      <Text style={styles.textkWelcomeAgain}>Welcome Back</Text>
                       <Image
                         source={require('@/assets/img/check.png')}
                         style={styles.checkWelcomeAgain}
@@ -287,7 +290,7 @@ return(
                 {result[1].statusCode === 200 && ( <>
                 {result[1].lastLog ? (
                   <View style={{alignItems: 'center'}}>
-                    <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
+                    <Text style={styles.textkWelcomeAgain}>Welcome Back</Text>
                     <Image
                       source={require('@/assets/img/check.png')}
                       style={styles.checkWelcomeAgain}

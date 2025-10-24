@@ -60,8 +60,10 @@ const InitialScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const loadData= async () => {
       const user = await AsyncStorage.getItem("user");
       const key = await AsyncStorage.getItem("key");
+      const id = await AsyncStorage.getItem("id")
       console.log(user)
       console.log(key)
+      console.log(id)
     }
 
     loadData();

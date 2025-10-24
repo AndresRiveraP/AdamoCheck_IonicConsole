@@ -56,6 +56,7 @@ const VerifiedNew = ({ route, navigation }) => {
   useEffect(() => {
     const createLog = async () => {
       const belongsTo = await AsyncStorage.getItem('key');
+      const organizationId = await AsyncStorage.getItem('id');
       const logData = {
         day: formattedDate,
         identification: id,
@@ -63,10 +64,11 @@ const VerifiedNew = ({ route, navigation }) => {
         checkin: check === 'in' ? formattedTime : null,
         checkout: check === 'out' ? formattedTime : null,
         checkType: check,
-        belongsTo
+        belongsTo,
+        organizationId
       };
       try {
-        const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs', {
+        const response = await fetch('http://192.168.0.64:4000/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -97,7 +99,7 @@ const VerifiedNew = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3000000000000000000000000); // 3000 milliseconds = 3 seconds
+    }, 3000000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 

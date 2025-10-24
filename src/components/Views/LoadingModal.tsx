@@ -37,6 +37,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
 
     const processData = async () => {
       const { source, base64Data, check, documentId } = route.params;
+      const storedUser = await AsyncStorage.getItem("key");
 
       try {
         if (!source || source === 'camera') {
@@ -44,7 +45,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           // console.log('User being sent:', user);
 
           const response = await fetch(
-            'https://uqj2wa6v80.execute-api.us-east-2.amazonaws.com/dev/compare-face',
+            'https://amc0mupi4g.execute-api.us-east-2.amazonaws.com/stage/compare-face',
             {
               method: 'POST',
               headers: {
@@ -53,7 +54,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
               },
               body: JSON.stringify({
                 image: base64Data,
-                user: user
+                organization: storedUser
               }),
             },
           );
@@ -65,8 +66,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
           
           if (res.statusCode !== 200) {
             navigation.replace('UnverifiedNew', { check });
-          } else if (res.statusCode === 200 && res.body.matches.length > 0) {
-            const payload = res.body.matches;
+          } else if (res.statusCode === 200 && res.matches.length > 0) {
+            const payload = res.matches;
             switch (payload.length) {
               case 1:
                 navigation.replace('VerifiedNew', {payload, check});
@@ -85,7 +86,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
             navigation.replace('Unverified', { check });
           }
         } else if (source === 'UnverifiedNew' && documentId) {
-          const response = await fetch('https://adamocheckback-ult.up.railway.app/api/logs/unverified', {
+          const response = await fetch('https://adamocheckback.up.railway.app/api/logs/unverified', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
