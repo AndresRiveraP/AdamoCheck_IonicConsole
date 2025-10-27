@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
-import { ImageBackground, StyleSheet, View, Image, Text, SafeAreaView, PixelRatio, TouchableOpacity, Animated, Dimensions, BackHandler } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Text, TouchableOpacity, Animated, Dimensions, BackHandler } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { scaleFontSize, scaleHeightSize, scaleWidthSize } from '@/utils/scaleUtils';
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,34 +9,64 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
-function sp(size) {
-  return PixelRatio.getFontScale() * size;
+
+
+interface VerifiedProps {
+  route: {
+    params: {
+      payload: Array<{
+        name: string;
+        lastname: string;
+        id: string;
+      }>;
+      check: 'in' | 'out';
+    };
+  };
+  navigation: {
+    navigate: (screen: string) => void;
+  };
 }
 
-const Verified3New = ({ route, navigation }) => {
+interface LogResponse {
+  statusCode: number;
+  message?: string;
+  lastLog?: {
+    checkin?: string;
+    checkout?: string;
+  };
+  role?: string;
+  log?: {
+    checkin?: string;
+    checkout?: string;
+  };
+}
+
+
+
+const Verified3New: React.FC<VerifiedProps> = ({route, navigation}) => {
   const { payload, check } = route.params;
   
-  var name1 = payload[0].name;
-  var lastName1 = payload[0].lastname;
-  var id1 = payload[0].id;
+  var name1 = payload[0]?.name;
+  var lastName1 = payload[0]?.lastname;
+  var id1 = payload[0]?.id;
 
-  var name2 = payload[1].name;
-  var lastName2 = payload[1].lastname;
-  var id2 = payload[1].id;
+  var name2 = payload[1]?.name;
+  var lastName2 = payload[1]?.lastname;
+  var id2 = payload[1]?.id;
 
-  var name3 = payload[2].name;
-  var lastName3 = payload[2].lastname;
-  var id3 = payload[2].id;
+  var name3 = payload[2]?.name;
+  var lastName3 = payload[2]?.lastname;
+  var id3 = payload[2]?.id;
 
   var currentDate = new Date();
   var formattedDate = moment(currentDate).format('DD-MM-20YY');
   var formattedTime = moment(currentDate).format('h:mm A');
 
-  const [shouldRender, setShouldRender] = useState(false);
-  const [result, setResult] = useState(null);
+  const [shouldRender, setShouldRender] = useState<boolean>(false);
+  const [result, setResult] = useState<LogResponse[] | null>(null);
 
   // Add API call tracking ref
-  const apiCallMade = useRef(false);
+  const apiCallMade = useRef<boolean>(false);
   
   // Add animation refs for all three containers
   const firstSlideAnim = useRef(new Animated.Value(-width)).current;
@@ -59,7 +89,7 @@ const Verified3New = ({ route, navigation }) => {
 );
 
   useEffect(() => {
-    const createLog = async () => {
+    const createLog = async (): Promise<void> => {
       const belongsTo = await AsyncStorage.getItem('key');
       const organizationId = await AsyncStorage.getItem('id');
       if (apiCallMade.current) return;
@@ -108,24 +138,24 @@ const Verified3New = ({ route, navigation }) => {
           body: JSON.stringify({logs}),
         });
 
-        const result = await response.json();
+        const result: LogResponse[] = await response.json();
         setResult(result);
 
         if (response.ok) {
           console.log('Log created successfully: \n\n\n', result);
           setShouldRender(true);
         } else if (response.status === 400) {
-          console.log('Error creating log:', result.message);
+          console.log('Error creating log:', response.statusText);
           Toast.show({
             type: 'warning',
             text1: 'Warning',
-            text2: result.message,
+            text2: response.statusText,
             position: 'top',
             visibilityTime: 3000,
           });
           navigation.navigate('InitialScreen');
         } else {
-          console.error('Error creating log:', result.message);
+          console.error('Error creating log:', response.statusText);
         }
       } catch (error) {
         console.error('Error creating log:', error);
@@ -184,7 +214,7 @@ const Verified3New = ({ route, navigation }) => {
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 420000000000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [shouldRender]);
@@ -194,7 +224,7 @@ const Verified3New = ({ route, navigation }) => {
   }
 
   return(
-    <AnimatedScreenWrapper style={styles.container}>
+    <AnimatedScreenWrapper>
       <ImageBackground
         source={require('@/assets/img/backgroundStaff.png')}
         style={styles.background}>
@@ -250,8 +280,8 @@ const Verified3New = ({ route, navigation }) => {
                 <Text style={styles.textName}>{name1}</Text>
                 <Text style={styles.textLastName}>{lastName1}</Text>
               </View>
-              <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-              {result[0].statusCode === 200 && ( <>            
+              <View style={{ height: 2, width: '65%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
+              {result?.[0]?.statusCode === 200 && ( <>            
                 {result[0].lastLog ? (
                   <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center',flexGrow: 1}}>
                     <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
@@ -274,7 +304,7 @@ const Verified3New = ({ route, navigation }) => {
                 
                 </>)}
 
-              {result[0].message === "You are already checked in" && (
+              {result?.[0].message === "You are already checked in" && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -282,7 +312,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
       
-              {result[0].statusCode === 203 && (
+              {result?.[0].statusCode === 203 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
@@ -290,7 +320,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
     
-              {result[0].statusCode === 202 && (
+              {result?.[0].statusCode === 202 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -298,7 +328,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
             </Animated.View>
-          
+
             <Animated.View 
               style={[styles.card,
                 check === "out" && { borderColor: '#D48F21' },
@@ -313,8 +343,8 @@ const Verified3New = ({ route, navigation }) => {
                 <Text style={styles.textName}>{name2}</Text>
                 <Text style={styles.textLastName}>{lastName2}</Text>
               </View>
-              <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-              {result[1].statusCode === 200 && ( <>            
+              <View style={{ height: 2, width: '65%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
+              {result?.[1].statusCode === 200 && ( <>            
                 {result[1].lastLog ? (
                   <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center',flexGrow: 1}}>
                     <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
@@ -337,7 +367,7 @@ const Verified3New = ({ route, navigation }) => {
                 
                 </>)}
                 
-              {result[1].message === "You are already checked in" && (
+              {result?.[1].message === "You are already checked in" && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -345,7 +375,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
       
-              {result[1].statusCode === 203 && (
+              {result?.[1].statusCode === 203 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
@@ -353,7 +383,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
     
-              {result[1].statusCode === 202 && (
+              {result?.[1].statusCode === 202 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -361,8 +391,6 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
             </Animated.View>
-
-
 
             <Animated.View 
               style={[styles.card,
@@ -378,9 +406,9 @@ const Verified3New = ({ route, navigation }) => {
                 <Text style={styles.textName}>{name3}</Text>
                 <Text style={styles.textLastName}>{lastName3}</Text>
               </View>
-              <View style={{ height: 2, width: '60%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
-              {result[2].statusCode === 200 && ( <>            
-                {result[2].lastLog ? (
+              <View style={{ height: 2, width: '65%', backgroundColor: '#78910F', alignSelf: 'center' }}/>
+              {result?.[2].statusCode === 200 && ( <>            
+                {result?.[2].lastLog ? (
                   <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center',flexGrow: 1}}>
                     <Text style={styles.textkWelcomeAgain}>Welcome Again</Text>
                   </View>
@@ -402,7 +430,7 @@ const Verified3New = ({ route, navigation }) => {
                 
                 </>)}
 
-              {result[2].message === "You are already checked in" && (
+              {result?.[2].message === "You are already checked in" && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -410,7 +438,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
       
-              {result[2].statusCode === 203 && (
+              {result?.[2].statusCode === 203 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
@@ -418,7 +446,7 @@ const Verified3New = ({ route, navigation }) => {
                 </View>
               )}
     
-              {result[2].statusCode === 202 && (
+              {result?.[2].statusCode === 202 && (
                 <View style={styles.alreadyChecked}>
                   <View style={styles.whitened}>
                     <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
@@ -430,16 +458,7 @@ const Verified3New = ({ route, navigation }) => {
 
             <Image 
               source={require('../../assets/img/adamoByHBPO.png')} 
-              style={[
-                {
-                  resizeMode: 'contain',
-                  width: scaleWidthSize(120),
-                  alignSelf: 'center',
-                },
-                (result[0]?.statusCode !== 200 && result[1]?.statusCode !== 200 && result[2]?.statusCode !== 200) ? {
-                  marginTop: scaleHeightSize(40),
-                } : {marginTop: scaleHeightSize(-10)},
-              ]}
+              style={{ resizeMode: 'contain', width: scaleWidthSize(120), alignSelf: 'center', marginBottom: '-5%' }}
             />
           </View>
       </ImageBackground>
@@ -481,7 +500,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#EBF3CB',
     borderRadius: 60,
     marginTop: '15%',
-    padding: '3%', 
+    padding: '3%',
+    gap: 10
   },
   containerTime: {
     position: 'absolute',
@@ -536,7 +556,7 @@ const styles = StyleSheet.create({
   textkWelcomeAgain: {
     alignSelf: 'center',
     fontSize: scaleFontSize(19),
-    fontWeight:'500',
+    fontWeight:'400',
     color:'#323232',
   },
   textName: {
@@ -556,7 +576,9 @@ const styles = StyleSheet.create({
     fontSize: scaleFontSize(10),
     fontWeight:'600',
     color:'#819842',
-    fontFamily: 'Poppins-SemiBold'
+    fontFamily: 'Poppins-SemiBold',
+    marginTop: '1%',
+    marginBottom: '-1%',
   },
   identication: {
     display: 'flex',
@@ -572,7 +594,7 @@ const styles = StyleSheet.create({
   },
   textID: {
     textAlign:'center',
-    fontSize: scaleFontSize(10),
+    fontSize: scaleFontSize(11),
     fontWeight:'400',
     color:'#78910F',
     alignSelf: 'center',

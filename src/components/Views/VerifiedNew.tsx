@@ -106,6 +106,7 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
       };
       try {
         const response = await fetch('https://adamocheckback.up.railway.app/api/logs', {
+        // const response = await fetch('http://192.168.0.139:4000/api/logs', {  
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -136,7 +137,7 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
 
     const timer = setTimeout(() => {
       navigation.navigate('InitialScreen');
-    }, 3000000); // 3000 milliseconds = 3 seconds
+    }, 3000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer);
 
@@ -315,7 +316,7 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
                     style={[
                       styles.card,
                       check === "out" ?(
-                         { borderColor: '#D48F21', padding: 0 }) : ( { borderColor: '#D48F21', padding: 0})
+                         { borderColor: '#D48F21', padding: 0 }) : ({ padding: 0})
                       ]}
                   >
                       <View style={[styles.containerTime, check === "out" && {backgroundColor: '#503B0F'}]}>
@@ -394,30 +395,70 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
               </View>
             )}
 
-          {result?.message === "You are already checked in" && (
-              <View style={styles.alreadyChecked}>
-                <View style={styles.whitened}>
-                  <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
-                </View>
-              </View>
-            )}
+            <View style={[styles.containerContent, { display: 'flex', alignItems: 'center', marginTop: "20%", height: 'auto', position: 'relative' }]}>
+              <TouchableOpacity
+                style={{zIndex: 1000, position: 'absolute', width: '30%', height: '25%', top:'-10%'}}
+                onPress={() => navigation.navigate('InitialScreen')}>
+                <Image 
+                  source={
+                    require('@/assets/img/check.png')
+                  }
+                  style={styles.checkAlreadyChecked}
+                />
+              </TouchableOpacity>
+              {result?.statusCode === 201 && (
+                  <View style={styles.alreadyChecked}>
+                    <View style={styles.whitened}>
+                      <Text style={styles.textChecked}>You are already {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                    </View>
+                  </View>
+                )}
 
-            {result?.statusCode === 203 && (
-              <View style={styles.alreadyChecked}>
-                <View style={styles.whitened}>
-                  <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
-                </View>
-              </View>
-            )}
-            
-            {result?.statusCode === 202 && (
-              <View style={styles.alreadyChecked}>
-                <View style={styles.whitened}>
-                  <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
-                </View>
-              </View>
-            )}
+                {result?.statusCode === 203 && (
+                  <View style={styles.alreadyChecked}>
+                    <View style={styles.whitened}>
+                      <Text style={styles.textChecked}>You already {'\n'} <Text style={{fontWeight:'700'}}>checked out!</Text> </Text>
+                    </View>
+                  </View>
+                )}
+                
+                {result?.statusCode === 202 && (
+                  <View style={styles.alreadyChecked}>
+                    <View style={styles.whitened}>
+                      <Text style={styles.textChecked}>You are not {'\n'} <Text style={{fontWeight:'700'}}>checked in!</Text> </Text>
+                    </View>
+                  </View>
+                )}
 
+              {(result?.statusCode === 201 || result?.statusCode === 202 || result?.statusCode === 203) && (
+                <View style={[{ alignSelf: 'center', width: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}]}>
+                  <View style={{ height: 2, width: '100%', backgroundColor: '#78910F', alignSelf: 'center' }} />
+                  <View style={{ marginVertical: '7%' }}>
+                    <View>
+                      <Text style={styles.textName}>{name}</Text>
+                      <Text style={styles.textLastName}>{lastName}</Text>
+                    </View>
+
+                    
+                  </View>
+                  <View>
+                    <Text style={[styles.textRole, {marginTop: "-5%"}]}>{result?.role}</Text>
+                  </View>
+
+                  <View style={styles.identication}>
+                    <Image
+                      source={require('../../assets/img/idCard.png')}
+                      style={[{resizeMode: "contain", width: scaleWidthSize(20), alignSelf: 'center'}]}
+                    />
+                    <Text style={{textAlign:'center', fontSize: scaleFontSize(23), fontWeight:'400', color:'#78910F'}}> ID: <Text style={{color: '#323232'}}>{id}</Text></Text>
+                  </View>
+                </View>
+              )}
+              <Image
+                source={require('../../assets/img/adamoByHBPO.png')} 
+                style={[{resizeMode: "contain", width: scaleWidthSize(120), alignSelf: 'center'}]}
+              />
+            </View>
           </View>
         </Animated.View>
     </AnimatedScreenWrapper>
@@ -548,24 +589,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic'
   },
+  checkAlreadyChecked:{
+    resizeMode: 'contain',
+    width: '100%',
+    height: '100%'
+  },
+
   alreadyChecked: {
     position: 'relative',
     flexDirection: 'column',
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '50%'
+    marginTop: '10%'
   },
   whitened: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    padding: scaleHeightSize(20),
-    borderRadius: scaleWidthSize(10),
+    padding: scaleHeightSize(10),
     width: '80%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   textChecked: {
-    color: '#FFF',
+    color: '#000',
     fontSize: scaleFontSize(25),
     alignSelf: 'center',
     textAlign: 'center',

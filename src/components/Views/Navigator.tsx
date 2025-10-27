@@ -7,16 +7,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
 import LoadingScreen from './LoadingModal';
-import Verified from './Verified';
-import Verified2 from './Verified2';
-import Verified3 from './Verified3';
 import Unverified from './Unverified';
 import InternalLogin from './InternalLogin';
 import VerifiedNew from './VerifiedNew';
 import Verified2New from './Verified2New';
 import Splash from './Splash';
 import Verified3New from './Verified3New';
-import VerifiedBirthday from './VerifiedBirthday';
 import UnverifiedNew from './UnverifiedNew';
 import NoData from './NoData';
 
@@ -73,22 +69,6 @@ const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
             options={{ headerShown: false, headerLeft: () => null,} }
           />
          <Stack.Screen
-            name="Verified"
-            component={Verified as React.FC}
-            options={{ headerShown: false , headerLeft: () => null,
-        }} 
-        />
-        <Stack.Screen
-            name="Verified2"
-            component={Verified2 as React.FC}
-            options={{ headerShown: false, headerLeft: () => null, } }
-        />
-        <Stack.Screen 
-            name="Verified3"
-            component={Verified3 as React.FC}
-            options={{ headerShown: false, headerLeft: () => null, } }
-        />
-         <Stack.Screen
             name="Unverified"
             component={Unverified as React.FC}
             options={{ headerShown: false, headerLeft: () => null} }
@@ -106,11 +86,6 @@ const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
         <Stack.Screen
            name="Verified3New"
            component={Verified3New as React.FC}
-           options={{ headerShown: false, headerLeft: () => null} }
-        />
-        <Stack.Screen
-           name="VerifiedBirthday"
-           component={VerifiedBirthday as React.FC}
            options={{ headerShown: false, headerLeft: () => null} }
         />
         <Stack.Screen
