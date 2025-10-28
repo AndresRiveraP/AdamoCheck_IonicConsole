@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import InitialScreen from './InitialScreen';
 import CameraScreen from './CameraScreen';
 import LoadingScreen from './LoadingModal';
-import Unverified from './Unverified';
+// import Unverified from './Unverified';
 import InternalLogin from './InternalLogin';
 import VerifiedNew from './VerifiedNew';
 import Verified2New from './Verified2New';
@@ -68,11 +68,11 @@ const Navigator: React.FC<NavigatorProps> = ({initialRouteName}) => {
             component={LoadingScreen as React.FC}
             options={{ headerShown: false, headerLeft: () => null,} }
           />
-         <Stack.Screen
+         {/* <Stack.Screen
             name="Unverified"
             component={Unverified as React.FC}
             options={{ headerShown: false, headerLeft: () => null} }
-        />
+        /> */}
         <Stack.Screen
            name="VerifiedNew"
            component={VerifiedNew as React.FC}

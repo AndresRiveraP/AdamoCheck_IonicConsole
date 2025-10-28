@@ -83,7 +83,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
                 break;
             }
           } else {
-            navigation.replace('Unverified', { check });
+            navigation.replace('UnverifiedNew', { check });
           }
         } else if (source === 'UnverifiedNew' && documentId) {
           const response = await fetch('https://adamocheckback.up.railway.app/api/logs/unverified', {
@@ -114,14 +114,14 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
                 lastname: result.lastname,
               };
             } else {
-              navigation.replace('NoData', { check });
+              navigation.replace('UnverifiedNew', { check });
               return;
             }
 
             navigation.replace('VerifiedNew', { payload: [payload], check });
           } else {
             
-            navigation.replace('NoData');
+            navigation.replace('UnverifiedNew', { check });
           }
         }
       } catch (error) {
