@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, SafeAreaView, View, Dimensions, Text, TouchableOpacity, TextInput, PixelRatio, ToastAndroid } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Dimensions, Text, TouchableOpacity, TextInput, PixelRatio, ToastAndroid, Image } from 'react-native';
 import Video from 'react-native-video';
 import AnimatedScreenWrapper from './AnimatedScreenWrapper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -100,7 +100,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
             console.log('Employee fetched successfully:', result);
 
             let payload;
-            console.log('resul_------------------', result)  
+
             if (Array.isArray(result) && result[0]?.employee) {
               payload = {
                 id: result[0].employee.idNumber,
@@ -138,12 +138,19 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
           <View style={styles.videoWrapper}>
             <Video
-              source={require('./assets/gif/eye.mp4')}
+              source={require('./assets/gif/check2.mp4')}
               style={styles.videoContainer}
-              resizeMode="contain"
+              resizeMode="cover"
               repeat={true}
               paused={false}
               disableFocus={true}
+            />
+          </View>
+
+          <View style={styles.gifContainer}>
+            <Image
+              source={require('./assets/gif/elipsis.gif')}
+              style={styles.gif}
             />
           </View>
 
@@ -208,9 +215,21 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   videoContainer: {
-    width: width * 0.6,
-    height: height * 0.6, 
-    alignSelf: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  gifContainer: {
+    position: 'absolute',
+    bottom: '15%',
+    width: '100%',
+    alignItems: 'center',
+  },
+  gif: {
+    width: '20%',
+    resizeMode: 'contain',
   },
   inputContainer: {
     marginTop: 20,
