@@ -63,7 +63,7 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
 
   const { width } = Dimensions.get('window');
 
-  console.log({payload, check});
+  //console.log({payload, check});
   var name = payload[0].name;
   var lastName = payload[0].lastname;
   var id = payload[0].id;
@@ -106,7 +106,6 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
       };
       try {
         const response = await fetch('https://adamocheckback.up.railway.app/api/logs', {
-        // const response = await fetch('http://192.168.0.139:4000/api/logs', {  
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -120,7 +119,7 @@ const VerifiedNew: React.FC<VerifiedProps> = ({
 
         console.log('Result', response);
         if (response.status === 200) {
-          console.log('Log created successfully:', result);
+          //console.log('Log created successfully:', result);
           setShouldRender(true);
         } else if (response.status === 201 || response.status === 202 || response.status === 203) {
           console.log("Already something: ",  result);

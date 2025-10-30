@@ -15,6 +15,7 @@ import threeFacesData from '../../assets/apiTesters/3faces.json';
 import oneFaceCMData from '../../assets/apiTesters/1faceCM.json';
 import twoFacesCMData from '../../assets/apiTesters/2facesCM.json';
 import threeFacesCMData from '../../assets/apiTesters/3facesCM.json';
+
 import { scaleFontSize, scaleWidthSize } from '@/utils/scaleUtils';
 
 interface CameraScreenProps {
@@ -38,7 +39,7 @@ interface CameraScreenProps {
 const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
   const check = route.params.check;
   const cameraRef = useRef<RNCamera>(null);
-  const [isTestMode, setIsTestMode] = useState<boolean>(true);
+  const [isTestMode, setIsTestMode] = useState<boolean>(false);
   const hasNavigated = useRef(false);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ route, navigation }) => {
           hasNavigated.current = true;
           navigation.replace('LoadingScreen', { 
             check,
-            base64Data: twoFacesData.image,
+            base64Data: oneFaceData.image,
             source: 'camera'
           });
         }
