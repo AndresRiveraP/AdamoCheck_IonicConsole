@@ -13,8 +13,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion") // now 1.8.22
+        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
@@ -24,21 +24,17 @@ allprojects {
         google()
         mavenCentral()
     }
-    
-    // Enhanced force consistent Kotlin version
-    configurations.all {
-        resolutionStrategy {
-            force "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-            force "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-            force "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-            // Optional: you can remove forcing kotlin-gradle-plugin here
-            // force "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-            
-            eachDependency { DependencyResolveDetails details ->
-                if (details.requested.group == 'org.jetbrains.kotlin') {
-                    details.useVersion kotlinVersion
+}
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            project.configurations.all {
+                resolutionStrategy {
+                    force "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
+                    force "org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20"
+                    force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
+                    force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20"
+                    force "org.jetbrains.kotlin:kotlin-reflect:1.7.20"
                 }
             }
         }
